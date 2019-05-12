@@ -14,9 +14,9 @@ $ tnpm install @ali/git-commit-msg-linter --save-dev
 
 ## How it works
 
-On installing, it will copy the `{PROJECT}/.git/hooks/commit-msg` executable file if it exists to `{PROJECT}/.git/hooks/commit-msg.old` then the `commit-msg` will be overwrote by injecting the linting rules contained in src file `commit-msg.js`.
+- On installing, it will copy the `{PROJECT}/.git/hooks/commit-msg` executable file if it exists to `{PROJECT}/.git/hooks/commit-msg.old` then the `commit-msg` will be overwrote by injecting the linting rules contained in src file `commit-msg.js`.
 
-On uninstalling, the `commit-msg` file will be restored and the `commit-msg.old` will be deleted.
+- On uninstalling, the `commit-msg` file will be restored and the `commit-msg.old` will be deleted.
 
 ## Why yet a new linter
 
