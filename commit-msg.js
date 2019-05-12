@@ -35,24 +35,24 @@ function displayError() {
   ${GREEN}correct format: <type>(<scope>): <subject>
 
   ${COLOR}type:
-    ${COLOR}feat      ${GRAY}----     feature
-    ${COLOR}fix       ${GRAY}----     bug fix
-    ${COLOR}docs      ${GRAY}----     documentation
-    ${COLOR}style     ${GRAY}----     formatting, missing semi colons, …
-    ${COLOR}refactor  ${GRAY}----     a code change that neither fixes a bug nor adds a feature
-    ${COLOR}perf      ${GRAY}----     a code change that improves performance
-    ${COLOR}chore     ${GRAY}----     maintaining
-    ${COLOR}test      ${GRAY}----     when adding missing tests or correcting existing ones
-    ${COLOR}temp      ${GRAY}----     temporary commit, will not be included in git history
+    ${COLOR}feat     ${GRAY}Feature.
+    ${COLOR}fix      ${GRAY}Bug fix.
+    ${COLOR}docs     ${GRAY}Documentation.
+    ${COLOR}style    ${GRAY}Formatting, missing semi colons, …
+    ${COLOR}refactor ${GRAY}A code change that neither fixes a bug nor adds a feature.
+    ${COLOR}perf     ${GRAY}A code change that improves performance.
+    ${COLOR}chore    ${GRAY}Maintaining.
+    ${COLOR}test     ${GRAY}When adding missing tests or correcting existing ones.
+    ${COLOR}temp     ${GRAY}Temporary commit, will not be included in CHANGELOG.
 
   ${COLOR}scope:
-    ${GRAY}Optional, usually the files you have changed, or the API methods.
+    ${GRAY}Optional, can be anything specifying place of the commit change. For example $location, $browser, $compile, $rootScope, ngHref, ngClick, ngView, etc. In App Development, it can be a page, a module or a component.
 
   ${COLOR}subject:
-    ${GRAY}Please describe your changes in one line
+    ${GRAY}A very short description of the change in one line; Don't capitalize first letter; No dot (.) at the end
 
   ${COLOR}Example:
-    ${GREEN}style($location): add couple of missing semi colons
+    ${GREEN}style($location): add couple of missing semi colons.
   `
   );
 }
