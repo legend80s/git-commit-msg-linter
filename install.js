@@ -46,19 +46,7 @@ if (exists(commitMsgHookFile) && !fs.lstatSync(commitMsgHookFile).isSymbolicLink
   console.log(`${PACKAGE_NAME_LABEL}:`);
 }
 
-// We cannot create a symlink over an existing file so make sure it's gone and
-// finish the installation process.
-try {
-  fs.unlinkSync(commitMsgHookFile);
-} catch (error) {
-  const alert = chalk.red(`unlinkSync ${chalk.bold(commitMsgHookFile)} error`);
-
-  console.error(`${PACKAGE_NAME_LABEL}: ${alert}:`, error);
-}
-
-const rules = fs.readFileSync('./commit-msg');
-
-console.log('rules:', rules);
+const rules = fs.readFileSync('./commit-msg.js');
 
 // It could be that we do not have rights to this folder which could cause the
 // installation of this module to completely fail. We should just output the
