@@ -2,7 +2,9 @@
 
 const fs = require('fs');
 
-const MAX_LENGTH = 300;
+// Any line of the commit message cannot be longer 100 characters!
+// This allows the message to be easier to read on github as well as in various git tools.
+const MAX_LENGTH = 100;
 /* eslint-disable no-useless-escape */
 const PATTERN = /^(?:fixup!\s*)?(\w*)(\(([\w\$\.\*/-]*)\))?\: (.*)$/;
 /* eslint-enable no-useless-escape */
@@ -49,7 +51,8 @@ function displayError() {
     ${GRAY}Optional, can be anything specifying place of the commit change. For example $location, $browser, $compile, $rootScope, ngHref, ngClick, ngView, etc. In App Development, it can be a page, a module or a component.
 
   ${COLOR}subject:
-    ${GRAY}A very short description of the change in one line; Don't capitalize first letter; No dot (.) at the end
+    ${GRAY}A very short description of the change in one line; Don't capitalize first letter; No dot (.) at the end.
+    ${GRAY}Any line of the commit message cannot be longer 100 characters!
 
   ${COLOR}Example:
     ${GREEN}style($location): add couple of missing semi colons.
@@ -90,12 +93,30 @@ function validateMessage(message) {
   console.log('scope:', scope);
   console.log('subject:', subject);
 
-  if (!TYPES.includes(type)) {
+  const invalideType = !TYPES.includes(type);
+
+  // scope can be optional, but not empty string
+  // "test: hello" OK
+  // "test(): hello" FAILED
+  const invalidScope = typeof scope === 'string' && scope.trim() === '';
+
+  // Don't capitalize first letter; No dot (.) at the end
+  const invalidSubject = isUpperCase(subject[0]) || subject.endsWith('.');
+
+  if (invalideType || invalidScope || invalidSubject) {
     displayError();
     return false;
   }
 
   return isValid;
+}
+
+/**
+ * isUpperCase
+ * @param {string} letter
+ */
+function isUpperCase(letter) {
+  return letter === letter.toUpperCase();
 }
 
 function firstLineFromBuffer(buffer) {
