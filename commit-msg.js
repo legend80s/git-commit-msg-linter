@@ -34,13 +34,17 @@ function displayError({
   invalidScope = false,
   invalidSubject = false,
 } = {}) {
+  const type = invalideType ? `${RED}<type>` : '<type>';
+  const scope = invalidScope ? `${RED}(<scope>)` : `${invalideFormat ? RED : GREEN}(<scope>)`;
+  const subject = invalidSubject ? `${RED}<subject>` : `${invalideFormat ? RED : GREEN}<subject>`;
+
   console.error(
     `
   ${invalideFormat ? RED : YELLOW}*************Invalid Git Commit Message**************${invalidLength ? `
 
-  ${RED}commit message is longer than ${MAX_LENGTH} characters` : ''}
+  ${RED}Any line of the commit message cannot be longer ${MAX_LENGTH} characters!` : ''}
 
-  ${invalideFormat ? RED : GREEN}correct format: <type>(<scope>): <subject>
+  ${invalideFormat ? RED : GREEN}correct format: ${type}${scope}: ${subject}
 
   ${invalideType ? RED : YELLOW}type:
     ${YELLOW}feat     ${GRAY}Feature.
@@ -62,8 +66,7 @@ function displayError({
   ${YELLOW}subject:
     ${GRAY}A very short description of the change in one line;${invalidSubject ? `${RED}
       - Don't capitalize first letter;
-      - No dot (.) at the end.
-      - Any line of the commit message cannot be longer 100 characters!` : ''}
+      - No dot (.) at the end.` : ''}
 
   ${YELLOW}Example:
     ${GREEN}style($location): add couple of missing semi colons.
