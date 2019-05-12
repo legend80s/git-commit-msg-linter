@@ -6,6 +6,12 @@ It's a git "commit-msg" hook for linting your git commit message against the [Go
 
 *The repo is heavily influenced by [pre-commit](https://github.com/observing/pre-commit). Thanks.*
 
+## Install
+
+```shell
+$ tnpm install @ali/git-commit-msg-linter --save-dev
+```
+
 ## How it works
 
 On installing, it will copy the `{PROJECT}/.git/hooks/commit-msg` executable file if it exists to `{PROJECT}/.git/hooks/commit-msg.old` then the `commit-msg` will be overwrote by injecting the linting rules contained in src file `commit-msg.js`.
