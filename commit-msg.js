@@ -46,11 +46,15 @@ function displayError() {
     ${COLOR}temp     ${GRAY}Temporary commit, will not be included in CHANGELOG.
 
   ${COLOR}scope:
-    ${GRAY}Optional, can be anything specifying place of the commit change. For example $location, $browser, $compile, $rootScope, ngHref, ngClick, ngView, etc. In App Development, it can be a page, a module or a component.
+    ${GRAY}Optional, can be anything specifying place of the commit change.
+    For example $location, $browser, $compile, $rootScope, ngHref, ngClick, ngView, etc.
+    In App Development, scope can be a page, a module or a component.
 
   ${COLOR}subject:
-    ${GRAY}A very short description of the change in one line; Don't capitalize first letter; No dot (.) at the end.
-    ${GRAY}Any line of the commit message cannot be longer 100 characters!
+    ${GRAY}A very short description of the change in one line;
+      - Don't capitalize first letter;
+      - No dot (.) at the end.
+      - Any line of the commit message cannot be longer 100 characters!
 
   ${COLOR}Example:
     ${GREEN}style($location): add couple of missing semi colons.
