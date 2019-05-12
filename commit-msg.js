@@ -27,7 +27,7 @@ const TYPES = [
 ];
 
 /* eslint-disable no-console */
-function displayError() {
+function displayError({ invalidSubject }) {
   console.error(
     `
   ${RED}*************Invalid Git Commit Message**************
@@ -51,7 +51,7 @@ function displayError() {
     In App Development, scope can be a page, a module or a component.
 
   ${COLOR}subject:
-    ${GRAY}A very short description of the change in one line;
+    ${GRAY}A very short description of the change in one line;${invalidSubject ? RED : GRAY}
       - Don't capitalize first letter;
       - No dot (.) at the end.
       - Any line of the commit message cannot be longer 100 characters!
@@ -106,7 +106,7 @@ function validateMessage(message) {
   const invalidSubject = isUpperCase(subject[0]) || subject.endsWith('.');
 
   if (invalideType || invalidScope || invalidSubject) {
-    displayError();
+    displayError({ invalidSubject });
     return false;
   }
 
