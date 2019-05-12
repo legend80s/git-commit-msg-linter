@@ -19,10 +19,11 @@ On uninstalling, the `commit-msg` file will be restored and the `commit-msg.old`
 
 - [ ] More `type`s can be added through `package.json`.
 - [ ] `is-english-only` should be configurable through `package.json`, default `false`.
-- [ ] First letter of `subject` must be a lowercase one.
-- [ ] `subject` must not end with dot.
-- [ ] Empty `scope` parenthesis not allowed.
-- [ ] `scope` parenthesis must be of English which means full-width ones are not allowed.
+- [x] First letter of `subject` must be a lowercase one.
+- [x] `subject` must not end with dot.
+- [x] Empty `scope` parenthesis not allowed.
+- [x] `scope` parenthesis must be of English which means full-width ones are not allowed.
+- [ ] Keep a space between Chinese and English character.
 
 ## Notice
 
