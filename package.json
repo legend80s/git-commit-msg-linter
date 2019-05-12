@@ -10,6 +10,10 @@
     "uninstall": "node uninstall.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/legend80s/commit-msg-linter.git"
+  },
   "keywords": [],
   "author": "",
   "license": "MIT",
