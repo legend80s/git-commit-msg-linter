@@ -6,12 +6,11 @@
 const fs = require('fs');
 const path = require('path');
 
-const { COMMIT_MSG_HOOK_FILE, PACKAGE_NAME_LABEL, COMMIT_MSG_LABLE } = require('./constants');
+const { COMMIT_MSG_HOOK_FILE, PACKAGE_NAME_LABEL, COMMIT_MSG_LABLE, PROJECT_ROOT } = require('./constants');
 const { bailOut } = require('./utils');
 
 const exists = fs.existsSync || path.existsSync;
-const root = path.resolve(__dirname, '..', '..');
-const git = path.resolve(root, '.git');
+const git = path.resolve(PROJECT_ROOT, '.git');
 
 // Location of hook file, if it exists
 const commitMsgFile = path.resolve(git, 'hooks', COMMIT_MSG_HOOK_FILE);

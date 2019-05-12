@@ -10,13 +10,10 @@ const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 const { bailOut } = require('./utils');
-
-const root = path.resolve(__dirname, '..', '..');
-const git = path.resolve(root, '.git');
+const { COMMIT_MSG_LABLE, PACKAGE_NAME_LABEL, COMMIT_MSG_HOOK_FILE, PACKAGE_NAME, PROJECT_ROOT } = require('./constants');
 
 const exists = fs.existsSync;
-
-const { COMMIT_MSG_LABLE, PACKAGE_NAME_LABEL, COMMIT_MSG_HOOK_FILE, PACKAGE_NAME } = require('./constants');
+const git = path.resolve(PROJECT_ROOT, '.git');
 
 // Bail out if we don't have an `.git` directory as the hooks will not get triggered.
 if (!exists(git) || !fs.lstatSync(git).isDirectory()) {
