@@ -1,6 +1,6 @@
 {
   "name": "@ali/git-commit-msg-linter",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "git commit message linter hook",
   "main": "index.js",
   "scripts": {
