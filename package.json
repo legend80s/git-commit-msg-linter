@@ -21,5 +21,8 @@
     "eslint": "^5.16.0",
     "eslint-config-ali": "^6.0.0",
     "eslint-plugin-import": "^2.17.2"
+  },
+  "dependencies": {
+    "chalk": "^2.4.2"
   }
 }

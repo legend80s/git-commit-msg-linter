@@ -8,6 +8,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const chalk = require('chalk');
 const { bailOut } = require('./utils');
 
 const root = path.resolve(__dirname, '..', '..');
@@ -15,31 +16,18 @@ const git = path.resolve(root, '.git');
 
 const exists = fs.existsSync;
 
-const { COMMIT_MSG, COMMIT_MSG_LINTER } = require('./constants');
-
-// Gather the location of the possible hidden .git directory,
-// the hooks directory which contains all git hooks and the absolute location of the
-// `commit-msg` file. The path needs to be absolute in order for the symlinking to work correctly.
-// const git = getGitFolderPath(root);
-
-console.log('__dirname:', __dirname);
-console.log('root:', root);
-console.log('git:', git);
-console.log('COMMIT_MSG:', COMMIT_MSG, 'COMMIT_MSG_LINTER:', COMMIT_MSG_LINTER);
+const { COMMIT_MSG_LABLE, PACKAGE_NAME_LABEL, COMMIT_MSG_HOOK_FILE, PACKAGE_NAME } = require('./constants');
 
 // Bail out if we don't have an `.git` directory as the hooks will not get triggered.
-if (!git) {
-  console.error(`${COMMIT_MSG_LINTER}: Not found any .git folder for installing ${COMMIT_MSG} hook`);
-  console.error(`${COMMIT_MSG_LINTER}: Not installed successfully`);
+if (!exists(git) || !fs.lstatSync(git).isDirectory()) {
+  console.error(`${PACKAGE_NAME_LABEL}: ${chalk.red('.git folder Not found')}`);
+  console.error(`${PACKAGE_NAME_LABEL}: ${chalk.red(`${PACKAGE_NAME} won't be installed`)}`);
 
   bailOut();
 }
 
 const hooks = path.resolve(git, 'hooks');
-const commitMsgHookFile = path.resolve(hooks, COMMIT_MSG);
-
-console.log('hooks:', hooks);
-console.log('commitMsgHookFile:', commitMsgHookFile);
+const commitMsgHookFile = path.resolve(hooks, COMMIT_MSG_HOOK_FILE);
 
 // If we do have directory create a hooks folder if it doesn't exist.
 if (!exists(hooks)) { fs.mkdirSync(hooks); }
@@ -48,13 +36,14 @@ if (!exists(hooks)) { fs.mkdirSync(hooks); }
 // overriding it and losing it completely as it might contain something
 // important.
 if (exists(commitMsgHookFile) && !fs.lstatSync(commitMsgHookFile).isSymbolicLink()) {
-  console.log(`${COMMIT_MSG_LINTER}:`);
-  console.log(`${COMMIT_MSG_LINTER}: Detected an existing git ${COMMIT_MSG} hook`);
+  console.log(`${PACKAGE_NAME_LABEL}:`);
+  console.log(`${PACKAGE_NAME_LABEL}: An existing git ${COMMIT_MSG_LABLE} hook detected`);
 
   fs.writeFileSync(`${commitMsgHookFile}.old`, fs.readFileSync(commitMsgHookFile));
 
-  console.log(`${COMMIT_MSG_LINTER}: Old ${COMMIT_MSG} hook backuped to ${COMMIT_MSG}.old`);
-  console.log(`${COMMIT_MSG_LINTER}:`);
+  const old = chalk.bold(`${COMMIT_MSG_HOOK_FILE}.old`);
+  console.log(`${PACKAGE_NAME_LABEL}: Old ${COMMIT_MSG_LABLE} hook backuped to ${old}`);
+  console.log(`${PACKAGE_NAME_LABEL}:`);
 }
 
 // We cannot create a symlink over an existing file so make sure it's gone and
@@ -62,7 +51,9 @@ if (exists(commitMsgHookFile) && !fs.lstatSync(commitMsgHookFile).isSymbolicLink
 try {
   fs.unlinkSync(commitMsgHookFile);
 } catch (error) {
-  console.error(`unlinkSync ${commitMsgHookFile} error:`, error);
+  const alert = chalk.red(`unlinkSync ${chalk.bold(commitMsgHookFile)} error`);
+
+  console.error(`${PACKAGE_NAME_LABEL}: ${alert}:`, error);
 }
 
 const rules = fs.readFileSync('./commit-msg');
@@ -73,16 +64,16 @@ console.log('rules:', rules);
 // installation of this module to completely fail. We should just output the
 // error instead destroying the whole npm install process.
 try { fs.writeFileSync(commitMsgHookFile, rules); } catch (e) {
-  console.error(`${COMMIT_MSG_LINTER}:`);
-  console.error(`${COMMIT_MSG_LINTER}: Failed to create the hook file in your .git/hooks folder because:`);
-  console.error(`${COMMIT_MSG_LINTER}: ${e.message}`);
-  console.error(`${COMMIT_MSG_LINTER}: The hook was not installed.`);
-  console.error(`${COMMIT_MSG_LINTER}:`);
+  console.error(`${PACKAGE_NAME_LABEL}: ${chalk.red('Failed to create the hook file in your .git/hooks folder because:')}`);
+  console.error(`${PACKAGE_NAME_LABEL}: ${chalk.red(e.message)}`);
+  console.error(`${PACKAGE_NAME_LABEL}: ${chalk.red('The hook was not installed.')}`);
 }
 
 try { fs.chmodSync(commitMsgHookFile, '777'); } catch (e) {
-  console.error(`${COMMIT_MSG_LINTER}:`);
-  console.error(`${COMMIT_MSG_LINTER}: chmod 0777 the ${COMMIT_MSG} file in your .git/hooks folder because:`);
-  console.error(`${COMMIT_MSG_LINTER}: ${e.message}`);
-  console.error(`${COMMIT_MSG_LINTER}:`);
+  const alert = chalk.red(`chmod 0777 the ${COMMIT_MSG_LABLE} file in your .git/hooks folder because:`);
+
+  console.error(`${PACKAGE_NAME_LABEL}:`);
+  console.error(`${PACKAGE_NAME_LABEL}: ${alert}`);
+  console.error(`${PACKAGE_NAME_LABEL}: ${chalk.red(e.message)}`);
+  console.error(`${PACKAGE_NAME_LABEL}:`);
 }

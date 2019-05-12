@@ -6,7 +6,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const { COMMIT_MSG, COMMIT_MSG_LINTER } = require('./constants');
+const { COMMIT_MSG_HOOK_FILE, PACKAGE_NAME_LABEL, COMMIT_MSG_LABLE } = require('./constants');
 const { bailOut } = require('./utils');
 
 const exists = fs.existsSync || path.existsSync;
@@ -14,11 +14,11 @@ const root = path.resolve(__dirname, '..', '..');
 const git = path.resolve(root, '.git');
 
 // Location of hook file, if it exists
-const commitMsgFile = path.resolve(git, 'hooks', COMMIT_MSG);
+const commitMsgFile = path.resolve(git, 'hooks', COMMIT_MSG_HOOK_FILE);
 
 // Bail out if we don't have pre-commit file, it might be removed manually.
 if (!exists(commitMsgFile)) {
-  console.error(`${COMMIT_MSG_LINTER}: Not found any ${COMMIT_MSG} hook, no need to clean the battle field`);
+  console.info(`${PACKAGE_NAME_LABEL}: Not found any ${COMMIT_MSG_LABLE} hook, no need to clean the battle field`);
   bailOut();
 }
 
