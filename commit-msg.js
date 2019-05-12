@@ -10,6 +10,8 @@ const IGNORED = /(^WIP:)|(^\d+\.\d+\.\d+)/;
 const COLOR = '\x1B[1;33m';
 const GRAY = '\x1B[0;37m';
 const RED = '\x1B[0;31m';
+const GREEN = '\x1B[0;32m';
+
 const TYPES = [
   'feat', // 新功能
   'fix', // 修复问题
@@ -28,30 +30,30 @@ const TYPES = [
 function displayError() {
   console.error(
     `
-  ${RED}*************commit format error**************
+  ${RED}*************Invalid Git Commit Message**************
 
-  ${COLOR}correct format:  <type>(<scope>): <message> <issues>
+  ${GREEN}correct format: <type>(<scope>): <subject>
 
-  type:
-    ${COLOR}feat      ${GRAY}----     A new feature ${RED}Notice: you are updating your Y version (x.y.z)
-    ${COLOR}fix       ${GRAY}----     A bug fix
-    ${COLOR}docs      ${GRAY}----     Documentation only changes
-    ${COLOR}style     ${GRAY}----     Changes that do not affect the meaning of the code (formatting, missing semi colons, etc)
-    ${COLOR}refactor  ${GRAY}----     A code change that neither fixes a bug nor adds a feature
-    ${COLOR}perf      ${GRAY}----     A code change that improves performance
-    ${COLOR}test      ${GRAY}----     Adding missing or correcting existing tests
-    ${COLOR}break     ${GRAY}----     Break changes (not compatible with old version) ${RED}Notice: you are updating your X version (x.y.z)
-    ${COLOR}temp      ${GRAY}----     Useless commit, will not be included in git history
+  ${COLOR}type:
+    ${COLOR}feat      ${GRAY}----     feature
+    ${COLOR}fix       ${GRAY}----     bug fix
+    ${COLOR}docs      ${GRAY}----     documentation
+    ${COLOR}style     ${GRAY}----     formatting, missing semi colons, …
+    ${COLOR}refactor  ${GRAY}----     a code change that neither fixes a bug nor adds a feature
+    ${COLOR}perf      ${GRAY}----     a code change that improves performance
+    ${COLOR}chore     ${GRAY}----     maintaining
+    ${COLOR}test      ${GRAY}----     when adding missing tests or correcting existing ones
+    ${COLOR}temp      ${GRAY}----     temporary commit, will not be included in git history
+
   ${COLOR}scope:
-    Optional, usually the files you have changed, or the API methods.
-  message:
-    Please describe your changes in one line
-  issues:
-    Optional,Reference to related issues (#id or group/project#id)
+    ${GRAY}Optional, usually the files you have changed, or the API methods.
 
-  Example:
-    fix: Fix the problem that the upload data is missing the name attribute close #18
-     `
+  ${COLOR}subject:
+    ${GRAY}Please describe your changes in one line
+
+  ${COLOR}Example:
+    ${GREEN}style($location): add couple of missing semi colons
+  `
   );
 }
 
