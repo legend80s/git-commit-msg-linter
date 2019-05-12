@@ -1,4 +1,4 @@
-# @ali/git-commit-msg-linter
+# git-commit-msg-linter
 
 ## What's this
 
@@ -9,7 +9,7 @@ It's a git "commit-msg" hook for linting your git commit message against the [Go
 ## Install
 
 ```shell
-$ tnpm install @ali/git-commit-msg-linter --save-dev
+tnpm install git-commit-msg-linter --save-dev
 ```
 
 ## How it works
