@@ -4,6 +4,8 @@
 
 It's a git "commit-msg" hook for linting your git commit message against the [Google AngularJS Git Commit Message Conventions](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#heading=h.uyo6cb12dt6w). As a hook it will run at every commit to make sure your every commit message is valid against the conventions. If not your commit will be aborted.
 
+*The repo is heavily influenced by [pre-commit](https://github.com/observing/pre-commit). Thanks.*
+
 ## How it works
 
 On installing, it will copy the `{PROJECT}/.git/hooks/commit-msg` executable file if it exists to `{PROJECT}/.git/hooks/commit-msg.old` then the `commit-msg` will be overwrote by injecting the linting rules contained in src file `commit-msg.js`.
