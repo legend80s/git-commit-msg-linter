@@ -15,17 +15,15 @@ const RED = '\x1B[0;31m';
 const GREEN = '\x1B[0;32m';
 
 const TYPES = [
-  'feat', // 新功能
-  'fix', // 修复问题
-  'docs', // 修改文档
-  'style', // 修改代码格式，不影响代码逻辑
-  'refactor', // 重构代码，理论上不影响现有功能
-  'perf', // 提升性能
-  'test', // 增加修改测试用例
-  'chore', // 修改工具相关（包括但不限于文档、代码生成等）
-  'revert',
-  'break', // 破坏性变更(api删除,scss变量删除,api变更等不兼容变更)
-  'temp', // 无意义commit,该类commit不会汇总到history中
+  'feat',
+  'fix',
+  'docs',
+  'style',
+  'refactor',
+  'perf',
+  'chore',
+  'test',
+  'temp',
 ];
 
 /* eslint-disable no-console */
