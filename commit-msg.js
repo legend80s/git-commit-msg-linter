@@ -91,9 +91,9 @@ function validateMessage(message) {
   const scope = match[3];
   const subject = match[4];
 
-  console.log('type:', type);
-  console.log('scope:', scope);
-  console.log('subject:', subject);
+  // console.log('type:', type);
+  // console.log('scope:', scope);
+  // console.log('subject:', subject);
 
   const invalideType = !TYPES.includes(type);
 
