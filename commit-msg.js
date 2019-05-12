@@ -9,7 +9,7 @@ const MAX_LENGTH = 100;
 const PATTERN = /^(?:fixup!\s*)?(\w*)(\(([\w\$\.\*/-]*)\))?\: (.*)$/;
 /* eslint-enable no-useless-escape */
 const IGNORED = /(^WIP:)|(^\d+\.\d+\.\d+)/;
-const COLOR = '\x1B[1;33m';
+const YELLOW = '\x1B[1;33m';
 const GRAY = '\x1B[0;37m';
 const RED = '\x1B[0;31m';
 const GREEN = '\x1B[0;32m';
@@ -27,36 +27,45 @@ const TYPES = [
 ];
 
 /* eslint-disable no-console */
-function displayError({ invalidSubject }) {
+function displayError({
+  invalidLength = false,
+  invalideFormat = false,
+  invalideType = false,
+  invalidScope = false,
+  invalidSubject = false,
+} = {}) {
   console.error(
     `
-  ${RED}*************Invalid Git Commit Message**************
+  ${invalideFormat ? RED : YELLOW}*************Invalid Git Commit Message**************${invalidLength ? `
 
-  ${GREEN}correct format: <type>(<scope>): <subject>
+  ${RED}commit message is longer than ${MAX_LENGTH} characters` : ''}
 
-  ${COLOR}type:
-    ${COLOR}feat     ${GRAY}Feature.
-    ${COLOR}fix      ${GRAY}Bug fix.
-    ${COLOR}docs     ${GRAY}Documentation.
-    ${COLOR}style    ${GRAY}Formatting, missing semi colons, …
-    ${COLOR}refactor ${GRAY}A code change that neither fixes a bug nor adds a feature.
-    ${COLOR}perf     ${GRAY}A code change that improves performance.
-    ${COLOR}chore    ${GRAY}Maintaining.
-    ${COLOR}test     ${GRAY}When adding missing tests or correcting existing ones.
-    ${COLOR}temp     ${GRAY}Temporary commit, will not be included in CHANGELOG.
+  ${invalideFormat ? RED : GREEN}correct format: <type>(<scope>): <subject>
 
-  ${COLOR}scope:
+  ${invalideType ? RED : YELLOW}type:
+    ${YELLOW}feat     ${GRAY}Feature.
+    ${YELLOW}fix      ${GRAY}Bug fix.
+    ${YELLOW}docs     ${GRAY}Documentation.
+    ${YELLOW}style    ${GRAY}Formatting, missing semi colons, …
+    ${YELLOW}refactor ${GRAY}A code change that neither fixes a bug nor adds a feature.
+    ${YELLOW}perf     ${GRAY}A code change that improves performance.
+    ${YELLOW}chore    ${GRAY}Maintaining.
+    ${YELLOW}test     ${GRAY}When adding missing tests or correcting existing ones.
+    ${YELLOW}temp     ${GRAY}Temporary commit, will not be included in CHANGELOG.
+
+  ${YELLOW}scope:
     ${GRAY}Optional, can be anything specifying place of the commit change.
     For example $location, $browser, $compile, $rootScope, ngHref, ngClick, ngView, etc.
-    In App Development, scope can be a page, a module or a component.
+    In App Development, scope can be a page, a module or a component.${invalidScope ? `${RED}
+    \`scope\` can be *optional*, but its parenthesis if exists cannot be empty.` : ''}
 
-  ${COLOR}subject:
-    ${GRAY}A very short description of the change in one line;${invalidSubject ? RED : GRAY}
+  ${YELLOW}subject:
+    ${GRAY}A very short description of the change in one line;${invalidSubject ? `${RED}
       - Don't capitalize first letter;
       - No dot (.) at the end.
-      - Any line of the commit message cannot be longer 100 characters!
+      - Any line of the commit message cannot be longer 100 characters!` : ''}
 
-  ${COLOR}Example:
+  ${YELLOW}Example:
     ${GREEN}style($location): add couple of missing semi colons.
   `
   );
@@ -64,6 +73,7 @@ function displayError({ invalidSubject }) {
 
 function validateMessage(message) {
   let isValid = true;
+  let invalidLength = false;
 
   if (IGNORED.test(message)) {
     console.log('Commit message validation ignored.');
@@ -71,7 +81,7 @@ function validateMessage(message) {
   }
 
   if (message.length > MAX_LENGTH) {
-    console.error(`${COLOR}commit text is longer than ${MAX_LENGTH} characters`);
+    invalidLength = true;
     isValid = false;
   }
 
@@ -83,7 +93,7 @@ function validateMessage(message) {
   const match = PATTERN.exec(message);
 
   if (!match) {
-    displayError();
+    displayError({ invalidLength, invalideFormat: true });
     return false;
   }
 
@@ -106,7 +116,7 @@ function validateMessage(message) {
   const invalidSubject = isUpperCase(subject[0]) || subject.endsWith('.');
 
   if (invalideType || invalidScope || invalidSubject) {
-    displayError({ invalidSubject });
+    displayError({ invalideType, invalidScope, invalidSubject });
     return false;
   }
 
