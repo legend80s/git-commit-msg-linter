@@ -15,7 +15,7 @@
     "url": "git+https://github.com/legend80s/commit-msg-linter.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "legend80s",
   "license": "MIT",
   "devDependencies": {
     "eslint": "^5.16.0",
@@ -24,5 +24,8 @@
   },
   "dependencies": {
     "chalk": "^2.4.2"
+  },
+  "publishConfig": {
+    "registry": "http://registry.npm.alibaba-inc.com"
   }
 }
