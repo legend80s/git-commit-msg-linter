@@ -1,4 +1,4 @@
-# commit-msg-linter
+# @ali/git-commit-msg-linter
 
 ## What's this
 
