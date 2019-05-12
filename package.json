@@ -1,0 +1,21 @@
+{
+  "name": "commit-msg-linter",
+  "version": "0.0.1",
+  "description": "git commit message linter",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint *.js",
+    "lint:fix": "eslint --fix *.js",
+    "install": "node install.js",
+    "uninstall": "node uninstall.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-ali": "^6.0.0",
+    "eslint-plugin-import": "^2.17.2"
+  }
+}
