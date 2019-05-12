@@ -10,10 +10,6 @@ const fs = require('fs');
 const path = require('path');
 const { bailOut } = require('./utils');
 
-console.log('__dirname:', __dirname);
-
-bailOut();
-
 const root = path.resolve(__dirname, '..', '..');
 const git = path.resolve(root, '.git');
 
@@ -26,6 +22,7 @@ const { COMMIT_MSG, COMMIT_MSG_LINTER } = require('./constants');
 // `commit-msg` file. The path needs to be absolute in order for the symlinking to work correctly.
 // const git = getGitFolderPath(root);
 
+console.log('__dirname:', __dirname);
 console.log('root:', root);
 console.log('git:', git);
 console.log('COMMIT_MSG:', COMMIT_MSG, 'COMMIT_MSG_LINTER:', COMMIT_MSG_LINTER);
