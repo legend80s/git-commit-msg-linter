@@ -14,9 +14,9 @@ npm install git-commit-msg-linter --save-dev
 
 ## How it works
 
-- On installing, it will copy the `{PROJECT}/.git/hooks/commit-msg` executable file if it exists to `{PROJECT}/.git/hooks/commit-msg.old` then the `commit-msg` will be overwrote by injecting the linting rules contained in src file `commit-msg.js`.
+1. On installing, it will copy the `{PROJECT}/.git/hooks/commit-msg` executable file if it exists to `{PROJECT}/.git/hooks/commit-msg.old` then the `commit-msg` will be overwritten by injecting the linting rules contained in src file `commit-msg.js`.
 
-- On uninstalling, the `commit-msg` file will be restored and the `commit-msg.old` will be deleted.
+2. On uninstalling, the `commit-msg` file will be restored and the `commit-msg.old` will be deleted.
 
 ## Why yet a new linter
 
@@ -25,8 +25,8 @@ npm install git-commit-msg-linter --save-dev
 
 ## TODO
 
-- [ ] More `type`s can be added through `package.json`.
-- [ ] `is-english-only` should be configurable through `package.json`, default `false`.
+- [ ] Existing rule can be overwritten and new ones can be added through `.commitlinterrc`.
+- [ ] `is-english-only` should be configurable through `.commitlinterrc`, default `false`.
 - [x] First letter of `subject` must be a lowercase one.
 - [x] `subject` must not end with dot.
 - [x] Empty `scope` parenthesis not allowed.
