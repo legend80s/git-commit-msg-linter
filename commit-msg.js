@@ -40,7 +40,7 @@ function displayError({
 
   console.error(
     `
-  ${invalideFormat ? RED : YELLOW}*************Invalid Git Commit Message**************${invalidLength ? `
+  ${invalideFormat ? RED : YELLOW}************* Invalid Git Commit Message **************${invalidLength ? `
 
   ${RED}Any line of the commit message cannot be longer ${MAX_LENGTH} characters!` : ''}
 
