@@ -1,5 +1,9 @@
 # git-commit-msg-linter
 
+> git commit-msg hook for watching your every git commit message 👀
+
+![git-commit-msg-linter-result](https://raw.githubusercontent.com/legend80s/commit-msg-linter/master/assets/git-commit-msg-linter-result.png)
+
 ## What's this
 
 It's a git "commit-msg" hook for linting your git commit message against the [Google AngularJS Git Commit Message Conventions](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#heading=h.uyo6cb12dt6w). As a hook it will run at every commit to make sure your every commit message is valid against the conventions. If not your commit will be aborted.
