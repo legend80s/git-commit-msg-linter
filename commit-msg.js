@@ -19,16 +19,16 @@ const RED = '\x1B[0;31m';
 const GREEN = '\x1B[0;32m';
 
 const STEREOTYPES = {
-  feat: 'New feature.',
-  fix: 'Bug fix.',
-  docs: 'Documentation.',
-  style: 'Formatting, missing semi colons, …',
-  refactor: 'Neither fixing a bug nor adding a feature.',
-  perf: 'Improve performance.',
-  test: 'Add missing tests or correcting existing ones.',
-  chore: 'Maintain.',
-  deps: 'Upgrade dependency.',
-  temp: 'Temporary commit that won\'t be included in your CHANGELOG.',
+  feat: 'new feature',
+  fix: 'bug fix',
+  docs: 'documentation',
+  style: 'formatting, add missing semi colons, etc.',
+  refactor: 'neither fixing a bug nor adding a feature',
+  perf: 'improve performance',
+  test: 'add missing tests or correcting existing ones',
+  chore: 'maintain',
+  deps: 'upgrade dependency',
+  temp: 'temporary commit that won\'t be included in your changelog',
 };
 
 const commitMsg = process.argv[2];
