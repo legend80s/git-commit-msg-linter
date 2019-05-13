@@ -216,7 +216,7 @@ function displayError({
       - No dot (.) at the end.` : ''}
 
   ${YELLOW}Example:
-    ${GREEN}style($location): add couple of missing semi colons.
+    ${GREEN}style($location): add couple of missing semi colons
   `
   );
 }
