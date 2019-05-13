@@ -17,6 +17,9 @@
   "keywords": [],
   "author": "legend80s",
   "license": "MIT",
+  "engines": {
+    "node": ">= 8.0.0"
+  },
   "devDependencies": {
     "git-commit-msg-linter": "^1.0.0",
     "eslint": "^5.16.0",
