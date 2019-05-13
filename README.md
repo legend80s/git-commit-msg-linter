@@ -4,32 +4,56 @@
 
 <img src="https://raw.githubusercontent.com/legend80s/commit-msg-linter/master/assets/git-commit-msg-linter-result.png" alt="git-commit-msg-linter-result" width="90%" />
 
-## What's this
-
-It's a git "commit-msg" hook for linting your git commit message against the [Google AngularJS Git Commit Message Conventions](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#heading=h.uyo6cb12dt6w). As a hook it will run at every commit to make sure your every commit message is valid against the conventions. If not your commit will be aborted.
-
-*The repo is heavily influenced by [pre-commit](https://github.com/observing/pre-commit). Thanks.*
-
 ## Install
 
 ```shell
 npm install git-commit-msg-linter --save-dev
 ```
 
+## What's this
+
+It's a git "commit-msg" hook for linting your git commit message against the [Google AngularJS Git Commit Message Conventions](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#heading=h.uyo6cb12dt6w). As a hook it will run at every commit to make sure your every commit message is valid against the conventions. If not your commit will be aborted.
+
+*The repo is heavily influenced by [pre-commit](https://github.com/observing/pre-commit). Thanks.*
+
+
 ## How it works
 
 1. On installing, it will copy the `{PROJECT}/.git/hooks/commit-msg` executable file if it exists to `{PROJECT}/.git/hooks/commit-msg.old` then the `commit-msg` will be overwritten by injecting the linting rules contained in src file `commit-msg.js`.
-
-2. On uninstalling, the `commit-msg` file will be restored and the `commit-msg.old` will be deleted.
+2. On committing, the `commit-msg` hook will be triggered to check your commit message.
+3. On uninstalling, the `commit-msg` file will be restored and the `commit-msg.old` will be deleted.
 
 ## Why yet a new linter
 
 1. No "Google AngularJS Git Commit Message Conventions" linter hook ever existed now.
 2. It's very important to follow git commit message conventions and we recommend Google's.
 
+## commit message pattern
+
+```
+<type>(<scope>): <subject>
+
+# scope optional
+```
+
+## commitlinterrc.json
+
+Example:
+
+```json
+{
+  "types": {
+    "feat": "change for new feature",
+    "ci": "ci",
+    "build": "build",
+    "revert": "revert"
+  }
+}
+```
+
 ## TODO
 
-- [ ] Existing rule can be overwritten and new ones can be added through `commitlinterrc.json`.
+- [x] Existing rule can be overwritten and new ones can be added through `commitlinterrc.json`.
 - [ ] `is-english-only` should be configurable through `commitlinterrc.json`, default `false`.
 - [x] First letter of `subject` must be a lowercase one.
 - [x] `subject` must not end with dot.
@@ -42,3 +66,7 @@ npm install git-commit-msg-linter --save-dev
 1. git submodules not supported yet.
 
 ## FAQ
+
+1. how to add a `type`  or overwrite the description of existing `type`?
+
+   > Just add the `type` into your commitlinterrc.json.
