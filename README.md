@@ -16,7 +16,6 @@ It's a git "commit-msg" hook for linting your git commit message against the [Go
 
 *The repo is heavily influenced by [pre-commit](https://github.com/observing/pre-commit). Thanks.*
 
-
 ## How it works
 
 1. On installing, it will copy the `{PROJECT}/.git/hooks/commit-msg` executable file if it exists to `{PROJECT}/.git/hooks/commit-msg.old` then the `commit-msg` will be overwritten by injecting the linting rules contained in src file `commit-msg.js`.
@@ -30,7 +29,7 @@ It's a git "commit-msg" hook for linting your git commit message against the [Go
 
 ## commit message pattern
 
-```
+```shell
 <type>(<scope>): <subject>
 
 # scope optional
@@ -43,18 +42,27 @@ Example:
 ```json
 {
   "types": {
-    "feat": "change for new feature",
+    "feat": "new feature to the user",
     "ci": "ci",
     "build": "build",
-    "revert": "revert"
+    "revert": "revert",
+    "deps": "upgrade dependency",
+    "temp": false
   }
 }
 ```
+
+Rules above means:
+
+1. Modify existing type `feat`'s description to "new feature to the user";
+2. Add four new types: `ci`, `build`, `revert` and `deps`;
+3. `temp` are prohibited.
 
 ## TODO
 
 - [x] Existing rule can be overwritten and new ones can be added through `commitlinterrc.json`.
 - [ ] `is-english-only` should be configurable through `commitlinterrc.json`, default `false`.
+- [ ] `max-length` should be configurable through `commitlinterrc.json`, default `100`.
 - [x] First letter of `subject` must be a lowercase one.
 - [x] `subject` must not end with dot.
 - [x] Empty `scope` parenthesis not allowed.
@@ -63,10 +71,4 @@ Example:
 
 ## Notice
 
-1. git submodules not supported yet.
-
-## FAQ
-
-1. how to add a `type`  or overwrite the description of existing `type`?
-
-   > Just add the `type` into your commitlinterrc.json.
+git submodules not tested yet.
