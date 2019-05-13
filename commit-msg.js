@@ -172,6 +172,9 @@ function nSpaces(n) {
  * @param {number} options.index
  * @param {string} options.type
  * @param {string} options.description
+ * @param {number} options.maxTypeLength
+ *
+ * @returns {string}
  */
 function generateTypeDescription({ index, type, description, maxTypeLength }) {
   const paddingBefore = index === 0 ? '' : nSpaces(4);
