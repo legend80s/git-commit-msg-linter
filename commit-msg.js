@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
 
 const fs = require('fs');
 const path = require('path');
@@ -51,7 +52,7 @@ async function main(commitMsgFile, commitlinterrcFile) {
     readConfig(commitlinterrcFile),
   ]);
 
-  const merged = Object.assign({}, STEREOTYPES, config.types);
+  const merged = merge(STEREOTYPES, config.types);
   const msg = getFirstLine(commitMsgContent);
 
   if (!validateMessage(msg, merged)) {
@@ -64,7 +65,7 @@ async function main(commitMsgFile, commitlinterrcFile) {
 /**
  * @param {string} filename
  * @returns {Promise<Object>} return empty object when file not exist
- * @throws {Error} when error code of read file is not `ENOENT` or file exist but its content is invalid json
+ * @throws {Error} when error code not `ENOENT` or file exist but its content is invalid json
  */
 async function readConfig(filename) {
   const packageName = `${YELLOW}git-commit-msg-linter`;
@@ -85,7 +86,7 @@ async function readConfig(filename) {
   let config = {};
 
   try {
-    config = JSON.parse(content)
+    config = JSON.parse(content);
   } catch (error) {
     /** pass, commitlinterrc ignored when invalid json */
     /** output the error to the user for self-checking */
@@ -93,6 +94,26 @@ async function readConfig(filename) {
   }
 
   return config;
+}
+
+function merge(stereotypes, configTypes) {
+  return compact(Object.assign({}, stereotypes, configTypes), { strictFalse: true });
+}
+
+/**
+ * Create a new Object with all falsey values removed.
+ * The values false, null, 0, "", undefined, and NaN are falsey when `strictFalse` is false,
+ * Otherwise when `strictFalse` is true the only falsey value is fasle.
+ * @param {Object} obj
+ * @param {boolean} options.strictFalse
+ * @returns {Object}
+ */
+function compact(target, { strictFalse = false } = {}) {
+  return Object.keys(target).reduce((acc, key) => {
+    const shouldBeRemoved = strictFalse ? target[key] === false : !target[key];
+
+    return shouldBeRemoved ? acc : { ...acc, [key]: target[key] };
+  }, {});
 }
 
 function getFirstLine(buffer) {
@@ -159,7 +180,6 @@ function validateMessage(message, mergedTypes) {
   return isValid;
 }
 
-/* eslint-disable no-console */
 function displayError({
   invalidLength = false,
   invalideFormat = false,
