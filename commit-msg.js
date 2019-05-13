@@ -27,7 +27,6 @@ const STEREOTYPES = {
   perf: 'improve performance',
   test: 'add missing tests or correcting existing ones',
   chore: 'maintain',
-  deps: 'upgrade dependency',
   temp: 'temporary commit that won\'t be included in your changelog',
 };
 
