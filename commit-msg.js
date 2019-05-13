@@ -211,9 +211,9 @@ function displayError({
     \`scope\` can be *optional*, but its parenthesis if exists cannot be empty.` : ''}
 
   ${YELLOW}subject:
-    ${GRAY}A very short description of the change in one line;${invalidSubject ? `${RED}
-      - Don't capitalize first letter;
-      - No dot (.) at the end.` : ''}
+    ${GRAY}A very short description of the change in one line.${invalidSubject ? `${RED}
+      - don't capitalize first letter
+      - no dot (.) at the end` : ''}
 
   ${YELLOW}Example:
     ${GREEN}style($location): add couple of missing semi colons
