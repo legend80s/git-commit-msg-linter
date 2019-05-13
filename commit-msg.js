@@ -14,24 +14,28 @@ const GRAY = '\x1B[0;37m';
 const RED = '\x1B[0;31m';
 const GREEN = '\x1B[0;32m';
 
-const TYPES = [
-  ['feat', 'New feature.'],
-  ['fix', 'Bug fix.'],
-  ['docs', 'Documentation.'],
-  ['style', 'Formatting, missing semi colons, …'],
-  ['refactor', 'Neither fixing a bug nor adding a feature.'],
-  ['perf', 'Improve performance.'],
-  ['test', 'Add missing tests or correcting existing ones.'],
-  ['chore', 'Maintain.'],
-  ['deps', 'Upgrade dependency.'],
-  ['temp', 'Temporary commit that won\'t be included in your CHANGELOG.'],
-];
+const TYPES = {
+  feat: 'New feature.',
+  fix: 'Bug fix.',
+  docs: 'Documentation.',
+  style: 'Formatting, missing semi colons, …',
+  refactor: 'Neither fixing a bug nor adding a feature.',
+  perf: 'Improve performance.',
+  test: 'Add missing tests or correcting existing ones.',
+  chore: 'Maintain.',
+  deps: 'Upgrade dependency.',
+  temp: 'Temporary commit that won\'t be included in your CHANGELOG.',
+};
 
-const types = TYPES.map(([type]) => type);
+const types = Object.keys(TYPES);
 const maxTypeLength = [...types].sort((t1, t2) => t2.length - t1.length)[0].length;
 
-const typeDescriptions = TYPES
-  .map(([type, description], index) => generateTypeDescription({ index, type, description, maxTypeLength }))
+const typeDescriptions = types
+  .map((type, index) => {
+    const description = TYPES[type];
+
+    return generateTypeDescription({ index, type, description, maxTypeLength });
+  })
   .join('\n');
 
 /* eslint-disable no-console */
