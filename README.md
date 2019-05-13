@@ -1,6 +1,6 @@
 # git-commit-msg-linter
 
-> git commit-msg hook for watching your every git commit message 👀
+> Watching your every git commit message. 👀
 
 <img src="https://raw.githubusercontent.com/legend80s/commit-msg-linter/master/assets/git-commit-msg-linter-result.png" alt="git-commit-msg-linter-result" width="90%" />
 
