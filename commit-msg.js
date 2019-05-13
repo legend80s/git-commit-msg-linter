@@ -131,7 +131,7 @@ function validateMessage(message) {
  * @param {string} letter
  */
 function isUpperCase(letter) {
-  return letter === letter.toUpperCase();
+  return /^[A-Z]$/.test(letter);
 }
 
 function firstLineFromBuffer(buffer) {
