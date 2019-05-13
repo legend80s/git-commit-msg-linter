@@ -15,16 +15,24 @@ const RED = '\x1B[0;31m';
 const GREEN = '\x1B[0;32m';
 
 const TYPES = [
-  'feat',
-  'fix',
-  'docs',
-  'style',
-  'refactor',
-  'perf',
-  'chore',
-  'test',
-  'temp',
+  ['feat', 'New feature.'],
+  ['fix', 'Bug fix.'],
+  ['docs', 'Documentation.'],
+  ['style', 'Formatting, missing semi colons, …'],
+  ['refactor', 'Neither fixing a bug nor adding a feature.'],
+  ['perf', 'Improve performance.'],
+  ['test', 'Add missing tests or correcting existing ones.'],
+  ['chore', 'Maintain.'],
+  ['deps', 'Upgrade dependency.'],
+  ['temp', 'Temporary commit that won\'t be included in your CHANGELOG.'],
 ];
+
+const types = TYPES.map(([type]) => type);
+const maxTypeLength = [...types].sort((t1, t2) => t2.length - t1.length)[0].length;
+
+const typeDescriptions = TYPES
+  .map(([type, description], index) => generateTypeDescription({ index, type, description, maxTypeLength }))
+  .join('\n');
 
 /* eslint-disable no-console */
 function displayError({
@@ -47,16 +55,7 @@ function displayError({
   ${invalideFormat ? RED : GREEN}correct format: ${type}${scope}: ${subject}
 
   ${invalideType ? RED : YELLOW}type:
-    ${YELLOW}feat     ${GRAY}Feature.
-    ${YELLOW}fix      ${GRAY}Bug fix.
-    ${YELLOW}docs     ${GRAY}Documentation.
-    ${YELLOW}style    ${GRAY}Formatting, missing semi colons, …
-    ${YELLOW}refactor ${GRAY}A code change that neither fixes a bug nor adds a feature.
-    ${YELLOW}perf     ${GRAY}A code change that improves performance.
-    ${YELLOW}test     ${GRAY}When adding missing tests or correcting existing ones.
-    ${YELLOW}chore    ${GRAY}Maintaining.
-    ${YELLOW}deps     ${GRAY}Upgrade dependency.
-    ${YELLOW}temp     ${GRAY}Temporary commit, will not be included in CHANGELOG.
+    ${typeDescriptions}
 
   ${YELLOW}scope:
     ${GRAY}Optional, can be anything specifying place of the commit change.
@@ -109,7 +108,7 @@ function validateMessage(message) {
   // console.log('scope:', scope);
   // console.log('subject:', subject);
 
-  const invalideType = !TYPES.includes(type);
+  const invalideType = !types.includes(type);
 
   // scope can be optional, but not empty string
   // "test: hello" OK
@@ -150,3 +149,29 @@ fs.readFile(commitMsgFile, (err, buffer) => {
     process.exit(0);
   }
 });
+
+/**
+ * return n spaces
+ *
+ * @param  {number}
+ * @return {string}
+ */
+function nSpaces(n) {
+  const space = ' ';
+
+  return space.repeat(n);
+}
+
+/**
+ * generate type description
+ *
+ * @param {number} options.index
+ * @param {string} options.type
+ * @param {string} options.description
+ */
+function generateTypeDescription({ index, type, description, maxTypeLength }) {
+  const paddingBefore = index === 0 ? '' : nSpaces(4);
+  const marginRight = nSpaces(maxTypeLength - type.length + 1);
+
+  return `${paddingBefore}${YELLOW}${type}${marginRight}${GRAY}${description}`;
+}
