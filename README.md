@@ -25,8 +25,8 @@ npm install git-commit-msg-linter --save-dev
 
 ## TODO
 
-- [ ] Existing rule can be overwritten and new ones can be added through `.commitlinterrc`.
-- [ ] `is-english-only` should be configurable through `.commitlinterrc`, default `false`.
+- [ ] Existing rule can be overwritten and new ones can be added through `commitlinterrc.json`.
+- [ ] `is-english-only` should be configurable through `commitlinterrc.json`, default `false`.
 - [x] First letter of `subject` must be a lowercase one.
 - [x] `subject` must not end with dot.
 - [x] Empty `scope` parenthesis not allowed.
