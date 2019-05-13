@@ -53,8 +53,9 @@ function displayError({
     ${YELLOW}style    ${GRAY}Formatting, missing semi colons, …
     ${YELLOW}refactor ${GRAY}A code change that neither fixes a bug nor adds a feature.
     ${YELLOW}perf     ${GRAY}A code change that improves performance.
-    ${YELLOW}chore    ${GRAY}Maintaining.
     ${YELLOW}test     ${GRAY}When adding missing tests or correcting existing ones.
+    ${YELLOW}chore    ${GRAY}Maintaining.
+    ${YELLOW}deps     ${GRAY}Upgrade dependency.
     ${YELLOW}temp     ${GRAY}Temporary commit, will not be included in CHANGELOG.
 
   ${YELLOW}scope:
