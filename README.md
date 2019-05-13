@@ -2,7 +2,7 @@
 
 > git commit-msg hook for watching your every git commit message 👀
 
-<img src="https://raw.githubusercontent.com/legend80s/commit-msg-linter/master/assets/git-commit-msg-linter-result.png" alt="git-commit-msg-linter-result" width="80%" />
+<img src="https://raw.githubusercontent.com/legend80s/commit-msg-linter/master/assets/git-commit-msg-linter-result.png" alt="git-commit-msg-linter-result" width="90%" />
 
 ## What's this
 
