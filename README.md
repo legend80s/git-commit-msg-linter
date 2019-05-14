@@ -48,7 +48,7 @@ For example if you have the `commitlinterrc.json` below in your project root dir
 }
 ```
 
-It means:
+Which means:
 
 1. Modify existing type `feat`'s description to "new feature to the user".
 2. Add two new types: `build` and `deps`.
