@@ -20,14 +20,17 @@ const RED = '\x1B[0;31m';
 const GREEN = '\x1B[0;32m';
 
 const STEREOTYPES = {
-  feat: 'new feature',
-  fix: 'bug fix',
-  docs: 'documentation',
-  style: 'formatting, add missing semi colons, etc.',
-  refactor: 'neither fixing a bug nor adding a feature',
-  perf: 'improve performance',
-  test: 'add missing tests or correcting existing ones',
-  chore: 'maintain',
+  feat: 'a new feature',
+  fix: 'a bug fix',
+  docs: 'documentation only changes',
+  style: 'changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)',
+  refactor: 'a code change that neither fixes a bug nor adds a feature',
+  test: 'adding missing tests or correcting existing ones',
+  chore: 'maintain, for example changes that affect the build system',
+
+  // added
+  perf: 'a code change that improves performance',
+  ci: 'changes to your CI configuration files and scripts',
   temp: 'temporary commit that won\'t be included in your changelog',
 };
 
