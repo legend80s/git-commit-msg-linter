@@ -31,7 +31,7 @@ It's a git "commit-msg" hook for linting your git commit message against the [Go
 
 ## commitlinterrc.json
 
-Default `type`s including **feat**, **fix**, **docs**, **style**, **refactor**, **test**, **chore**, **perf**, **ci** and **temp**. But we can add, overwrite or forbid certain types.
+Default `type`s including **feat**, **fix**, **docs**, **style**, **refactor**, **test**, **chore**, **perf**, **ci** and **temp**. But you can add, overwrite or forbid certain types.
 
 For example if you have the `commitlinterrc.json` below in your project root directory:
 
