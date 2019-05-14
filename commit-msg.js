@@ -26,7 +26,7 @@ const STEREOTYPES = {
   style: 'changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)',
   refactor: 'a code change that neither fixes a bug nor adds a feature',
   test: 'adding missing tests or correcting existing ones',
-  chore: 'maintain, for example changes that affect the build system',
+  chore: 'maintain, changes to the build process or auxiliary tools and libraries such as documentation generation',
 
   // added
   perf: 'a code change that improves performance',
