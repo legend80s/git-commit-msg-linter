@@ -55,3 +55,9 @@ which means:
 - [x] `scope` parenthesis must be of English which means full-width ones are not allowed.
 - [ ] Keep a space between Chinese and English character.
 - [ ] Fix git pull commit not valid.
+
+## Reference guidelines
+
+1. [Angular Commit Message Guidelines](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-guidelines)
+2. [Angular.js Git Commit Guidelines](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines)
+3. [Google AngularJS Git Commit Message Conventions](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#heading=h.uyo6cb12dt6w)

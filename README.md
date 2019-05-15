@@ -12,7 +12,7 @@ npm install git-commit-msg-linter --save-dev
 
 ## What's this
 
-It's a git "commit-msg" hook for linting your git commit message against the [Google AngularJS Git Commit Message Conventions](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#heading=h.uyo6cb12dt6w). As a hook it will run at every commiting to make sure your every commit message is valid against the conventions. If not your commit will be aborted.
+It's a git "commit-msg" hook for linting your git commit message against the [Angular Commit Message Guidelines](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-guidelines). As a hook it will run at every commiting to make sure your every commit message is valid against the conventions. If not your commit will be aborted.
 
 *The repo is heavily influenced by [pre-commit](https://github.com/observing/pre-commit). Thanks.*
 
