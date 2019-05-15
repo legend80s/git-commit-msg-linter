@@ -18,52 +18,27 @@ It's a git "commit-msg" hook for linting your git commit message against the [Go
 
 ## Why yet a new linter
 
-1. No simpler git commit message hook ever exists right now.
-2. It's very important to follow certain git commit message conventions and we recommend Google's.
+Firstly no simple git commit message hook ever exists right now. To Add, to overwrite or to remove `type`s is not so friendly supported.
+
+Secondly it's very important to follow certain git commit message conventions and we recommend Angular's.
 
 ## Recommended commit message pattern
 
-```shell
-<type>(<scope>): <subject>
-
-# scope optional
-```
-
-## commitlinterrc.json
-
-Default `type`s including **feat**, **fix**, **docs**, **style**, **refactor**, **test**, **chore**, **perf**, **ci** and **temp**. But you can add, overwrite or forbid certain types.
-
-For example if you have the `commitlinterrc.json` below in your project root directory:
-
-```json
-{
-  "types": {
-    "feat": "new feature to the user",
-    "build": "changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)",
-    "deps": "upgrade dependency",
-    "temp": false,
-    "chore": false
-  }
-}
-```
-
-Which means:
-
-1. Modify existing type `feat`'s description to "new feature to the user".
-2. Add two new types: `build` and `deps`.
-3. `temp` are not allowed and `chore` are forbidden as `build` has the same meaning.
+> <type>(<scope>): <subject>
+>
+> // scope optional
 
 ## TODO
 
 - [x] Existing rule can be overwritten and new ones can be added through `commitlinterrc.json`.
 - [ ] `is-english-only` should be configurable through `commitlinterrc.json`, default `false`.
-- [ ] `max-length` should be configurable through `commitlinterrc.json`, default `100`.
+- [x] `max-len` should be configurable through `commitlinterrc.json`, default `100`.
 - [x] First letter of `subject` must be a lowercase one.
 - [x] `subject` must not end with dot.
 - [x] Empty `scope` parenthesis not allowed.
 - [x] `scope` parenthesis must be of English which means full-width ones are not allowed.
 - [ ] Keep a space between Chinese and English character.
 
-## Notice
+## Docs
 
-git submodules not tested yet.
+[More documentations.](https://github.com/legend80s/commit-msg-linter/blob/master/assets/docs.md)
