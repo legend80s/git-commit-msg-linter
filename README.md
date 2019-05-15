@@ -38,6 +38,7 @@ Secondly it's very important to follow certain git commit message conventions an
 - [x] Empty `scope` parenthesis not allowed.
 - [x] `scope` parenthesis must be of English which means full-width ones are not allowed.
 - [ ] Keep a space between Chinese and English character.
+- [ ] Fix git pull commit not valid.
 
 ## Docs
 
