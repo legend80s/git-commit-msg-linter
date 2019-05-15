@@ -24,7 +24,7 @@ Secondly it's very important to follow certain git commit message conventions an
 
 ## Recommended commit message pattern
 
-> <type>(<scope>): <subject>
+> \<type\>(\<scope\>): \<subject\>
 >
 > // scope optional
 
