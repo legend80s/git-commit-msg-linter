@@ -18,7 +18,7 @@ It's a git "commit-msg" hook for linting your git commit message against the [Go
 
 ## Why yet a new linter
 
-Firstly no simple git commit message hook ever exists right now. To Add, to overwrite or to remove `type`s is not so friendly supported. *Why not [conventional-changelog/commitlint](https://github.com/conventional-changelog/commitlint), read the [FAQs](https://github.com/legend80s/commit-msg-linter/blob/master/assets/docs.md)*.
+Firstly no simple git commit message hook ever exists right now. To Add, to overwrite or to remove `type`s is not so friendly supported. *Why not [conventional-changelog/commitlint](https://github.com/conventional-changelog/commitlint), read the [FAQs](https://github.com/legend80s/commit-msg-linter/blob/master/assets/docs.md#faqs)*.
 
 Secondly it's very important to follow certain git commit message conventions and we recommend Angular's.
 
