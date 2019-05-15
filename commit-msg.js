@@ -7,7 +7,7 @@ const util = require('util');
 
 const readFile = util.promisify(fs.readFile);
 
-// Any line of the commit message cannot be longer 100 characters!
+// Any line of the commit message cannot be longer than 100 characters!
 // This allows the message to be easier to read on github as well as in various git tools.
 const MAX_LENGTH = 100;
 /* eslint-disable no-useless-escape */
@@ -26,7 +26,7 @@ const STEREOTYPES = {
   style: 'changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)',
   refactor: 'a code change that neither fixes a bug nor adds a feature',
   test: 'adding missing tests or correcting existing ones',
-  chore: 'maintain, changes to the build process or auxiliary tools and libraries such as documentation generation',
+  chore: 'changes to the build process or auxiliary tools and libraries such as documentation generation',
 
   // added
   perf: 'a code change that improves performance',
@@ -55,10 +55,11 @@ async function main(commitMsgFile, commitlinterrcFile) {
     readConfig(commitlinterrcFile),
   ]);
 
-  const merged = merge(STEREOTYPES, config.types);
   const msg = getFirstLine(commitMsgContent);
+  const mergedTypes = merge(STEREOTYPES, config.types);
+  const maxLen = typeof config['max-len'] === 'number' ? config['max-len'] : MAX_LENGTH;
 
-  if (!validateMessage(msg, merged)) {
+  if (!validateMessage(msg, { mergedTypes, maxLen })) {
     process.exit(1);
   } else {
     process.exit(0);
@@ -127,10 +128,11 @@ function getFirstLine(buffer) {
  * validate git message
  *
  * @param {string} message
- * @param {Object>} mergedTypes
+ * @param {Object} options.mergedTypes 和 commitlinterrc merge 过的 types
+ * @param {number} options.maxLen 提交信息最大长度
  * @returns {boolean}
  */
-function validateMessage(message, mergedTypes) {
+function validateMessage(message, { mergedTypes, maxLen }) {
   let isValid = true;
   let invalidLength = false;
 
@@ -139,7 +141,9 @@ function validateMessage(message, mergedTypes) {
     return true;
   }
 
-  if (message.length > MAX_LENGTH) {
+  // console.log('message', message);
+
+  if (message.length > maxLen) {
     invalidLength = true;
     isValid = false;
   }
@@ -152,7 +156,7 @@ function validateMessage(message, mergedTypes) {
   const match = PATTERN.exec(message);
 
   if (!match) {
-    displayError({ invalidLength, invalideFormat: true, mergedTypes });
+    displayError({ invalidLength, invalideFormat: true }, { mergedTypes, maxLen });
     return false;
   }
 
@@ -176,7 +180,7 @@ function validateMessage(message, mergedTypes) {
   const invalidSubject = isUpperCase(subject[0]) || subject.endsWith('.');
 
   if (invalideType || invalidScope || invalidSubject) {
-    displayError({ invalideType, invalidScope, invalidSubject, mergedTypes });
+    displayError({ invalidLength, invalideType, invalidScope, invalidSubject }, { mergedTypes, maxLen });
     return false;
   }
 
@@ -189,8 +193,7 @@ function displayError({
   invalideType = false,
   invalidScope = false,
   invalidSubject = false,
-  mergedTypes,
-} = {}) {
+} = {}, { mergedTypes, maxLen }) {
   const type = invalideType ? `${RED}<type>` : '<type>';
   const scope = invalidScope ? `${RED}(<scope>)` : `${invalideFormat ? RED : GREEN}(<scope>)`;
   const subject = invalidSubject ? `${RED}<subject>` : `${invalideFormat ? RED : GREEN}<subject>`;
@@ -200,7 +203,7 @@ function displayError({
     `
   ${invalideFormat ? RED : YELLOW}************* Invalid Git Commit Message **************${invalidLength ? `
 
-  ${RED}Any line of the commit message cannot be longer ${MAX_LENGTH} characters!` : ''}
+  ${RED}Any line of the commit message cannot be longer ${maxLen} characters!` : ''}
 
   ${invalideFormat ? RED : GREEN}correct format: ${type}${scope}: ${subject}
 
@@ -250,13 +253,13 @@ function nSpaces(n) {
  * @param {number} options.index type index
  * @param {string} options.type type name
  * @param {string} options.description type description
- * @param {number} options.maxLength max type length
+ * @param {number} options.maxTypeLength max type length
  *
  * @returns {string}
  */
-function describe({ index, type, description, maxLength }) {
+function describe({ index, type, description, maxTypeLength }) {
   const paddingBefore = index === 0 ? '' : nSpaces(4);
-  const marginRight = nSpaces(maxLength - type.length + 1);
+  const marginRight = nSpaces(maxTypeLength - type.length + 1);
 
   return `${paddingBefore}${YELLOW}${type}${marginRight}${GRAY}${description}`;
 }
@@ -264,18 +267,18 @@ function describe({ index, type, description, maxLength }) {
 /**
  * generate type descriptions
  *
- * @param {Object} typeConfig
+ * @param {Object} mergedTypes
  * @returns {string} type descriptions
  */
-function describeTypes(typeConfig) {
-  const types = Object.keys(typeConfig);
-  const maxLength = [...types].sort((t1, t2) => t2.length - t1.length)[0].length;
+function describeTypes(mergedTypes) {
+  const types = Object.keys(mergedTypes);
+  const maxTypeLength = [...types].sort((t1, t2) => t2.length - t1.length)[0].length;
 
   return types
     .map((type, index) => {
-      const description = typeConfig[type];
+      const description = mergedTypes[type];
 
-      return describe({ index, type, description, maxLength });
+      return describe({ index, type, description, maxTypeLength });
     })
     .join('\n');
 }
