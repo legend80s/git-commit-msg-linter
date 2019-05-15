@@ -42,7 +42,7 @@ which means:
    >
    > To modify type description is also not supported. Unfriendly to non-english speakers. For example, all my team members are Japanese, isn't it more productive to change all the description to Japanese?
    >
-   > To add more types is also impossible. This is unacceptable for existing project with different type.
+   > To add more types is also impossible. This is unacceptable for project with different types already exist.
 
 ## TODO
 
