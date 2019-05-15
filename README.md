@@ -2,7 +2,7 @@
 
 > Watching your every git commit message. 👀
 
-![git-commit-msg-linter-demo](https://raw.githubusercontent.com/legend80s/commit-msg-linter/master/assets/demo-2.png)
+![git-commit-msg-linter-demo](https://raw.githubusercontent.com/legend80s/commit-msg-linter/master/assets/demo-3.png)
 
 ## Install
 
