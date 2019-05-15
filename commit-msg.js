@@ -31,7 +31,7 @@ const STEREOTYPES = {
   // added
   perf: 'a code change that improves performance',
   ci: 'changes to your CI configuration files and scripts',
-  temp: 'temporary commit that won\'t be included in your changelog',
+  temp: 'temporary commit that won\'t be included in your CHANGELOG',
 };
 
 const commitMsg = process.argv[2];
@@ -68,8 +68,7 @@ async function main(commitMsgFile, commitlinterrcFile) {
 
 /**
  * @param {string} filename
- * @returns {Promise<Object>} return empty object when file not exist
- * @throws {Error} when error code not `ENOENT` or file exist but its content is invalid json
+ * @returns {Promise<Object>} return empty object when read file error or content invalid json
  */
 async function readConfig(filename) {
   const packageName = `${YELLOW}git-commit-msg-linter`;
