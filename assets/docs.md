@@ -31,3 +31,15 @@ which means:
 - Add two new types: `build` and `deps`.
 - `temp` is not allowed and `chore` is forbidden as `build` means the same thing.
 - Maximum length of a commit message is adjusted to 80.
+
+## TODO
+
+- [x] Existing rule can be overwritten and new ones can be added through `commitlinterrc.json`.
+- [ ] `is-english-only` should be configurable through `commitlinterrc.json`, default `false`.
+- [x] `max-len` should be configurable through `commitlinterrc.json`, default `100`.
+- [x] First letter of `subject` must be a lowercase one.
+- [x] `subject` must not end with dot.
+- [x] Empty `scope` parenthesis not allowed.
+- [x] `scope` parenthesis must be of English which means full-width ones are not allowed.
+- [ ] Keep a space between Chinese and English character.
+- [ ] Fix git pull commit not valid.
