@@ -28,6 +28,7 @@ Secondly it's very important to follow certain git commit message conventions an
 >
 > // scope optional
 
-## Docs
+## Configuration
 
 [More documentations.](https://github.com/legend80s/commit-msg-linter/blob/master/assets/docs.md)
+
