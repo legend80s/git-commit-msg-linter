@@ -14,10 +14,12 @@ const MAX_LENGTH = 100;
 const PATTERN = /^(?:fixup!\s*)?(\w*)(\(([\w\$\.\*/-]*)\))?\: (.*)$/;
 /* eslint-enable no-useless-escape */
 const IGNORED = /(^WIP:)|(^\d+\.\d+\.\d+)/;
-const YELLOW = '\x1B[1;33m';
-const GRAY = '\x1B[0;37m';
-const RED = '\x1B[0;31m';
-const GREEN = '\x1B[0;32m';
+const YELLOW = '\x1b[1;33m';
+const GRAY = '\x1b[0;37m';
+const RED = '\x1b[0;31m';
+const GREEN = '\x1b[0;32m';
+/** End Of Style, removes all attributes (formatting and colors) */
+const EOS = '\x1b[0m';
 
 const STEREOTYPES = {
   feat: 'a new feature',
@@ -213,7 +215,7 @@ function displayError({
     ${GRAY}Optional, can be anything specifying place of the commit change.
     For example $location, $browser, $compile, $rootScope, ngHref, ngClick, ngView, etc.
     In App Development, scope can be a page, a module or a component.${invalidScope ? `${RED}
-    \`scope\` can be *optional*, but its parenthesis if exists cannot be empty.` : ''}
+    \`scope\` can be ${emphasis('optional')}${RED}, but its parenthesis if exists cannot be empty.` : ''}
 
   ${YELLOW}subject:
     ${GRAY}A very short description of the change in one line.${invalidSubject ? `${RED}
@@ -224,6 +226,17 @@ function displayError({
     ${GREEN}style($location): add couple of missing semi colons
   `
   );
+}
+
+/**
+ * Put emphasis on an text
+ * @param {string} text
+ */
+function emphasis(text) {
+  const ITALIC = '\x1b[3m';
+  const UNDERLINED = '\x1b[4m';
+
+  return `${ITALIC}${UNDERLINED}${text}${EOS}`;
 }
 
 /**
