@@ -301,6 +301,11 @@ function describeTypes(mergedTypes) {
     .join('\n');
 }
 
+/**
+ * Output debugging information.
+ * @param  {...any} args
+ * @returns {void}
+ */
 function debug(...args) {
   console.info(`${GREEN}[DEBUG]`, ...args, EOS);
 }
