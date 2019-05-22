@@ -181,20 +181,26 @@ function validateMessage(message, { mergedTypes, maxLen, verbose }) {
   const invalidSubject = isUpperCase(subject[0]) || subject.endsWith('.');
 
   if (invalideType || invalidScope || invalidSubject) {
-    displayError({ invalidLength, invalideType, invalidScope, invalidSubject }, { mergedTypes, maxLen });
+    displayError(
+      { invalidLength, invalideType, invalidScope, invalidSubject },
+      { mergedTypes, maxLen }
+    );
     return false;
   }
 
   return isValid;
 }
 
-function displayError({
-  invalidLength = false,
-  invalideFormat = false,
-  invalideType = false,
-  invalidScope = false,
-  invalidSubject = false,
-} = {}, { mergedTypes, maxLen }) {
+function displayError(
+  {
+    invalidLength = false,
+    invalideFormat = false,
+    invalideType = false,
+    invalidScope = false,
+    invalidSubject = false,
+  } = {},
+  { mergedTypes, maxLen }
+) {
   const type = invalideType ? `${RED}<type>` : '<type>';
   const scope = invalidScope ? `${RED}(<scope>)` : `${invalideFormat ? RED : GREEN}(<scope>)`;
   const subject = invalidSubject ? `${RED}<subject>` : `${invalideFormat ? RED : GREEN}<subject>`;
