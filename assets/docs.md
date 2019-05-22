@@ -55,7 +55,7 @@ which means:
 - [x] `scope` parenthesis must be of English which means full-width ones are not allowed.
 - [ ] Keep a space between Chinese and English character.
 - [ ] Fix git pull commit not valid.
-- [ ] Enable showing verbose information for debugging.
+- [x] Enable showing verbose information for debugging.
 
 ## Reference guidelines
 
