@@ -45,7 +45,7 @@ if (exists(commitMsgHookFile) && !fs.lstatSync(commitMsgHookFile).isSymbolicLink
   fs.writeFileSync(`${commitMsgHookFile}.old`, fs.readFileSync(commitMsgHookFile));
 
   const old = chalk.bold(`${COMMIT_MSG_HOOK_FILE}.old`);
-  console.log(`${PACKAGE_NAME_LABEL}: Old ${COMMIT_MSG_LABLE} hook backuped to ${old}`);
+  console.log(`${PACKAGE_NAME_LABEL}: Old ${COMMIT_MSG_LABLE} hook backed up to ${old}`);
   console.log(`${PACKAGE_NAME_LABEL}:`);
 }
 

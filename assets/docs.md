@@ -38,7 +38,7 @@ which means:
 
    > - Configuration is relatively complex.
    >
-   > - No description for type, so not so friendly to commit newbies. Because every time your are wondering which type should I use, you must jump out of you commit context to seek documentation in the wild web.
+   > - No description for type, unfriendly to commit newbies. Because every time your are wondering which type should I use, you must jump out of you commit context to seek documentation in the wild web.
    >
    > - To modify type description is also not supported. Unfriendly to non-english speakers. For example, all my team members are Japanese, isn't it more productive to change all the descriptions to Japanese?
    >
@@ -55,6 +55,7 @@ which means:
 - [x] `scope` parenthesis must be of English which means full-width ones are not allowed.
 - [ ] Keep a space between Chinese and English character.
 - [ ] Fix git pull commit not valid.
+- [ ] Enable showing verbose information for debugging.
 
 ## Reference guidelines
 
