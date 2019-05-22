@@ -56,12 +56,13 @@ async function main(commitMsgFile, commitlinterrcFile) {
     readFile(commitMsgFile),
     readConfig(commitlinterrcFile),
   ]);
+  const { types, 'max-len': maxLength, debug: verbose = false } = config;
 
   const msg = getFirstLine(commitMsgContent);
-  const mergedTypes = merge(STEREOTYPES, config.types);
-  const maxLen = typeof config['max-len'] === 'number' ? config['max-len'] : MAX_LENGTH;
+  const mergedTypes = merge(STEREOTYPES, types);
+  const maxLen = typeof maxLength === 'number' ? maxLength : MAX_LENGTH;
 
-  if (!validateMessage(msg, { mergedTypes, maxLen })) {
+  if (!validateMessage(msg, { mergedTypes, maxLen, verbose })) {
     process.exit(1);
   } else {
     process.exit(0);
@@ -131,9 +132,10 @@ function getFirstLine(buffer) {
  * @param {string} message
  * @param {Object} options.mergedTypes 和 commitlinterrc merge 过的 types
  * @param {number} options.maxLen 提交信息最大长度
+ * @param {boolean} options.verbose 是否打印 debug 信息
  * @returns {boolean}
  */
-function validateMessage(message, { mergedTypes, maxLen }) {
+function validateMessage(message, { mergedTypes, maxLen, verbose }) {
   let isValid = true;
   let invalidLength = false;
 
@@ -142,7 +144,7 @@ function validateMessage(message, { mergedTypes, maxLen }) {
     return true;
   }
 
-  // console.log('message', message);
+  verbose && debug(`commit message: |${message}|`);
 
   if (message.length > maxLen) {
     invalidLength = true;
@@ -165,9 +167,7 @@ function validateMessage(message, { mergedTypes, maxLen }) {
   const scope = match[3];
   const subject = match[4];
 
-  // console.log('type:', type);
-  // console.log('scope:', scope);
-  // console.log('subject:', subject);
+  verbose && debug(`type: ${type}, scope: ${scope}, subject: ${subject}`);
 
   const types = Object.keys(mergedTypes);
   const invalideType = !types.includes(type);
@@ -293,4 +293,8 @@ function describeTypes(mergedTypes) {
       return describe({ index, type, description, maxTypeLength });
     })
     .join('\n');
+}
+
+function debug(...args) {
+  console.info(`${GREEN}[DEBUG]`, ...args, EOS);
 }
