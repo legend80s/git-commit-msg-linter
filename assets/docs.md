@@ -1,5 +1,11 @@
 # git-commit-msg-linter
 
+## How it works
+
+When installing, it will copy the executable file `{PROJECT_ROOT}/.git/hooks/commit-msg` if it exists to `{PROJECT_ROOT}/.git/hooks/commit-msg.old` then the `commit-msg` will be overwritten by our linting rules.
+
+When uninstalling, the `commit-msg` file will be restored and the `commit-msg.old` will be removed.
+
 ## defaults
 
 The default `type`s includes **feat**, **fix**, **docs**, **style**, **refactor**, **test**, **chore**, **perf**, **ci** and **temp**.
