@@ -22,9 +22,9 @@ npm uninstall git-commit-msg-linter --save-dev
 
 ## Why yet a new linter
 
-Firstly no simple git commit message hook ever exists right now. To Add, to overwrite or to remove `type`s is not so friendly supported. *Why not conventional-changelog/commitlint, read the [FAQs](https://github.com/legend80s/commit-msg-linter/blob/master/assets/docs.md#faqs)*.
+Firstly it's very important to follow certain git commit message conventions and we recommend Angular's.
 
-Secondly it's very important to follow certain git commit message conventions and we recommend Angular's.
+Secondly no simple git commit message hook ever exists right now. To Add, to overwrite or to remove `type`s is not so friendly supported. *Why not conventional-changelog/commitlint, read the [FAQs](https://github.com/legend80s/commit-msg-linter/blob/master/assets/docs.md#faqs)*.
 
 ## Recommended commit message pattern
 
