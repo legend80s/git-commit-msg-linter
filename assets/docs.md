@@ -58,6 +58,7 @@ which means:
 - [ ] Keep a space between Chinese and English character.
 - [ ] Fix git pull commit not valid.
 - [x] Enable showing verbose information for debugging.
+- [ ] Interactive correcting and suggestion.
 
 ## Reference guidelines
 
