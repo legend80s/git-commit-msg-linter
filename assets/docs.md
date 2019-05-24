@@ -10,7 +10,7 @@ The default `max-len` is 100 which means the commit message cannot be longer tha
 
 Except for default types, you can add, overwrite or forbid certain types and so does the `max-len`.
 
-For example if you have the `commitlinterrc.json` below in your project root directory:
+For example if you have the `commitlinterrc.json` below in the root directory of your project:
 
 ```json
 {
