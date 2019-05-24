@@ -21,7 +21,8 @@ For example if you have the `commitlinterrc.json` below in your project root dir
     "temp": false,
     "chore": false
   },
-  "max-len": 80
+  "max-len": 80,
+  "debug": true
 }
 ```
 
@@ -31,6 +32,7 @@ which means:
 - Add two new types: `build` and `deps`.
 - `temp` is not allowed and `chore` is forbidden as `build` means the same thing.
 - Maximum length of a commit message is adjusted to 80.
+- Display verbose information about the commit message.
 
 ## FAQs
 
