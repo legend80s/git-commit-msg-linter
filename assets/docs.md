@@ -2,9 +2,9 @@
 
 ## How it works
 
-When installing, it will copy the executable file `{PROJECT_ROOT}/.git/hooks/commit-msg` if it exists to `{PROJECT_ROOT}/.git/hooks/commit-msg.old` then the `commit-msg` will be overwritten by our linting rules.
+After installed, it will copy the executable file `{PROJECT_ROOT}/.git/hooks/commit-msg` if it exists to `{PROJECT_ROOT}/.git/hooks/commit-msg.old` then the `commit-msg` will be overwritten by our linting rules.
 
-When uninstalling, the `commit-msg` file will be restored and the `commit-msg.old` will be removed.
+Before uninstalling, the `commit-msg` file will be restored and the `commit-msg.old` will be removed.
 
 ## defaults
 
