@@ -18,8 +18,10 @@ const YELLOW = '\x1b[1;33m';
 const GRAY = '\x1b[0;37m';
 const RED = '\x1b[0;31m';
 const GREEN = '\x1b[0;32m';
+
 /** End Of Style, removes all attributes (formatting and colors) */
 const EOS = '\x1b[0m';
+const BOLD = '\x1b[1m';
 
 const STEREOTYPES = {
   feat: 'a new feature',
@@ -180,11 +182,12 @@ function validateMessage(message, { mergedTypes, maxLen, verbose }) {
   // Don't capitalize first letter; No dot (.) at the end
   const invalidSubject = isUpperCase(subject[0]) || subject.endsWith('.');
 
-  if (invalidType || invalidScope || invalidSubject) {
+  if (invalidLength || invalidType || invalidScope || invalidSubject) {
     displayError(
       { invalidLength, invalidType, invalidScope, invalidSubject },
       { mergedTypes, maxLen, message }
     );
+
     return false;
   }
 
@@ -201,19 +204,19 @@ function displayError(
   } = {},
   { mergedTypes, maxLen, message }
 ) {
-  const type = invalidType ? `${RED}<type>` : '<type>';
-  const scope = invalidScope ? `${RED}(<scope>)` : `${invalidFormat ? RED : GREEN}(<scope>)`;
-  const subject = invalidSubject ? `${RED}<subject>` : `${invalidFormat ? RED : GREEN}<subject>`;
+  const type = decorate('type', invalidType);
+  const scope = decorate('scope', invalidScope, true);
+  const subject = decorate('subject', invalidSubject);
   const typeDescriptions = describeTypes(mergedTypes);
 
   const invalid = invalidLength || invalidFormat || invalidType || invalidScope || invalidSubject;
 
   console.info(
     `
-  ${invalidFormat ? RED : YELLOW}************* Invalid Git Commit Message **************${invalid ? `
-  ${EOS}commit message: ${italic(message)}` : ''}${invalidLength ? `
-  ${RED}Any line of the commit message cannot be longer ${maxLen} characters!` : ''}
-  ${invalidFormat ? RED : GREEN}correct format: ${type}${scope}: ${subject}
+  ${invalidFormat ? RED : YELLOW}************* Invalid Git Commit Message **************${EOS}${invalid ? `
+  ${label('commit message:')} ${RED}${message}${EOS}` : ''}${generateInvalidLengthTips(invalidLength, maxLen)}
+  ${label('correct format:')} ${GREEN}${type}${scope}: ${subject}${EOS}
+  ${label('example:')}        ${GREEN}docs: update README${EOS}
 
   ${invalidType ? RED : YELLOW}type:
     ${typeDescriptions}
@@ -228,16 +231,53 @@ function displayError(
     ${GRAY}A very short description of the change in one line.${invalidSubject ? `${RED}
       - don't capitalize first letter
       - no dot (.) at the end` : ''}
-
-  ${GREEN}Example:
-    ${GREEN}docs(changelog): update changelog to beta.5
   `
   );
 }
 
 /**
- * Put emphasis on an text
+ * Decorate the part of pattern.
+ *
+ * @param {string} text Text to decorate
+ * @param {boolean} invalid Whether the part is invalid
+ * @param {boolean} optional For example `scope` is optional
+ *
+ * @returns {string}
+ */
+function decorate(text, invalid, optional = false) {
+  if (invalid) {
+    return `${RED}${addPeripherals(underline(text) + RED, optional)}`;
+  }
+
+  return `${GREEN}${addPeripherals(text, optional)}`;
+}
+
+/**
+ * Add peripherals.
+ *
+ * @example
+ * addPeripherals('type')
+ * // => "<type>"
+ * addPeripherals('scope', true)
+ * // => "(<scope>)"
+ *
  * @param {string} text
+ * @param {boolean} optional
+ *
+ * @returns {string}
+ */
+function addPeripherals(text, optional = false) {
+  if (optional) {
+    return `(<${text}>)`;
+  }
+
+  return `<${text}>`;
+}
+
+/**
+ * Put emphasis on text.
+ * @param {string} text
+ * @returns {string}
  */
 function emphasis(text) {
   const ITALIC = '\x1b[3m';
@@ -247,18 +287,40 @@ function emphasis(text) {
 }
 
 /**
- * Make text italic
+ * Make text italic.
  * @param {string} text
+ * @returns {string}
  */
-function italic(text) {
-  const ITALIC = '\x1b[3m';
+// function italic(text) {
+//   const ITALIC = '\x1b[3m';
 
-  return `${ITALIC}${text}${EOS}`;
+//   return `${ITALIC}${text}${EOS}`;
+// }
+
+/**
+ * Make text underlined.
+ * @param {string} text
+ * @returns {string}
+ */
+function underline(text) {
+  const UNDERLINED = '\x1b[4m';
+
+  return `${UNDERLINED}${text}${EOS}`;
+}
+
+/**
+ * Make text displayed with error style.
+ * @param {string} text
+ * @returns {string}
+ */
+function red(text) {
+  return `${RED}${text}${EOS}`;
 }
 
 /**
  * isUpperCase
  * @param {string} letter
+ * @returns {boolean}
  */
 function isUpperCase(letter) {
   return /^[A-Z]$/.test(letter);
@@ -310,6 +372,32 @@ function describeTypes(mergedTypes) {
       return describe({ index, type, description, maxTypeLength });
     })
     .join('\n');
+}
+
+/**
+ * Style text like a label.
+ * @param {string} text
+ * @returns {string}
+ */
+function label(text) {
+  return `${BOLD}${text}${EOS}`;
+}
+
+/**
+ * Generate invalid length tips.
+ *
+ * @param {boolean} invalid
+ * @param {number} maxLen
+ * @returns {string}
+ */
+function generateInvalidLengthTips(invalid, maxLen) {
+  if (invalid) {
+    const tips = `commit message cannot be longer ${maxLen} characters!`;
+
+    return `\n  Invalid length: ${red(tips)}`;
+  }
+
+  return '';
 }
 
 /**
