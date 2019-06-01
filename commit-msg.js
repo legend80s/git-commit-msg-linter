@@ -159,7 +159,7 @@ function validateMessage(message, { mergedTypes, maxLen, verbose }) {
   const match = PATTERN.exec(message);
 
   if (!match) {
-    displayError({ invalidLength, invalideFormat: true }, { mergedTypes, maxLen, message });
+    displayError({ invalidLength, invalidFormat: true }, { mergedTypes, maxLen, message });
     return false;
   }
 
@@ -170,7 +170,7 @@ function validateMessage(message, { mergedTypes, maxLen, verbose }) {
   verbose && debug(`type: ${type}, scope: ${scope}, subject: ${subject}`);
 
   const types = Object.keys(mergedTypes);
-  const invalideType = !types.includes(type);
+  const invalidType = !types.includes(type);
 
   // scope can be optional, but not empty string
   // "test: hello" OK
@@ -180,9 +180,9 @@ function validateMessage(message, { mergedTypes, maxLen, verbose }) {
   // Don't capitalize first letter; No dot (.) at the end
   const invalidSubject = isUpperCase(subject[0]) || subject.endsWith('.');
 
-  if (invalideType || invalidScope || invalidSubject) {
+  if (invalidType || invalidScope || invalidSubject) {
     displayError(
-      { invalidLength, invalideType, invalidScope, invalidSubject },
+      { invalidLength, invalidType, invalidScope, invalidSubject },
       { mergedTypes, maxLen, message }
     );
     return false;
@@ -194,42 +194,42 @@ function validateMessage(message, { mergedTypes, maxLen, verbose }) {
 function displayError(
   {
     invalidLength = false,
-    invalideFormat = false,
-    invalideType = false,
+    invalidFormat = false,
+    invalidType = false,
     invalidScope = false,
     invalidSubject = false,
   } = {},
   { mergedTypes, maxLen, message }
 ) {
-  const type = invalideType ? `${RED}<type>` : '<type>';
-  const scope = invalidScope ? `${RED}(<scope>)` : `${invalideFormat ? RED : GREEN}(<scope>)`;
-  const subject = invalidSubject ? `${RED}<subject>` : `${invalideFormat ? RED : GREEN}<subject>`;
+  const type = invalidType ? `${RED}<type>` : '<type>';
+  const scope = invalidScope ? `${RED}(<scope>)` : `${invalidFormat ? RED : GREEN}(<scope>)`;
+  const subject = invalidSubject ? `${RED}<subject>` : `${invalidFormat ? RED : GREEN}<subject>`;
   const typeDescriptions = describeTypes(mergedTypes);
 
-  const invalid = invalidLength || invalideFormat || invalideType || invalidScope || invalidSubject;
+  const invalid = invalidLength || invalidFormat || invalidType || invalidScope || invalidSubject;
 
   console.info(
     `
-  ${invalideFormat ? RED : YELLOW}************* Invalid Git Commit Message **************${invalid ? `
-  ${EOS}commit message: ${message}` : ''}${invalidLength ? `
+  ${invalidFormat ? RED : YELLOW}************* Invalid Git Commit Message **************${invalid ? `
+  ${EOS}commit message: ${italic(message)}` : ''}${invalidLength ? `
   ${RED}Any line of the commit message cannot be longer ${maxLen} characters!` : ''}
-  ${invalideFormat ? RED : GREEN}correct format: ${type}${scope}: ${subject}
+  ${invalidFormat ? RED : GREEN}correct format: ${type}${scope}: ${subject}
 
-  ${invalideType ? RED : YELLOW}type:
+  ${invalidType ? RED : YELLOW}type:
     ${typeDescriptions}
 
-  ${YELLOW}scope:
+  ${invalidScope ? RED : YELLOW}scope:
     ${GRAY}Optional, can be anything specifying place of the commit change.
     For example $location, $browser, $compile, $rootScope, ngHref, ngClick, ngView, etc.
     In App Development, scope can be a page, a module or a component.${invalidScope ? `${RED}
     \`scope\` can be ${emphasis('optional')}${RED}, but its parenthesis if exists cannot be empty.` : ''}
 
-  ${YELLOW}subject:
+  ${invalidSubject ? RED : YELLOW}subject:
     ${GRAY}A very short description of the change in one line.${invalidSubject ? `${RED}
       - don't capitalize first letter
       - no dot (.) at the end` : ''}
 
-  ${YELLOW}Example:
+  ${GREEN}Example:
     ${GREEN}docs(changelog): update changelog to beta.5
   `
   );
@@ -244,6 +244,16 @@ function emphasis(text) {
   const UNDERLINED = '\x1b[4m';
 
   return `${ITALIC}${UNDERLINED}${text}${EOS}`;
+}
+
+/**
+ * Make text italic
+ * @param {string} text
+ */
+function italic(text) {
+  const ITALIC = '\x1b[3m';
+
+  return `${ITALIC}${text}${EOS}`;
 }
 
 /**
