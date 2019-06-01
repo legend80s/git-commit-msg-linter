@@ -159,7 +159,7 @@ function validateMessage(message, { mergedTypes, maxLen, verbose }) {
   const match = PATTERN.exec(message);
 
   if (!match) {
-    displayError({ invalidLength, invalideFormat: true }, { mergedTypes, maxLen });
+    displayError({ invalidLength, invalideFormat: true }, { mergedTypes, maxLen, message });
     return false;
   }
 
@@ -183,7 +183,7 @@ function validateMessage(message, { mergedTypes, maxLen, verbose }) {
   if (invalideType || invalidScope || invalidSubject) {
     displayError(
       { invalidLength, invalideType, invalidScope, invalidSubject },
-      { mergedTypes, maxLen }
+      { mergedTypes, maxLen, message }
     );
     return false;
   }
@@ -199,19 +199,20 @@ function displayError(
     invalidScope = false,
     invalidSubject = false,
   } = {},
-  { mergedTypes, maxLen }
+  { mergedTypes, maxLen, message }
 ) {
   const type = invalideType ? `${RED}<type>` : '<type>';
   const scope = invalidScope ? `${RED}(<scope>)` : `${invalideFormat ? RED : GREEN}(<scope>)`;
   const subject = invalidSubject ? `${RED}<subject>` : `${invalideFormat ? RED : GREEN}<subject>`;
   const typeDescriptions = describeTypes(mergedTypes);
 
-  console.error(
+  const invalid = invalidLength || invalideFormat || invalideType || invalidScope || invalidSubject;
+
+  console.info(
     `
-  ${invalideFormat ? RED : YELLOW}************* Invalid Git Commit Message **************${invalidLength ? `
-
+  ${invalideFormat ? RED : YELLOW}************* Invalid Git Commit Message **************${invalid ? `
+  ${EOS}commit message: ${message}` : ''}${invalidLength ? `
   ${RED}Any line of the commit message cannot be longer ${maxLen} characters!` : ''}
-
   ${invalideFormat ? RED : GREEN}correct format: ${type}${scope}: ${subject}
 
   ${invalideType ? RED : YELLOW}type:
