@@ -230,7 +230,7 @@ function displayError(
       - no dot (.) at the end` : ''}
 
   ${YELLOW}Example:
-    ${GREEN}style($location): add couple of missing semi colons
+    ${GREEN}docs(changelog): update changelog to beta.5
   `
   );
 }
