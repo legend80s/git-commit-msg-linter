@@ -14,7 +14,7 @@ A git "commit-msg" hook for linting your git commit message against the [Angular
 npm install git-commit-msg-linter --save-dev
 ```
 
-*To uninstall run the `uninstall` script instead of removing it manually* because only in this way, the old `commit-msg` hook can be restored, then your next commit messages can be ignored by git-commit-msg-linter.
+*To uninstall run the `uninstall` script instead of removing it manually* because only in this way, the old `commit-msg` hook can be restored, so that your next commit messages will be ignored by the linter.
 
 ```shell
 npm uninstall git-commit-msg-linter --save-dev
