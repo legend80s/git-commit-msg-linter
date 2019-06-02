@@ -28,9 +28,9 @@ Secondly no simple git commit message hook ever exists right now. To Add, to ove
 
 ## Recommended commit message pattern
 
-> \<type\>(\<scope\>): \<subject\>
+> \<**type**\>(\<**scope**\>): \<**subject**\>
 >
-> // scope optional
+> // *scope optional*
 
 ## Documentations
 
