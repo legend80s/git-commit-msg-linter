@@ -32,6 +32,7 @@ if (!exists(git) || !fs.lstatSync(git).isDirectory()) {
 
 const hooks = path.resolve(git, 'hooks');
 const commitMsgHookFile = path.resolve(hooks, COMMIT_MSG_HOOK_FILE);
+const backup = `${commitMsgHookFile}.old`;
 
 // If we do have `.git` folder create a `hooks` folder under it if it doesn't exist.
 if (!exists(hooks)) { fs.mkdirSync(hooks); }
@@ -42,7 +43,8 @@ if (exists(commitMsgHookFile) && !fs.lstatSync(commitMsgHookFile).isSymbolicLink
   console.log(`${PACKAGE_NAME_LABEL}:`);
   console.log(`${PACKAGE_NAME_LABEL}: An existing git ${COMMIT_MSG_LABLE} hook detected`);
 
-  fs.writeFileSync(`${commitMsgHookFile}.old`, fs.readFileSync(commitMsgHookFile));
+  // Only backup when "commit-msg.old" not exists, otherwise the original content will be lost
+  !exists(backup) && fs.writeFileSync(backup, fs.readFileSync(commitMsgHookFile));
 
   const old = chalk.bold(`${COMMIT_MSG_HOOK_FILE}.old`);
   console.log(`${PACKAGE_NAME_LABEL}: Old ${COMMIT_MSG_LABLE} hook backed up to ${old}`);
