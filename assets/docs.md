@@ -62,7 +62,7 @@ which means:
 - [x] Empty `scope` parenthesis not allowed.
 - [x] `scope` parenthesis must be of English which means full-width ones are not allowed.
 - [ ] Keep a space between Chinese and English character.
-- [ ] Fix git pull commit not valid.
+- [x] Fix git merge commit not valid.
 - [x] Enable showing verbose information for debugging.
 - [ ] Interactive correcting and suggestion.
 - [ ] No backup when `commit-msg.old` existed.
