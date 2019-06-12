@@ -13,7 +13,12 @@ const MAX_LENGTH = 100;
 /* eslint-disable no-useless-escape */
 const PATTERN = /^(?:fixup!\s*)?(\w*)(\(([\w\$\.\*/-]*)\))?\: (.*)$/;
 /* eslint-enable no-useless-escape */
-const IGNORED = /(^WIP:)|(^\d+\.\d+\.\d+)/;
+const IGNORED_PATTERNS = [
+  /(^WIP:)|(^\d+\.\d+\.\d+)/,
+
+  // ignore auto-generated commit msg
+  /^((Merge pull request)|(Merge (.*?) into (.*?)|(Merge branch (.*?)))(?:\r?\n)*$)/m,
+];
 const YELLOW = '\x1b[1;33m';
 const GRAY = '\x1b[0;37m';
 const RED = '\x1b[0;31m';
@@ -141,7 +146,7 @@ function validateMessage(message, { mergedTypes, maxLen, verbose }) {
   let isValid = true;
   let invalidLength = false;
 
-  if (IGNORED.test(message)) {
+  if (IGNORED_PATTERNS.some(pattern => pattern.test(message))) {
     console.log('Commit message validation ignored.');
     return true;
   }
