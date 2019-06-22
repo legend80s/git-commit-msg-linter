@@ -4,7 +4,7 @@
 
 ![git-commit-msg-linter-demo](https://raw.githubusercontent.com/legend80s/commit-msg-linter/master/assets/demo-4.png)
 
-A git "commit-msg" hook for linting your git commit message against the [Angular Commit Message Guidelines](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-guidelines). As a hook it will run at every commiting to make sure that your every commit message is valid against the conventions. If not the commit will be aborted.
+A git "commit-msg" hook for linting your git commit message against the [Angular Commit Message Guidelines](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-guidelines). As a hook it will run at every commiting to make sure that the message to commit is valid against the conventions. If not the commit will be aborted.
 
 *The repo is heavily influenced by [pre-commit](https://github.com/observing/pre-commit). Thanks.*
 
@@ -31,6 +31,8 @@ Secondly no simple git commit message hook ever exists right now. To Add, to ove
 > \<type\>(\<scope\>): \<subject\>
 >
 > // *scope optional*
+
+The default `type`s includes **feat**, **fix**, **docs**, **style**, **refactor**, **test**, **chore**, **perf**, **ci** and **temp**. And They can be extended or modified by [commitlinterrc.json](https://github.com/legend80s/commit-msg-linter/blob/master/assets/docs.md#commitlinterrcjson).
 
 ## Documentations
 
