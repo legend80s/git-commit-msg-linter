@@ -16,14 +16,14 @@ The default `max-len` is 100 which means the commit message cannot be longer tha
 
 Except for default types, you can add, overwrite or forbid certain types and so does the `max-len`.
 
-For example if you have the `commitlinterrc.json` below in the root directory of your project:
+For example if you have this `commitlinterrc.json` file below in the root directory of your project:
 
 ```json
 {
   "types": {
-    "feat": "new feature to the user",
-    "build": "changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)",
-    "deps": "upgrade dependency",
+    "feat": "ユーザーが知覚できる新機能",
+    "build": "ビルドシステムまたは外部の依存関係に影響する変更（スコープの例：gulp、broccoli、npm）",
+    "deps": "依存関係を追加、アップグレード、削除",
     "temp": false,
     "chore": false
   },
@@ -34,7 +34,7 @@ For example if you have the `commitlinterrc.json` below in the root directory of
 
 which means:
 
-- Modify existing type `feat`'s description to "new feature to the user".
+- Modify existing type `feat`'s description to "ユーザーが知覚できる新機能".
 - Add two new types: `build` and `deps`.
 - `temp` is not allowed and `chore` is forbidden as `build` means the same thing.
 - Maximum length of a commit message is adjusted to 80.
