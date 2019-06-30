@@ -1,6 +1,6 @@
 <h1 align="center">Welcome to git-commit-msg-linter 👋</h1>
 <p>
-  <img src="https://img.shields.io/badge/version-2.3.4-blue.svg?cacheSeconds=2592000" />
+  <img src="https://img.shields.io/npm/v/git-commit-msg-linter.svg" />
   <img src="https://img.shields.io/badge/node-%3E%3D%208.0.0-blue.svg" />
   <a href="https://github.com/legend80s/commit-msg-linter#readme">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" target="_blank" />
