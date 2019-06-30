@@ -36,7 +36,8 @@ which means:
 
 - Modify existing type `feat`'s description to "ユーザーが知覚できる新機能".
 - Add two new types: `build` and `deps`.
-- `temp` is not allowed and `chore` is forbidden as `build` means the same thing.
+- `temp` is not allowed.
+- `chore` is forbidden as `build` covers the same scope.
 - Maximum length of a commit message is adjusted to 80.
 - Display verbose information about the commit message.
 
