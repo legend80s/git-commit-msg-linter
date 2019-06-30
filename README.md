@@ -1,4 +1,17 @@
-# git-commit-msg-linter
+<h1 align="center">Welcome to git-commit-msg-linter 👋</h1>
+<p>
+  <img src="https://img.shields.io/badge/version-2.3.4-blue.svg?cacheSeconds=2592000" />
+  <img src="https://img.shields.io/badge/node-%3E%3D%208.0.0-blue.svg" />
+  <a href="https://github.com/legend80s/commit-msg-linter#readme">
+    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" target="_blank" />
+  </a>
+  <a href="https://github.com/legend80s/commit-msg-linter/graphs/commit-activity">
+    <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" target="_blank" />
+  </a>
+  <a href="https://github.com/legend80s/commit-msg-linter/blob/master/LICENSE">
+    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" target="_blank" />
+  </a>
+</p>
 
 > Watching your every git commit message. 👀
 
@@ -24,7 +37,7 @@ npm uninstall git-commit-msg-linter --save-dev
 
 Firstly it's very important to follow certain git commit message conventions and we recommend Angular's.
 
-Secondly no simple git commit message hook ever exists right now. To Add, to overwrite or to remove `type`s is not so friendly supported. *Why not conventional-changelog/commitlint, read the [FAQs](https://github.com/legend80s/commit-msg-linter/blob/master/assets/docs.md#faqs)*.
+Secondly no simple git commit message hook ever exists right now. To Add, to overwrite or to remove `type`s is not so friendly supported. *Why not conventional-changelog/commitlint or husky, read the [FAQs](https://github.com/legend80s/commit-msg-linter/blob/master/assets/docs.md#faqs)*.
 
 ## Recommended commit message pattern
 
@@ -37,3 +50,21 @@ The default `type`s includes **feat**, **fix**, **docs**, **style**, **refactor*
 ## Documentations
 
 [Configuration and FAQs.](https://github.com/legend80s/commit-msg-linter/blob/master/assets/docs.md)
+
+## 🤝 Contributing
+
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/legend80s/commit-msg-linter/issues).
+
+## Show your support
+
+Give a ⭐️ if this project helped you!
+
+## 📝 License
+
+Copyright © 2019 [legend80s](https://github.com/legend80s).
+
+This project is [MIT](https://github.com/legend80s/commit-msg-linter/blob/master/LICENSE) licensed.
+
+------
+
+_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
