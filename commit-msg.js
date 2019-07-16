@@ -16,6 +16,8 @@ const PATTERN = /^(?:fixup!\s*)?(\w*)(\(([\w\$\.\*/-]*)\))?\: (.*)$/;
 const IGNORED_PATTERNS = [
   /(^WIP:)|(^\d+\.\d+\.\d+)/,
 
+  /^Publish$/,
+
   // ignore auto-generated commit msg
   /^((Merge pull request)|(Merge (.*?) into (.*?)|(Merge branch (.*?)))(?:\r?\n)*$)/m,
 ];
