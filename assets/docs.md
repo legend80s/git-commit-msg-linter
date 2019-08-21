@@ -66,7 +66,7 @@ which means:
 - [x] Fix git merge commit not valid.
 - [x] Enable showing verbose information for debugging.
 - [ ] Interactive correcting and suggestion.
-- [ ] No backup when `commit-msg.old` existed.
+- [x] No backup when `commit-msg.old` existed.
 - [x] Display commit message on invalid error.
 
 ## Reference guidelines
