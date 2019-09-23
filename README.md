@@ -3,6 +3,9 @@
   <a href="https://www.npmjs.com/package/git-commit-msg-linter">
     <img src="https://img.shields.io/npm/v/git-commit-msg-linter.svg" alt="npm version" />
   </a>
+  <a href="https://www.npmjs.com/package/git-commit-msg-linter">
+    <img src="https://img.shields.io/npm/dm/git-commit-msg-linter.svg" alt="npm downloads" />
+  </a>
   <img src="https://img.shields.io/badge/node-%3E%3D%208.0.0-blue.svg" alt="prerequisite node version" />
   <a href="https://github.com/legend80s/commit-msg-linter#readme">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" target="_blank" />
