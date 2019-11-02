@@ -1,4 +1,5 @@
 <h1 align="center">Welcome to git-commit-msg-linter 👋</h1>
+
 <p>
   <a href="https://www.npmjs.com/package/git-commit-msg-linter">
     <img src="https://img.shields.io/npm/v/git-commit-msg-linter.svg" alt="npm version" />
@@ -13,8 +14,8 @@
   <a href="https://github.com/legend80s/commit-msg-linter/graphs/commit-activity">
     <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" target="_blank" />
   </a>
-  <a href="https://github.com/legend80s/commit-msg-linter/blob/master/LICENSE">
-    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" target="_blank" />
+  <a href="https://packagephobia.now.sh/result?p=commander" rel="nofollow">
+    <img src="https://packagephobia.now.sh/badge?p=git-commit-msg-linter" alt="Install Size">
   </a>
 </p>
 
