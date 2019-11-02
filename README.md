@@ -8,12 +8,6 @@
     <img src="https://img.shields.io/npm/dm/git-commit-msg-linter.svg" alt="npm downloads" />
   </a>
   <img src="https://img.shields.io/badge/node-%3E%3D%208.0.0-blue.svg" alt="prerequisite node version" />
-  <a href="https://github.com/legend80s/commit-msg-linter#readme">
-    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" target="_blank" />
-  </a>
-  <a href="https://github.com/legend80s/commit-msg-linter/graphs/commit-activity">
-    <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" target="_blank" />
-  </a>
   <a href="https://packagephobia.now.sh/result?p=commander" rel="nofollow">
     <img src="https://packagephobia.now.sh/badge?p=git-commit-msg-linter" alt="Install Size">
   </a>
