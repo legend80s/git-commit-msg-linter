@@ -29,7 +29,7 @@
     "node": ">= 8.0.0"
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
+    "eslint": "^6.6.0",
     "eslint-config-ali": "^6.0.0",
     "eslint-plugin-import": "^2.17.2",
     "git-commit-msg-linter": "^2.2.1"
