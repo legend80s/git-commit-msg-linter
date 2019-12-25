@@ -83,7 +83,7 @@ For example if you have this `commitlinterrc.json` file below in the root direct
 }
 ```
 
-hich means:
+Which means:
 
 - Modify existing type `feat`'s description to "ユーザーが知覚できる新機能".
 - Add two new types: `build` and `deps`.
@@ -94,15 +94,15 @@ hich means:
 
 ## FAQs
 
-1. Why not [conventional-changelog/commitlint](https://github.com/conventional-changelog/commitlint)?
+Why not [conventional-changelog/commitlint](https://github.com/conventional-changelog/commitlint)?
 
-   > - Configuration is relatively complex.
-   >
-   > - No description for type, unfriendly to commit newbies. Because every time your are wondering which type should I use, you must jump out of you commit context to seek documentation in the wild web.
-   >
-   > - To modify type description is also not supported. Unfriendly to non-english speakers. For example, all my team members are Japanese, isn't it more productive to change all the descriptions to Japanese?
-   >
-   > - To add more types is also impossible. This is unacceptable for project with different types already existed.
+> Configuration is relatively complex.
+>
+> No description for type, unfriendly to commit newbies. Because every time your are wondering which type should I use, you must jump out of you commit context to seek documentation in the wild web.
+>
+> To modify type description is also not supported. Unfriendly to non-english speakers. For example, all my team members are Japanese, isn't it more productive to change all the descriptions to Japanese?
+>
+> To add more types is also impossible. This is unacceptable for project with different types already existed.
 
 ## TODO
 
