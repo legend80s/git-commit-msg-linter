@@ -1,6 +1,6 @@
 {
   "name": "git-commit-msg-linter",
-  "version": "2.3.10",
+  "version": "2.3.11",
   "description": "git commit message linter hook",
   "main": "index.js",
   "files": [
