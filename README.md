@@ -13,7 +13,7 @@
   </a>
 </p>
 
-> Watching your every git commit message FAST. 👀
+> 👀Watching your every git commit message INSTANTLY 🚀.
 
 ![git-commit-msg-linter-demo](https://raw.githubusercontent.com/legend80s/commit-msg-linter/master/assets/demo-4-compressed.png)
 
