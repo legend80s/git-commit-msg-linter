@@ -1,5 +1,4 @@
 <h1 align="center">Welcome to git-commit-msg-linter 👋</h1>
-
 <p>
   <a href="https://www.npmjs.com/package/git-commit-msg-linter">
     <img src="https://img.shields.io/npm/v/git-commit-msg-linter.svg" alt="npm version" />
@@ -132,7 +131,7 @@ A more detailed `commitlinterrc.json`：
 }
 ```
 
-In this config, the one-line `example` and `scope`, `subject`'s description sections is modified as what your write in the `commitlinterrc.json`. And the the invalid header is hidden by set `"showInvalidHeader": false`。
+In this config, the one-line `example` and `scope`, `subject`'s description section are modified as what your write in the `commitlinterrc.json`. And the the invalid header is hidden by set `"showInvalidHeader": false`。
 
 ![detailed-config-demo](https://raw.githubusercontent.com/legend80s/commit-msg-linter/master/assets/detailed-config-wx-compressed.png)
 
