@@ -56,6 +56,9 @@ const DEFAULT_INVALID_SCOPE_DESCRIPTIONS = [
   '`scope` can be optional, but its parenthesis if exists cannot be empty.',
 ];
 
+const DEFAULT_SUBJECT_DESCRIPTIONS = [
+  'A very short description of the change in one line.',
+];
 const DEFAULT_INVALID_SUBJECT_DESCRIPTIONS = [
   '- don\'t capitalize first letter',
   '- no dot "." at the end`',
