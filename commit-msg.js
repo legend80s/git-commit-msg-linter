@@ -45,6 +45,8 @@ const STEREOTYPES = {
   temp: 'temporary commit that won\'t be included in your CHANGELOG',
 };
 
+const DEFAULT_EXAMPLE = 'docs: update README';
+
 const commitMsg = process.argv[2];
 const commitlinterrc = path.resolve(__dirname, '..', '..', 'commitlinterrc.json');
 
@@ -65,13 +67,18 @@ async function main(commitMsgFile, commitlinterrcFile) {
     readFile(commitMsgFile),
     readConfig(commitlinterrcFile),
   ]);
-  const { types, 'max-len': maxLength, debug: verbose = false } = config;
+  const {
+    types,
+    'max-len': maxLength,
+    debug: verbose = false,
+    example = DEFAULT_EXAMPLE,
+  } = config;
 
   const msg = getFirstLine(commitMsgContent);
   const mergedTypes = merge(STEREOTYPES, types);
   const maxLen = typeof maxLength === 'number' ? maxLength : MAX_LENGTH;
 
-  if (!validateMessage(msg, { mergedTypes, maxLen, verbose })) {
+  if (!validateMessage(msg, { mergedTypes, maxLen, verbose, example })) {
     process.exit(1);
   } else {
     process.exit(0);
@@ -144,7 +151,7 @@ function getFirstLine(buffer) {
  * @param {boolean} options.verbose 是否打印 debug 信息
  * @returns {boolean}
  */
-function validateMessage(message, { mergedTypes, maxLen, verbose }) {
+function validateMessage(message, { mergedTypes, maxLen, verbose, example }) {
   let isValid = true;
   let invalidLength = false;
 
@@ -168,7 +175,10 @@ function validateMessage(message, { mergedTypes, maxLen, verbose }) {
   const match = PATTERN.exec(message);
 
   if (!match) {
-    displayError({ invalidLength, invalidFormat: true }, { mergedTypes, maxLen, message });
+    displayError(
+      { invalidLength, invalidFormat: true },
+      { mergedTypes, maxLen, message, example },
+    );
     return false;
   }
 
@@ -192,7 +202,7 @@ function validateMessage(message, { mergedTypes, maxLen, verbose }) {
   if (invalidLength || invalidType || invalidScope || invalidSubject) {
     displayError(
       { invalidLength, invalidType, invalidScope, invalidSubject },
-      { mergedTypes, maxLen, message }
+      { mergedTypes, maxLen, message },
     );
 
     return false;
@@ -209,7 +219,7 @@ function displayError(
     invalidScope = false,
     invalidSubject = false,
   } = {},
-  { mergedTypes, maxLen, message }
+  { mergedTypes, maxLen, message, example },
 ) {
   const type = decorate('type', invalidType);
   const scope = decorate('scope', invalidScope, true);
@@ -223,7 +233,7 @@ function displayError(
   ${invalidFormat ? RED : YELLOW}************* Invalid Git Commit Message **************${EOS}${invalid ? `
   ${label('commit message:')} ${RED}${message}${EOS}` : ''}${generateInvalidLengthTips(invalidLength, maxLen)}
   ${label('correct format:')} ${GREEN}${type}${scope}: ${subject}${EOS}
-  ${label('example:')}        ${GREEN}docs: update README${EOS}
+  ${label('example:')}        ${GREEN}${example}${EOS}
 
   ${invalidType ? RED : YELLOW}type:
     ${typeDescriptions}
@@ -238,7 +248,7 @@ function displayError(
     ${GRAY}A very short description of the change in one line.${invalidSubject ? `${RED}
       - don't capitalize first letter
       - no dot (.) at the end` : ''}
-  `
+  `,
   );
 }
 
