@@ -92,6 +92,50 @@ Which means:
 - Maximum length of a commit message is adjusted to 80.
 - Display verbose information about the commit message.
 
+A more detailed `commitlinterrc.json`：
+
+```json
+{
+  "types": {
+    "feat": "ユーザーが知覚できる新機能",
+    "build": "ビルドシステムまたは外部の依存関係に影響する変更（スコープの例：gulp、broccoli、npm）",
+    "deps": "依存関係を追加、アップグレード、削除",
+    "docs": "ドキュメントのみ変更",
+    "fix": false,
+    "style": false,
+    "refactor": false,
+    "test": false,
+    "perf": false,
+    "ci": false,
+    "temp": false,
+    "chore": false
+  },
+  "max-len": 80,
+  "example": "feat: 新機能",
+  "scopeDescriptions": [
+    "オプションで、コミット変更の場所を指定するものであれば何でもかまいません。",
+    "たとえば、$ location、$ browser、$ compile、$ rootScope、ngHref、ngClick、ngViewなど。",
+    "アプリ開発では、スコープはページ、モジュール、またはコンポーネントです。"
+  ],
+  "invalidScopeDescriptions": [
+    "`scope`はオプションですが、括弧が存在する場合は空にすることはできません。"
+  ],
+  "subjectDescriptions": [
+    "1行での変更の非常に短い説明。"
+  ],
+  "invalidSubjectDescriptions": [
+    "最初の文字を大文字にしないでください",
+    "最後にドット「。」なし"
+  ],
+  "showInvalidHeader": false,
+  "debug": false
+}
+```
+
+In this config, the one-line `example` and `scope`, `subject`'s description sections is modified as what your write in the `commitlinterrc.json`. And the the invalid header is hidden by set `"showInvalidHeader": false`。
+
+![detailed-config-demo](https://raw.githubusercontent.com/legend80s/commit-msg-linter/master/assets/detailed-config-wx-compressed.png)
+
 ## FAQs
 
 Why not [conventional-changelog/commitlint](https://github.com/conventional-changelog/commitlint)?

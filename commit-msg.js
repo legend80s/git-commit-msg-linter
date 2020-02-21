@@ -47,6 +47,20 @@ const STEREOTYPES = {
 
 const DEFAULT_EXAMPLE = 'docs: update README';
 
+const DEFAULT_SCOPE_DESCRIPTIONS = [
+  'Optional, can be anything specifying the place of the commit change.',
+  'For example $location, $browser, $compile, $rootScope, ngHref, ngClick, ngView, etc.',
+  'In App Development, scope can be a page, a module or a component.',
+];
+const DEFAULT_INVALID_SCOPE_DESCRIPTIONS = [
+  '`scope` can be optional, but its parenthesis if exists cannot be empty.',
+];
+
+const DEFAULT_INVALID_SUBJECT_DESCRIPTIONS = [
+  '- don\'t capitalize first letter',
+  '- no dot "." at the end`',
+];
+
 const commitMsg = process.argv[2];
 const commitlinterrc = path.resolve(__dirname, '..', '..', 'commitlinterrc.json');
 
@@ -71,14 +85,33 @@ async function main(commitMsgFile, commitlinterrcFile) {
     types,
     'max-len': maxLength,
     debug: verbose = false,
+    showInvalidHeader = true,
     example = DEFAULT_EXAMPLE,
+
+    scopeDescriptions = DEFAULT_SCOPE_DESCRIPTIONS,
+    invalidScopeDescriptions = DEFAULT_INVALID_SCOPE_DESCRIPTIONS,
+
+    subjectDescriptions = DEFAULT_SUBJECT_DESCRIPTIONS,
+    invalidSubjectDescriptions = DEFAULT_INVALID_SUBJECT_DESCRIPTIONS,
   } = config;
+
+  verbose && debug('config:', config);
 
   const msg = getFirstLine(commitMsgContent);
   const mergedTypes = merge(STEREOTYPES, types);
   const maxLen = typeof maxLength === 'number' ? maxLength : MAX_LENGTH;
 
-  if (!validateMessage(msg, { mergedTypes, maxLen, verbose, example })) {
+  if (!validateMessage(msg, {
+    mergedTypes,
+    maxLen,
+    verbose,
+    example,
+    showInvalidHeader,
+    scopeDescriptions,
+    invalidScopeDescriptions,
+    subjectDescriptions,
+    invalidSubjectDescriptions,
+  })) {
     process.exit(1);
   } else {
     process.exit(0);
@@ -151,7 +184,19 @@ function getFirstLine(buffer) {
  * @param {boolean} options.verbose 是否打印 debug 信息
  * @returns {boolean}
  */
-function validateMessage(message, { mergedTypes, maxLen, verbose, example }) {
+function validateMessage(
+  message,
+  {
+    mergedTypes,
+    maxLen,
+    verbose,
+    example,
+    showInvalidHeader,
+    scopeDescriptions,
+    invalidScopeDescriptions,
+    subjectDescriptions,
+    invalidSubjectDescriptions,
+  }) {
   let isValid = true;
   let invalidLength = false;
 
@@ -177,8 +222,19 @@ function validateMessage(message, { mergedTypes, maxLen, verbose, example }) {
   if (!match) {
     displayError(
       { invalidLength, invalidFormat: true },
-      { mergedTypes, maxLen, message, example },
+      {
+        mergedTypes,
+        maxLen,
+        message,
+        example,
+        showInvalidHeader,
+        scopeDescriptions,
+        invalidScopeDescriptions,
+        subjectDescriptions,
+        invalidSubjectDescriptions,
+      },
     );
+
     return false;
   }
 
@@ -202,7 +258,17 @@ function validateMessage(message, { mergedTypes, maxLen, verbose, example }) {
   if (invalidLength || invalidType || invalidScope || invalidSubject) {
     displayError(
       { invalidLength, invalidType, invalidScope, invalidSubject },
-      { mergedTypes, maxLen, message },
+      {
+        mergedTypes,
+        maxLen,
+        message,
+        example,
+        showInvalidHeader,
+        scopeDescriptions,
+        invalidScopeDescriptions,
+        subjectDescriptions,
+        invalidSubjectDescriptions,
+      },
     );
 
     return false;
@@ -219,7 +285,17 @@ function displayError(
     invalidScope = false,
     invalidSubject = false,
   } = {},
-  { mergedTypes, maxLen, message, example },
+  {
+    mergedTypes,
+    maxLen,
+    message,
+    example,
+    showInvalidHeader,
+    scopeDescriptions,
+    invalidScopeDescriptions,
+    subjectDescriptions,
+    invalidSubjectDescriptions,
+  },
 ) {
   const type = decorate('type', invalidType);
   const scope = decorate('scope', invalidScope, true);
@@ -228,9 +304,19 @@ function displayError(
 
   const invalid = invalidLength || invalidFormat || invalidType || invalidScope || invalidSubject;
 
+  const header = !showInvalidHeader ?
+    '' :
+    `\n  ${invalidFormat ? RED : YELLOW}************* Invalid Git Commit Message **************${EOS}`;
+
+  const scopeDescription = scopeDescriptions.join('\n    ');
+  const invalidScopeDescription = invalidScopeDescriptions.join('\n    ');
+  const defaultInvalidScopeDescription = `scope can be ${emphasis('optional')}${RED}, but its parenthesis if exists cannot be empty.`;
+
+  const subjectDescription = subjectDescriptions.join('\n    ');
+  const invalidSubjectDescription = invalidSubjectDescriptions.join('\n    ');
+
   console.info(
-    `
-  ${invalidFormat ? RED : YELLOW}************* Invalid Git Commit Message **************${EOS}${invalid ? `
+    `${header}${invalid ? `
   ${label('commit message:')} ${RED}${message}${EOS}` : ''}${generateInvalidLengthTips(invalidLength, maxLen)}
   ${label('correct format:')} ${GREEN}${type}${scope}: ${subject}${EOS}
   ${label('example:')}        ${GREEN}${example}${EOS}
@@ -239,16 +325,14 @@ function displayError(
     ${typeDescriptions}
 
   ${invalidScope ? RED : YELLOW}scope:
-    ${GRAY}Optional, can be anything specifying place of the commit change.
-    For example $location, $browser, $compile, $rootScope, ngHref, ngClick, ngView, etc.
-    In App Development, scope can be a page, a module or a component.${invalidScope ? `${RED}
-    \`scope\` can be ${emphasis('optional')}${RED}, but its parenthesis if exists cannot be empty.` : ''}
+    ${GRAY}${scopeDescription}${invalidScope ? `${RED}
+
+    ${invalidScopeDescription || defaultInvalidScopeDescription}` : ''}
 
   ${invalidSubject ? RED : YELLOW}subject:
-    ${GRAY}A very short description of the change in one line.${invalidSubject ? `${RED}
-      - don't capitalize first letter
-      - no dot (.) at the end` : ''}
-  `,
+    ${GRAY}${subjectDescription}${invalidSubject ? `${RED}
+    \n    ${invalidSubjectDescription}` : ''}
+  `
   );
 }
 

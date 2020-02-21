@@ -16,7 +16,7 @@
     "lint:fix": "eslint --fix *.js",
     "install": "node install.js",
     "uninstall": "node uninstall.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo open \"https://github.com/legend80s/commit-msg-linter-test\" && exit 0"
   },
   "repository": {
     "type": "git",
