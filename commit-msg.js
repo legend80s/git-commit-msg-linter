@@ -10,6 +10,7 @@ const readFile = util.promisify(fs.readFile);
 // Any line of the commit message cannot be longer than 100 characters!
 // This allows the message to be easier to read on github as well as in various git tools.
 const MAX_LENGTH = 100;
+const MIN_LENGTH = 10;
 /* eslint-disable no-useless-escape */
 const PATTERN = /^(?:fixup!\s*)?(\w*)(\(([\w\$\.\*/-]*)\))?\: (.*)$/;
 /* eslint-enable no-useless-escape */
@@ -64,12 +65,12 @@ const DEFAULT_INVALID_SUBJECT_DESCRIPTIONS = [
   '- no dot "." at the end`',
 ];
 
-const commitMsg = process.argv[2];
+const commitMsgFilePath = process.argv[2];
 const commitlinterrc = path.resolve(__dirname, '..', '..', 'commitlinterrc.json');
 
 // console.log(commitlinterrc);
 
-main(commitMsg, commitlinterrc);
+main(commitMsgFilePath, commitlinterrc);
 
 /**
  * main function
@@ -87,6 +88,7 @@ async function main(commitMsgFile, commitlinterrcFile) {
   const {
     types,
     'max-len': maxLength,
+    'min-len': minLength,
     debug: verbose = false,
     showInvalidHeader = true,
     example = DEFAULT_EXAMPLE,
@@ -100,13 +102,15 @@ async function main(commitMsgFile, commitlinterrcFile) {
 
   verbose && debug('config:', config);
 
-  const msg = getFirstLine(commitMsgContent);
+  const msg = getFirstLine(commitMsgContent).replace(/\s{2,}/g, ' ');
   const mergedTypes = merge(STEREOTYPES, types);
   const maxLen = typeof maxLength === 'number' ? maxLength : MAX_LENGTH;
+  const minLen = typeof minLength === 'number' ? minLength : MIN_LENGTH;
 
   if (!validateMessage(msg, {
     mergedTypes,
     maxLen,
+    minLen,
     verbose,
     example,
     showInvalidHeader,
@@ -192,6 +196,7 @@ function validateMessage(
   {
     mergedTypes,
     maxLen,
+    minLen,
     verbose,
     example,
     showInvalidHeader,
@@ -199,7 +204,8 @@ function validateMessage(
     invalidScopeDescriptions,
     subjectDescriptions,
     invalidSubjectDescriptions,
-  }) {
+  },
+) {
   let isValid = true;
   let invalidLength = false;
 
@@ -210,7 +216,7 @@ function validateMessage(
 
   verbose && debug(`commit message: |${message}|`);
 
-  if (message.length > maxLen) {
+  if (message.length > maxLen || message.length < minLen) {
     invalidLength = true;
     isValid = false;
   }
@@ -228,6 +234,7 @@ function validateMessage(
       {
         mergedTypes,
         maxLen,
+        minLen,
         message,
         example,
         showInvalidHeader,
@@ -264,6 +271,7 @@ function validateMessage(
       {
         mergedTypes,
         maxLen,
+        minLen,
         message,
         example,
         showInvalidHeader,
@@ -291,6 +299,7 @@ function displayError(
   {
     mergedTypes,
     maxLen,
+    minLen,
     message,
     example,
     showInvalidHeader,
@@ -320,7 +329,7 @@ function displayError(
 
   console.info(
     `${header}${invalid ? `
-  ${label('commit message:')} ${RED}${message}${EOS}` : ''}${generateInvalidLengthTips(invalidLength, maxLen)}
+  ${label('commit message:')} ${RED}${message}${EOS}` : ''}${generateInvalidLengthTips(message, invalidLength, maxLen, minLen)}
   ${label('correct format:')} ${GREEN}${type}${scope}: ${subject}${EOS}
   ${label('example:')}        ${GREEN}${example}${EOS}
 
@@ -335,7 +344,7 @@ function displayError(
   ${invalidSubject ? RED : YELLOW}subject:
     ${GRAY}${subjectDescription}${invalidSubject ? `${RED}
     \n    ${invalidSubjectDescription}` : ''}
-  `
+  `,
   );
 }
 
@@ -417,9 +426,9 @@ function underline(text) {
  * @param {string} text
  * @returns {string}
  */
-function red(text) {
-  return `${RED}${text}${EOS}`;
-}
+// function red(text) {
+//   return `${RED}${text}${EOS}`;
+// }
 
 /**
  * isUpperCase
@@ -490,15 +499,22 @@ function label(text) {
 /**
  * Generate invalid length tips.
  *
+ * @param {string} message commit message
  * @param {boolean} invalid
  * @param {number} maxLen
+ * @param {number} minLen
  * @returns {string}
  */
-function generateInvalidLengthTips(invalid, maxLen) {
+function generateInvalidLengthTips(message, invalid, maxLen, minLen) {
   if (invalid) {
-    const tips = `commit message cannot be longer ${maxLen} characters!`;
+    const { length } = message;
+    const maxStyle = length > maxLen ? BOLD : '';
+    const minStyle = length < minLen ? BOLD : '';
 
-    return `\n  Invalid length: ${red(tips)}`;
+    const tips =
+      `${RED}${BOLD}${length}${EOS}. ${RED}Commit message cannot be longer ${maxStyle}${maxLen}${EOS} ${RED}characters or shorter than ${minStyle}${minLen}${EOS} ${RED}characters!${EOS}`;
+
+    return `\n  ${BOLD}Invalid length${EOS}: ${tips}`;
   }
 
   return '';

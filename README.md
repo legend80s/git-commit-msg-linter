@@ -109,6 +109,7 @@ A more detailed `commitlinterrc.json`：
     "temp": false,
     "chore": false
   },
+  "min-len": 10,
   "max-len": 80,
   "example": "feat: 新機能",
   "scopeDescriptions": [
