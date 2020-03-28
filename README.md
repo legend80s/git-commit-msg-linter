@@ -44,6 +44,18 @@ Secondly no simple git commit message hook ever exists right now. To Add, to ove
 >
 > // *scope optional*
 
+Bad: 
+
+> Fix syntax error
+
+Good:
+
+> docs: fix syntax error
+
+Excellent:
+
+> **docs(README): fix syntax error**
+
 The default `type`s includes **feat**, **fix**, **docs**, **style**, **refactor**, **test**, **chore**, **perf**, **ci** and **temp**. And They can be extended or modified by [commitlinterrc.json](https://github.com/legend80s/commit-msg-linter/blob/master/assets/docs.md#commitlinterrcjson).
 
 ## How it works
