@@ -52,7 +52,7 @@ Good:
 
 > docs: fix syntax error
 
-Excellent:
+**Excellent:**
 
 > **docs(README): fix syntax error**
 
