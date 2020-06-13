@@ -68,7 +68,9 @@ After installed, it will copy the hook `{PROJECT_ROOT}/.git/hooks/commit-msg` if
 
 Before uninstalling, the `commit-msg` file will be restored and the `commit-msg.old` will be removed.
 
-## Configuration
+## Zero Configuration
+
+**Configuration Not Required!** If it has to be customized we have the guide below.
 
 The default `type`s includes **feat**, **fix**, **docs**, **style**, **refactor**, **test**, **chore**, **perf**, **ci** and **temp**.
 
