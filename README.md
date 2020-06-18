@@ -44,17 +44,17 @@ Secondly no simple git commit message hook ever exists right now. To Add, to ove
 >
 > // *scope optional*
 
-Bad: 
+Bad:
 
-> Fix syntax error
+> Correct spelling of CHANGELOG.
 
 Good:
 
-> docs: fix syntax error
+> docs: correct spelling of CHANGELOG
 
-**Excellent:**
+Good (commit message with scope):
 
-> **docs(README): fix syntax error**
+> docs(CHANGELOG): correct spelling
 
 The default `type`s includes **feat**, **fix**, **docs**, **style**, **refactor**, **test**, **chore**, **perf**, **ci** and **temp**. And They can be extended or modified by [commitlinterrc.json](https://github.com/legend80s/commit-msg-linter/blob/master/assets/docs.md#commitlinterrcjson).
 
