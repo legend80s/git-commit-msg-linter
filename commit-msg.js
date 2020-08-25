@@ -32,24 +32,25 @@ const EOS = '\x1b[0m';
 const BOLD = '\x1b[1m';
 
 const STEREOTYPES = {
-  feat: 'a new feature',
-  fix: 'a bug fix',
-  docs: 'documentation only changes',
-  style: 'changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)',
-  refactor: 'a code change that neither fixes a bug nor adds a feature',
-  test: 'adding missing tests or correcting existing ones',
-  chore: 'changes to the build process or auxiliary tools and libraries such as documentation generation',
+  feat: 'A new feature',
+  fix: 'A bug fix',
+  docs: 'Documentation only changes',
+  style: 'Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)',
+  refactor: 'A code change that neither fixes a bug nor adds a feature',
+  test: 'Adding missing tests or correcting existing ones',
+  chore: 'Changes to the build process or auxiliary tools and libraries such as documentation generation',
 
   // added
-  perf: 'a code change that improves performance',
-  ci: 'changes to your CI configuration files and scripts',
-  temp: 'temporary commit that won\'t be included in your CHANGELOG',
+  perf: 'A code change that improves performance',
+  ci: 'Changes to your CI configuration files and scripts',
+  build: 'Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)',
+  temp: 'Temporary commit that won\'t be included in your CHANGELOG',
 };
 
 const DEFAULT_EXAMPLE = 'docs: update README';
 
 const DEFAULT_SCOPE_DESCRIPTIONS = [
-  'Optional, can be anything specifying the place of the commit change.',
+  'Optional, can be anything specifying the scope of the commit change.',
   'For example $location, $browser, $compile, $rootScope, ngHref, ngClick, ngView, etc.',
   'In App Development, scope can be a page, a module or a component.',
 ];
@@ -58,7 +59,7 @@ const DEFAULT_INVALID_SCOPE_DESCRIPTIONS = [
 ];
 
 const DEFAULT_SUBJECT_DESCRIPTIONS = [
-  'A very short description of the change in one line.',
+  'A very short description of the change in one line and in present tense. Not capitalized. No period at the end.',
 ];
 const DEFAULT_INVALID_SUBJECT_DESCRIPTIONS = [
   '- don\'t capitalize first letter',
