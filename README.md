@@ -16,7 +16,7 @@
 
 ![git-commit-msg-linter-demo](https://raw.githubusercontent.com/legend80s/commit-msg-linter/master/assets/demo-4-compressed.png)
 
-A git "commit-msg" hook for linting your git commit message against the [Angular Commit Message Guidelines](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-guidelines). As a hook it will run at every commiting to make sure that the message to commit is valid against the conventions. If not the commit will be aborted.
+A git "commit-msg" hook for linting your git commit message against the popular [Angular Commit Message Guidelines](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-format). As a hook it will run at every commiting to make sure that the message to commit is valid against the conventions. If not the commit will be aborted.
 
 *This linter is deeply influenced by [pre-commit](https://github.com/observing/pre-commit). Thanks.*
 
@@ -26,23 +26,21 @@ A git "commit-msg" hook for linting your git commit message against the [Angular
 npm install git-commit-msg-linter --save-dev
 ```
 
-*To uninstall run the `uninstall` script instead of removing it manually* because only in this way, the old `commit-msg` hook can be restored, so that your next commit messages will be ignored by the linter.
+## Recommended Commit Message Format
 
-```shell
-npm uninstall git-commit-msg-linter --save-dev
 ```
-
-## Why yet a new linter
-
-Firstly it's very important to follow certain git commit message conventions and we recommend Angular's.
-
-Secondly no simple git commit message hook ever exists right now. To Add, to overwrite or to remove `type`s is not so friendly supported. *Why not conventional-changelog/commitlint or husky, read the [FAQs](https://github.com/legend80s/commit-msg-linter/blob/master/assets/docs.md#faqs)*.
-
-## Recommended commit message pattern
-
-> \<type\>(\<scope\>): \<subject\>
->
-> // *scope optional*
+<type>(<scope>): <short summary>
+  │       │             │
+  │       │             └─⫸ Summary in present tense. Not capitalized. No period at the end.
+  │       │
+  │       └─⫸ Commit Scope: for example: animations|bazel|benchpress|common|compiler|compiler-cli|core|
+  │                          elements|forms|http|language-service|localize|platform-browser|
+  │                          platform-browser-dynamic|platform-server|platform-webworker|
+  │                          platform-webworker-dynamic|router|service-worker|upgrade|zone.js|
+  │                          packaging|changelog|dev-infra|docs-infra|migrations|ngcc|ve
+  │
+  └─⫸ Commit Type: feat|fix|docs|style|refactor|test|chore|perf|ci|build|temp
+```
 
 Bad:
 
@@ -56,23 +54,13 @@ Good (commit message with scope):
 
 > docs(CHANGELOG): correct spelling
 
-The default `type`s includes **feat**, **fix**, **docs**, **style**, **refactor**, **test**, **chore**, **perf**, **ci** and **temp**. And They can be extended or modified by [commitlinterrc.json](https://github.com/legend80s/commit-msg-linter/blob/master/assets/docs.md#commitlinterrcjson).
-
-## How it works
-
-> The `commit-msg` hook takes one parameter, which again is the path to a temporary file that contains the commit message written by the developer. If this script exits non-zero, Git aborts the commit process, so you can use it to validate your project state or commit message before allowing a commit to go through.
->
-> https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks
-
-After installed, it will copy the hook `{PROJECT_ROOT}/.git/hooks/commit-msg` if it exists to `{PROJECT_ROOT}/.git/hooks/commit-msg.old` then the `commit-msg` will be overwritten by our linting rules.
-
-Before uninstalling, the `commit-msg` file will be restored and the `commit-msg.old` will be removed.
+The default commit `type`s can be extended or modified by [commitlinterrc.json](https://github.com/legend80s/commit-msg-linter/blob/master/assets/docs.md#commitlinterrcjson).
 
 ## Zero Configuration
 
 **Configuration Not Required!** If it has to be customized we have the guide below.
 
-The default `type`s includes **feat**, **fix**, **docs**, **style**, **refactor**, **test**, **chore**, **perf**, **ci** and **temp**.
+The default `type`s includes **feat**, **fix**, **docs**, **style**, **refactor**, **test**, **chore**, **perf**, **ci**, **build** and **temp**.
 
 The default `max-len` is 100 which means the commit message cannot be longer than 100 characters.
 
@@ -149,6 +137,28 @@ A more detailed `commitlinterrc.json`：
 In this config, the one-line `example` and `scope`, `subject`'s description section are modified as what your write in the `commitlinterrc.json`. And the the invalid header is hidden by set `"showInvalidHeader": false`。
 
 ![detailed-config-demo](https://raw.githubusercontent.com/legend80s/commit-msg-linter/master/assets/detailed-config-wx-compressed.png)
+
+## Why yet a new linter
+
+Firstly it's very important to follow certain git commit message conventions and we recommend Angular's.
+
+Secondly no simple git commit message hook ever exists right now. To Add, to overwrite or to remove `type`s is not so friendly supported. *Why not conventional-changelog/commitlint or husky, read the [FAQs](https://github.com/legend80s/commit-msg-linter/blob/master/assets/docs.md#faqs)*.
+
+## How it works
+
+> The `commit-msg` hook takes one parameter, which again is the path to a temporary file that contains the commit message written by the developer. If this script exits non-zero, Git aborts the commit process, so you can use it to validate your project state or commit message before allowing a commit to go through.
+>
+> https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks
+
+After installed, it will copy the hook `{PROJECT_ROOT}/.git/hooks/commit-msg` if it exists to `{PROJECT_ROOT}/.git/hooks/commit-msg.old` then the `commit-msg` will be overwritten by our linting rules.
+
+To uninstall run the `uninstall` script instead of removing it manually because only in this way, the old `commit-msg` hook can be restored, so that your next commit messages will be ignored by the linter.
+
+```shell
+npm uninstall git-commit-msg-linter --save-dev
+```
+
+Before uninstalling, the `commit-msg` file will be restored and the `commit-msg.old` will be removed.
 
 ## FAQs
 
