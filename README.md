@@ -187,6 +187,7 @@ Why not [conventional-changelog/commitlint](https://github.com/conventional-chan
 - [ ] Suggest similar but valid msg on invalid input
 - [x] No backup when `commit-msg.old` existed.
 - [x] Display commit message on invalid error.
+- [ ] 中文版（根据电脑设置）
 
 ## References
 
