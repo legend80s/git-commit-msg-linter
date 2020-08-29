@@ -21,19 +21,13 @@ A git "commit-msg" hook for linting your git commit message against the popular 
 
 *This linter is deeply influenced by [pre-commit](https://github.com/observing/pre-commit). Thanks.*
 
+[中文版文档](https://github.com/legend80s/commit-msg-linter/blob/master/README-zh-CN.md)
+
 ## Install
 
 ```shell
 npm install git-commit-msg-linter --save-dev
 ```
-
-1. Visualization, low cost to Learn
-2. Zero configuration
-3. Prompt error msg precisely, friendly to commit messge format unfamiliar developers
-4. i18 en-US and zh-CN supported
-5. Customizable for your team's format
-
-[中文版文档](https://github.com/legend80s/commit-msg-linter/blob/master/README-zh-CN.md)
 
 ## Recommended Commit Message Format
 
@@ -146,6 +140,14 @@ A more detailed `commitlinterrc.json`：
 In this config, the one-line `example` and `scope`, `subject`'s description section are modified as what your write in the `commitlinterrc.json`. And the the invalid header is hidden by set `"showInvalidHeader": false`。
 
 ![detailed-config-demo](https://raw.githubusercontent.com/legend80s/commit-msg-linter/master/assets/detailed-config-wx-compressed.png)
+
+## Features
+
+1. Visualization, low cost to Learn
+2. Zero configuration
+3. Prompt error msg precisely, friendly to commit messge format unfamiliar developers
+4. i18 en-US and zh-CN supported
+5. Customizable for your team's format
 
 ## Why yet a new linter
 
