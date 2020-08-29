@@ -33,14 +33,14 @@ npm install git-commit-msg-linter --save-dev
   │       │             │
   │       │             └─⫸ Summary in present tense. Not capitalized. No period at the end.
   │       │
-  │       └─⫸ Commit Scope: for example: animations|bazel|benchpress|common|compiler|compiler-cli|core|
-  │                          elements|forms|http|language-service|localize|platform-browser|
-  │                          platform-browser-dynamic|platform-server|platform-webworker|
-  │                          platform-webworker-dynamic|router|service-worker|upgrade|zone.js|
-  │                          packaging|changelog|dev-infra|docs-infra|migrations|ngcc|ve
+  │       └─⫸ Commit Scope: Optional, can be anything specifying the scope of the commit change.
+  |                          For example $location|$browser|$compile|$rootScope|ngHref|ngClick|ngView, etc.
+  |                          In App Development, scope can be a page, a module or a component.
   │
   └─⫸ Commit Type: feat|fix|docs|style|refactor|test|chore|perf|ci|build|temp
 ```
+
+The `<type>` and `<summary>` fields are mandatory, the `(<scope>)` field is optional.
 
 Bad:
 
