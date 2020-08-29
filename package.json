@@ -29,9 +29,6 @@
     "node": ">= 8.0.0"
   },
   "devDependencies": {
-    "eslint": "^6.6.0",
-    "eslint-config-ali": "^8.0.2",
-    "eslint-plugin-import": "^2.18.2",
     "git-commit-msg-linter": "^2.4.4"
   },
   "dependencies": {
