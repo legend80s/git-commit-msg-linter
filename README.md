@@ -23,6 +23,18 @@ A git "commit-msg" hook for linting your git commit message against the popular 
 
 [中文版文档](https://github.com/legend80s/commit-msg-linter/blob/master/README-zh-CN.md)
 
+- [Install](#install)
+- [Recommended Commit Message Format](#recommended-commit-message-format)
+- [Zero Configuration](#zero configuration)
+  - [commitlinterrc.json](#commitlinterrc.json)
+- [Features](#features)
+- [Why yet a new linter](#why-yet-a-new-linter)
+- [How it works](#how-it-works)
+- [FAQs](#faqs)
+- [TODO](#todo)
+- [Development](#development)
+- [References](#references)
+
 ## Install
 
 ```shell
@@ -206,9 +218,9 @@ Copy commit-msg.js to [commit-msg-linter-test](https://github.com/legend80s/comm
 
 ## References
 
-1. [Angular Commit Message Guidelines](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-guidelines)
+1. [Angular Commit Message Guidelines](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-format)
 2. [Angular.js Git Commit Guidelines](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines)
-3. [Google AngularJS Git Commit Message Conventions](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit#heading=h.uyo6cb12dt6w)
+3. [Google AngularJS Git Commit Message Conventions](https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit)
 
 ## 🤝 Contributing
 
