@@ -1,7 +1,7 @@
 # git-commit-msg-linter
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/legend80s/commit-msg-linter/master/assets/demo-6-zh-cn-compressed.png" alt="git-commit-msg-linter zh-CN demo" width="70%" />
+  <img src="https://raw.githubusercontent.com/legend80s/commit-msg-linter/master/assets/demo-6-zh-cn-compressed.png" alt="git-commit-msg-linter zh-CN demo" width="90%" />
 </p>
 
 > 👀 监督和规范开发者的每一行提交信息，为团队定制专属 Git 提交信息规范
