@@ -25,7 +25,7 @@ A git "commit-msg" hook for linting your git commit message against the popular 
 
 - [Install](#install)
 - [Recommended Commit Message Format](#recommended-commit-message-format)
-- [Zero Configuration](#zero configuration)
+- [Zero Configuration](#zero-configuration)
   - [commitlinterrc.json](#commitlinterrc.json)
 - [Features](#features)
 - [Why yet a new linter](#why-yet-a-new-linter)
