@@ -27,6 +27,9 @@ A git "commit-msg" hook for linting your git commit message against the popular 
 - [Recommended Commit Message Format](#recommended-commit-message-format)
 - [Zero Configuration](#zero-configuration)
   - [commitlinterrc.json](#commitlinterrc.json)
+  - [Set Linting Prompter's Language](#set-linting-prompter's-language)
+    - [Set in commitlinterrc.json](#set-in-commitlinterrc.json)
+    - [Set in bash profiles](#set-in-bash-profiles)
 - [Features](#features)
 - [Why yet a new linter](#why-yet-a-new-linter)
 - [How it works](#how-it-works)
@@ -114,6 +117,7 @@ A more detailed `commitlinterrc.json`：
 
 ```json
 {
+  "lang": "en-US", // or "zh-CN". Set linter prompt's language
   "types": {
     "feat": "ユーザーが知覚できる新機能",
     "build": "ビルドシステムまたは外部の依存関係に影響する変更（スコープの例：gulp、broccoli、npm）",
@@ -154,6 +158,28 @@ A more detailed `commitlinterrc.json`：
 In this config, the one-line `example` and `scope`, `subject`'s description section are modified as what your write in the `commitlinterrc.json`. And the the invalid header is hidden by set `"showInvalidHeader": false`。
 
 ![detailed-config-demo](https://raw.githubusercontent.com/legend80s/commit-msg-linter/master/assets/detailed-config-wx-compressed.png)
+
+### Set Linting Prompter's Language
+
+It will use your system's language as the default language. But two ways are provided also, priority from high to low.
+
+#### Set in commitlinterrc.json
+
+```json
+{
+  "lang": "zh-CN"
+}
+```
+
+lang in ["en-US", "zh-CN"]
+
+#### Set in bash profiles
+
+```sh
+echo 'export COMMIT_MSG_LINTER_LANG=zh-CN' >> ~/.zshrc
+```
+
+.bash_profile, .zshrc etc.
 
 ## Features
 
@@ -213,7 +239,7 @@ Why not [conventional-changelog/commitlint](https://github.com/conventional-chan
 - [x] No backup when `commit-msg.old` existed.
 - [x] Display commit message on invalid error.
 - [x] i18n
-- [ ] 通过 zsh rc、commitlinrrc 设置语言
+- [x] set lang in zshrc, or commitlinrrc
 
 ## Development
 
