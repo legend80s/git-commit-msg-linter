@@ -41,6 +41,8 @@ A git "commit-msg" hook for linting your git commit message against the popular 
 npm install git-commit-msg-linter --save-dev
 ```
 
+**Just Install No Configurations Required** and your commit message is under linting from now on.
+
 ## Recommended Commit Message Format
 
 ```
@@ -211,6 +213,7 @@ Why not [conventional-changelog/commitlint](https://github.com/conventional-chan
 - [x] No backup when `commit-msg.old` existed.
 - [x] Display commit message on invalid error.
 - [x] i18n
+- [ ] 通过 zsh rc、commitlinrrc 设置语言
 
 ## Development
 
