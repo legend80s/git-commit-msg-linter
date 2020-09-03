@@ -161,7 +161,7 @@ In this config, the one-line `example` and `scope`, `subject`'s description sect
 
 ### Set Linting Prompter's Language
 
-It will use your system's language as the default language. But two ways are provided also, priority from high to low.
+It will use your system's language as the default language. But two ways are provided also. Priority from high to low.
 
 #### Set in commitlinterrc.json
 
@@ -179,7 +179,7 @@ lang in ["en-US", "zh-CN"]
 echo 'export COMMIT_MSG_LINTER_LANG=zh-CN' >> ~/.zshrc
 ```
 
-.bash_profile, .zshrc etc.
+profiles such as `.bash_profile`, `.zshrc` etc.
 
 ## Features
 

@@ -14,6 +14,26 @@ npm install git-commit-msg-linter --save-dev
 
 **只需安装无需配置**，提交信息已处于 lint 状态，现在去提交代码试试。
 
+## 设置提示语言
+
+默认使用系统设置语言（`$ node -p 'Intl.DateTimeFormat().resolvedOptions().locale'`），可通过以下两种方式自定义语言，仅支持中文（zh-CN）和英文（en-US），优先级从高到低：
+
+### 通过 commitlinterrc.json 设置
+
+```json
+{
+  "lang": "zh-CN"
+}
+```
+
+### 通过环境变量设置
+
+```sh
+echo 'export COMMIT_MSG_LINTER_LANG=zh-CN' >> ~/.zshrc
+```
+
+profile 文件可以是 `.bash_profile`, `.zshrc` 等。
+
 ## 优点
 
 1. 可视化，低学习成本
