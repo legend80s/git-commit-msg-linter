@@ -37,29 +37,31 @@ const GREEN = '\x1b[0;32m';
 const EOS = '\x1b[0m';
 const BOLD = '\x1b[1m';
 
-const commitMsgFilePath = process.argv[2];
-const commitlinterrc = path.resolve(__dirname, '..', '..', 'commitlinterrc.json');
+async function main() {
+  const commitMsgFilePath = process.argv[2];
+  const commitlinterrcFilePath = path.resolve(__dirname, '..', '..', 'commitlinterrc.json');
 
-// console.log(commitlinterrc);
+  // console.log(commitlinterrc);
 
-main(commitMsgFilePath, commitlinterrc);
+  const [commitMsgContent, config] = await Promise.all([
+    readFile(commitMsgFilePath),
+    readConfig(commitlinterrcFilePath),
+  ]);
 
-const lang = getLanguage();
+  const lang = getLanguage(config.lang);
+
+  lint(commitMsgContent, config, lang);
+}
+
+main();
 
 /**
- * main function
- *
- * @param {string} commitMsgFile
- * @param {string} commitlinterrcFile
+ * @param {string} commitMsgContent
+ * @param {string} config
  *
  * @returns {void}
  */
-async function main(commitMsgFile, commitlinterrcFile) {
-  const [commitMsgContent, config] = await Promise.all([
-    readFile(commitMsgFile),
-    readConfig(commitlinterrcFile),
-  ]);
-
+async function lint(commitMsgContent, config, lang) {
   const {
     commitMsgExample,
     defaultScopeDescriptions,
@@ -102,6 +104,7 @@ async function main(commitMsgFile, commitlinterrcFile) {
     invalidScopeDescriptions,
     subjectDescriptions,
     invalidSubjectDescriptions,
+    lang,
   })) {
     process.exit(1);
   } else {
@@ -188,6 +191,7 @@ function validateMessage(
     invalidScopeDescriptions,
     subjectDescriptions,
     invalidSubjectDescriptions,
+    lang,
   },
 ) {
   let isValid = true;
@@ -226,6 +230,7 @@ function validateMessage(
         invalidScopeDescriptions,
         subjectDescriptions,
         invalidSubjectDescriptions,
+        lang,
       },
     );
 
@@ -263,6 +268,7 @@ function validateMessage(
         invalidScopeDescriptions,
         subjectDescriptions,
         invalidSubjectDescriptions,
+        lang,
       },
     );
 
@@ -271,8 +277,6 @@ function validateMessage(
 
   return isValid;
 }
-
-const translated = i18n(lang);
 
 function displayError(
   {
@@ -293,6 +297,7 @@ function displayError(
     invalidScopeDescriptions,
     subjectDescriptions,
     invalidSubjectDescriptions,
+    lang,
   },
 ) {
   const type = decorate('type', invalidType);
@@ -312,11 +317,12 @@ function displayError(
 
   const subjectDescription = subjectDescriptions.join('\n    ');
   const invalidSubjectDescription = invalidSubjectDescriptions.join('\n    ');
+  const translated = i18n(lang);
   const { example: labelExample, correctFormat, commitMessage } = translated;
 
   console.info(
     `${header}${invalid ? `
-  ${label(`${commitMessage}:`)} ${RED}${message}${EOS}` : ''}${generateInvalidLengthTips(message, invalidLength, maxLen, minLen)}
+  ${label(`${commitMessage}:`)} ${RED}${message}${EOS}` : ''}${generateInvalidLengthTips(message, invalidLength, maxLen, minLen, translated, lang)}
   ${label(`${correctFormat}:`)} ${GREEN}${type}${scope}: ${subject}${EOS}
   ${label(`${labelExample}:`)} ${GREEN}${example}${EOS}
 
@@ -491,7 +497,7 @@ function label(text) {
  * @param {number} minLen
  * @returns {string}
  */
-function generateInvalidLengthTips(message, invalid, maxLen, minLen) {
+function generateInvalidLengthTips(message, invalid, maxLen, minLen, translated, lang) {
   if (invalid) {
     const { length } = message;
     const maxStyle = length > maxLen ? BOLD : '';
@@ -519,11 +525,13 @@ function debug(...args) {
 /**
  * @returns 'en-US' or 'zh-CN'
  */
-function getLanguage() {
-  const lang = Intl.DateTimeFormat().resolvedOptions().locale;
-
+function getLanguage(configLang) {
   // return LANG.ZH_CN;
-  return lang;
+
+  return configLang ||
+    process.env.COMMIT_MSG_LINTER_LANG ||
+    Intl.DateTimeFormat().resolvedOptions().locale
+  ;
 }
 
 /**
