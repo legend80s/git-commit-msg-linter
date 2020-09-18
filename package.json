@@ -32,7 +32,8 @@
     "git-commit-msg-linter": "^2.4.4"
   },
   "dependencies": {
-    "chalk": "^2.4.2"
+    "chalk": "^2.4.2",
+    "did-you-mean": "^0.0.1"
   },
   "bugs": {
     "url": "https://github.com/legend80s/commit-msg-linter/issues"

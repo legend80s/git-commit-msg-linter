@@ -4,6 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
+const Matcher = require('did-you-mean');
 
 const readFile = util.promisify(fs.readFile);
 
@@ -17,8 +18,7 @@ const LANG = {
 // https://docs.google.com/document/d/1QrDFcIiPjSLDn3EL15IJygNPiHORgU1_OOAqWjiDU5Y/edit
 const MAX_LENGTH = 100;
 const MIN_LENGTH = 10;
-/* eslint-disable no-useless-escape */
-const PATTERN = /^(?:fixup!\s*)?(\w*)(\(([\w\$\.\*/-]*)\))?\: (.*)$/;
+
 /* eslint-enable no-useless-escape */
 const IGNORED_PATTERNS = [
   /(^WIP:)|(^\d+\.\d+\.\d+)/,
@@ -214,9 +214,9 @@ function validateMessage(
   //   isValid = false;
   // }
 
-  const match = PATTERN.exec(message);
+  const matches = resolvePatterns(message);
 
-  if (!match) {
+  if (!matches) {
     displayError(
       { invalidLength, invalidFormat: true },
       {
@@ -237,14 +237,12 @@ function validateMessage(
     return false;
   }
 
-  const type = match[1];
-  const scope = match[3];
-  const subject = match[4];
+  const { type, scope, subject } = matches;
 
   verbose && debug(`type: ${type}, scope: ${scope}, subject: ${subject}`);
 
   const types = Object.keys(mergedTypes);
-  const invalidType = !types.includes(type);
+  const typeInvalid = !types.includes(type);
 
   // scope can be optional, but not empty string
   // "test: hello" OK
@@ -254,9 +252,9 @@ function validateMessage(
   // Don't capitalize first letter; No dot (.) at the end
   const invalidSubject = isUpperCase(subject[0]) || subject.endsWith('.');
 
-  if (invalidLength || invalidType || invalidScope || invalidSubject) {
+  if (invalidLength || typeInvalid || invalidScope || invalidSubject) {
     displayError(
-      { invalidLength, invalidType, invalidScope, invalidSubject },
+      { invalidLength, type, typeInvalid, invalidScope, invalidSubject },
       {
         mergedTypes,
         maxLen,
@@ -282,7 +280,8 @@ function displayError(
   {
     invalidLength = false,
     invalidFormat = false,
-    invalidType = false,
+    type,
+    typeInvalid = false,
     invalidScope = false,
     invalidSubject = false,
   } = {},
@@ -300,12 +299,15 @@ function displayError(
     lang,
   },
 ) {
-  const type = decorate('type', invalidType);
+  const decoratedType = decorate('type', typeInvalid);
   const scope = decorate('scope', invalidScope, true);
   const subject = decorate('subject', invalidSubject);
-  const typeDescriptions = describeTypes(mergedTypes);
 
-  const invalid = invalidLength || invalidFormat || invalidType || invalidScope || invalidSubject;
+  const types = Object.keys(mergedTypes);
+  const suggestedType = suggestType(type, types);
+  const typeDescriptions = describeTypes(mergedTypes, suggestedType);
+
+  const invalid = invalidLength || invalidFormat || typeInvalid || invalidScope || invalidSubject;
   const invalidHeader = resolveHeader(lang);
   const header = !showInvalidHeader ?
     '' :
@@ -320,13 +322,17 @@ function displayError(
   const translated = i18n(lang);
   const { example: labelExample, correctFormat, commitMessage } = translated;
 
+  const correctedExample = typeInvalid ?
+    didYouMean(message, { example, types }) :
+    example;
+
   console.info(
     `${header}${invalid ? `
   ${label(`${commitMessage}:`)} ${RED}${message}${EOS}` : ''}${generateInvalidLengthTips(message, invalidLength, maxLen, minLen, translated, lang)}
-  ${label(`${correctFormat}:`)} ${GREEN}${type}${scope}: ${subject}${EOS}
-  ${label(`${labelExample}:`)} ${GREEN}${example}${EOS}
+  ${label(`${correctFormat}:`)} ${GREEN}${decoratedType}${scope}: ${subject}${EOS}
+  ${label(`${labelExample}:`)} ${GREEN}${correctedExample}${EOS}
 
-  ${invalidType ? RED : YELLOW}type:
+  ${typeInvalid ? RED : YELLOW}type:
     ${typeDescriptions}
 
   ${invalidScope ? RED : YELLOW}scope:
@@ -338,6 +344,52 @@ function displayError(
     ${invalidSubjectDescription}` : ''}
   `,
   );
+}
+
+
+/**
+ *
+ * @param {string} example
+ * @param {boolean} typeInvalid
+ * @param mergedTypes
+ *
+ * @example
+ * didYouMean('refact: abc', { types: ['refactor'], example: 'docs: xyz' })
+ * => 'refactor: abc'
+ *
+ * didYouMean('abc', { types: ['refactor'], example: 'docs: xyz' })
+ * => 'docs: xyz'
+ */
+function didYouMean(message, { types, example }) {
+  const patterns = resolvePatterns(message);
+
+  if (!patterns && !patterns.type) {
+    return example;
+  }
+
+  const { type } = patterns;
+
+  // Get the closest match
+  const suggestedType = suggestType(type, types);
+
+  if (!suggestedType) {
+    return example;
+  }
+
+  const TYPE_REGEXP = /^\w+:/g;
+
+  return message.replace(TYPE_REGEXP, `${suggestedType}:`)
+}
+
+function suggestType(type = '', types) {
+  const matcher = new Matcher(types);
+  const match = matcher.get(type);
+
+  if (match) { return match; }
+
+  const suggestedType = types.find(t => type.includes(t) || t.includes(type));
+
+  return suggestedType || '';
 }
 
 /**
@@ -453,11 +505,12 @@ function nSpaces(n) {
  *
  * @returns {string}
  */
-function describe({ index, type, description, maxTypeLength }) {
+function describe({ index, type, suggestedType, description, maxTypeLength }) {
   const paddingBefore = index === 0 ? '' : nSpaces(4);
   const marginRight = nSpaces(maxTypeLength - type.length + 1);
+  const typeColor = suggestedType === type ? GREEN : YELLOW;
 
-  return `${paddingBefore}${YELLOW}${type}${marginRight}${GRAY}${description}`;
+  return `${paddingBefore}${typeColor}${type}${marginRight}${GRAY}${description}`;
 }
 
 /**
@@ -466,7 +519,7 @@ function describe({ index, type, description, maxTypeLength }) {
  * @param {Object} mergedTypes
  * @returns {string} type descriptions
  */
-function describeTypes(mergedTypes) {
+function describeTypes(mergedTypes, suggestedType = '') {
   const types = Object.keys(mergedTypes);
   const maxTypeLength = [...types].sort((t1, t2) => t2.length - t1.length)[0].length;
 
@@ -474,7 +527,7 @@ function describeTypes(mergedTypes) {
     .map((type, index) => {
       const description = mergedTypes[type];
 
-      return describe({ index, type, description, maxTypeLength });
+      return describe({ index, type, suggestedType, description, maxTypeLength });
     })
     .join('\n');
 }
@@ -702,4 +755,24 @@ function i18n(lang) {
   }
 
   return translated;
+}
+
+function resolvePatterns(message) {
+  /* eslint-disable no-useless-escape */
+  const PATTERN = /^(?:fixup!\s*)?(\w*)(\(([\w\$\.\*/-]*)\))?\: (.*)$/;
+  const matches = PATTERN.exec(message);
+
+  if (matches) {
+    const type = matches[1];
+    const scope = matches[3];
+    const subject = matches[4];
+
+    return {
+      type,
+      scope,
+      subject,
+    }
+  }
+
+  return null;
 }
