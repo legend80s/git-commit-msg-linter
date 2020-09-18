@@ -235,7 +235,7 @@ Why not [conventional-changelog/commitlint](https://github.com/conventional-chan
 - [ ] Keep a space between Chinese and English character.
 - [x] Fix git merge commit not valid.
 - [x] Enable showing verbose information for debugging.
-- [ ] Suggest similar but valid msg on invalid input
+- [x] Suggest similar but valid msg on invalid input
 - [x] No backup when `commit-msg.old` existed.
 - [x] Display commit message on invalid error.
 - [x] i18n
