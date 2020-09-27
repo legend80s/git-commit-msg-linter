@@ -150,9 +150,9 @@ function merge(stereotypes, configTypes) {
 }
 
 /**
- * Create a new Object with all falsey values removed.
- * The values false, null, 0, "", undefined, and NaN are falsey when `strictFalse` is false,
- * Otherwise when `strictFalse` is true the only falsey value is fasle.
+ * Create a new Object with all falsy values removed.
+ * The values false, null, 0, "", undefined, and NaN are falsy when `strictFalse` is false,
+ * Otherwise when `strictFalse` is true the only falsy value is false.
  * @param {Object} obj
  * @param {boolean} options.strictFalse
  * @returns {Object}
@@ -376,9 +376,11 @@ function didYouMean(message, { types, example }) {
     return example;
   }
 
-  const TYPE_REGEXP = /^\w+:/g;
+  const TYPE_REGEXP = /^\w+(\(\w*\))?:/;
 
-  return message.replace(TYPE_REGEXP, `${suggestedType}:`)
+  return message.replace(TYPE_REGEXP, (_, p1) => {
+    return p1 && p1 !== '()' ? `${suggestedType}${p1}:` : `${suggestedType}:`;
+  })
 }
 
 function suggestType(type = '', types) {
@@ -508,7 +510,7 @@ function nSpaces(n) {
 function describe({ index, type, suggestedType, description, maxTypeLength }) {
   const paddingBefore = index === 0 ? '' : nSpaces(4);
   const marginRight = nSpaces(maxTypeLength - type.length + 1);
-  const typeColor = suggestedType === type ? GREEN : YELLOW;
+  const typeColor = suggestedType === type ? GREEN + BOLD : YELLOW;
 
   return `${paddingBefore}${typeColor}${type}${marginRight}${GRAY}${description}`;
 }
