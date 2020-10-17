@@ -19,9 +19,9 @@
 
 A git "commit-msg" hook for linting your git commit message against the popular [Angular Commit Message Guidelines](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-format). As a hook it will run at every commiting to make sure that the message to commit is valid against the conventions. If not the commit will be aborted.
 
-*This linter is deeply influenced by [pre-commit](https://github.com/observing/pre-commit). Thanks.*
+*Heavily inspired by [pre-commit](https://github.com/observing/pre-commit). Thanks.*
 
-[中文版文档](https://github.com/legend80s/commit-msg-linter/blob/master/README-zh-CN.md)
+[简体中文](https://github.com/legend80s/commit-msg-linter/blob/master/README-zh-CN.md)
 
 - [Install](#install)
 - [Recommended Commit Message Format](#recommended-commit-message-format)

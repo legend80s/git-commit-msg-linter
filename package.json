@@ -29,7 +29,7 @@
     "node": ">= 8.0.0"
   },
   "devDependencies": {
-    "git-commit-msg-linter": "^2.4.4"
+    "git-commit-msg-linter": "^3.0.0"
   },
   "dependencies": {
     "chalk": "^2.4.2",
