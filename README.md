@@ -115,7 +115,7 @@ Which means:
 
 A more detailed `commitlinterrc.json`：
 
-```json
+```jsonc
 {
   "lang": "en-US", // or "zh-CN". Set linter prompt's language
   "types": {
