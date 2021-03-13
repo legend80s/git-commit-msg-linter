@@ -611,19 +611,19 @@ function resolveStereotypes(lang) {
   }
 
   const STEREOTYPES_EN_US = {
-    feat: 'A new feature',
-    fix: 'A bug fix',
-    docs: 'Documentation only changes',
-    style: 'Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)',
-    refactor: 'A code change that neither fixes a bug nor adds a feature',
-    test: 'Adding missing tests or correcting existing ones',
-    chore: 'Changes to the build process or auxiliary tools and libraries such as documentation generation',
+    feat: 'A new feature.',
+    fix: 'A bug fix.',
+    docs: 'Documentation only changes.',
+    style: 'Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc).',
+    refactor: 'A code change that neither fixes a bug nor adds a feature.',
+    test: 'Adding missing tests or correcting existing ones.',
+    chore: 'Changes to the build process or auxiliary tools and libraries such as documentation generation.',
 
     // added
-    perf: 'A code change that improves performance',
-    ci: 'Changes to your CI configuration files and scripts',
-    build: 'Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)',
-    temp: 'Temporary commit that won\'t be included in your CHANGELOG',
+    perf: 'A code change that improves performance.',
+    ci: 'Changes to your CI configuration files and scripts.',
+    build: 'Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm).',
+    temp: 'Temporary commit that won\'t be included in your CHANGELOG.',
   };
 
   /** @type {typeof STEREOTYPES_EN_US} */
@@ -646,7 +646,7 @@ function resolveStereotypes(lang) {
  * @param lang {string}
  */
 function resolveDefaultDescriptions(lang) {
-  const DEFAULT_EXAMPLE_EN_US = 'docs: update README add developer tips';
+  const DEFAULT_EXAMPLE_EN_US = 'docs: update README to add developer tips';
   const DEFAULT_EXAMPLE_ZH_CN = 'docs: 更新 README，添加开发者部分';
 
   const DEFAULT_SCOPE_DESCRIPTIONS_EN_US = [
