@@ -188,6 +188,7 @@ profiles such as `.bash_profile`, `.zshrc` etc.
 3. Prompt error msg precisely, friendly to commit messge format unfamiliar developers
 4. i18 en-US and zh-CN supported
 5. Customizable for your team's format
+6. It works with the husky flow.
 
 ## Why yet a new linter
 
