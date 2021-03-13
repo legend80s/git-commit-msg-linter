@@ -15,35 +15,7 @@
 
 > 👀 Watching your every git commit message INSTANTLY 🚀.
 
-```sh
-➜  gcmsglinter git:(master) ✗ gcam "update README"
-
-  ************* Invalid Git Commit Message **************
-  commit message: update README
-  correct format: <type>(<scope>): <subject>
-  example: docs: update README to add developer tips
-
-  type:
-    feat     A new feature.
-    fix      A bug fix.
-    docs     Documentation only changes.
-    style    Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc).
-    refactor A code change that neither fixes a bug nor adds a feature.
-    test     Adding missing tests or correcting existing ones.
-    chore    Changes to the build process or auxiliary tools and libraries such as documentation generation.
-    perf     A code change that improves performance.
-    ci       Changes to your CI configuration files and scripts.
-    build    Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm).
-    temp     Temporary commit that won't be included in your CHANGELOG.
-
-  scope:
-    Optional, can be anything specifying the scope of the commit change.
-    For example $location, $browser, $compile, $rootScope, ngHref, ngClick, ngView, etc.
-    In App Development, scope can be a page, a module or a component.
-
-  subject:
-    Brief summary of the change in present tense. Not capitalized. No period at the end.
-```
+![git-commit-msg-linter-demo](https://raw.githubusercontent.com/legend80s/commit-msg-linter/master/assets/demo-7-compressed.png)
 
 A git "commit-msg" hook for linting your git commit message against the popular [Angular Commit Message Guidelines](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-format). As a hook it will run at every commiting to make sure that the message to commit is valid against the conventions. If not the commit will be aborted.
 
@@ -263,11 +235,11 @@ Why not [conventional-changelog/commitlint](https://github.com/conventional-chan
 - [ ] Keep a space between Chinese and English character.
 - [x] Fix git merge commit not valid.
 - [x] Enable showing verbose information for debugging.
-- [x] Suggest similar but valid msg on invalid input
+- [x] Suggest similar but valid `type` on invalid input using [did-you-mean](https://www.npmjs.com/package/did-you-mean).
 - [x] No backup when `commit-msg.old` existed.
 - [x] Display commit message on invalid error.
-- [x] i18n
-- [x] set lang in zshrc, or commitlinrrc
+- [x] i18n.
+- [x] Set lang in zshrc, or commitlinrrc.
 
 ## Development
 
