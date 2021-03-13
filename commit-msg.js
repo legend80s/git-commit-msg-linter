@@ -418,7 +418,7 @@ function decorate(text, invalid, optional = false) {
  * addPeripherals('type')
  * // => "<type>"
  * addPeripherals('scope', true)
- * // => "(<scope>)"
+ * // => "[scope]"
  *
  * @param {string} text
  * @param {boolean} optional
@@ -427,7 +427,7 @@ function decorate(text, invalid, optional = false) {
  */
 function addPeripherals(text, optional = false) {
   if (optional) {
-    return `(<${text}>)`;
+    return `[${text}]`;
   }
 
   return `<${text}>`;
@@ -647,7 +647,7 @@ function resolveStereotypes(lang) {
  */
 function resolveDefaultDescriptions(lang) {
   const DEFAULT_EXAMPLE_EN_US = 'docs: update README to add developer tips';
-  const DEFAULT_EXAMPLE_ZH_CN = 'docs: 更新 README，添加开发者部分';
+  const DEFAULT_EXAMPLE_ZH_CN = 'docs: 更新 README 添加开发者部分';
 
   const DEFAULT_SCOPE_DESCRIPTIONS_EN_US = [
     'Optional, can be anything specifying the scope of the commit change.',
