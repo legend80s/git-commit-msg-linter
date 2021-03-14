@@ -46,11 +46,11 @@ npm install git-commit-msg-linter --save-dev
 
 **Just Install No Configurations Required** and your commit message is under linting from now on.
 
-For husky@5 it will ignore the `.git/hooks/commit-msg` so a `.husky/commit-msg` need to add manually:
-
-```sh
-npx husky add .husky/commit-msg ".git/hooks/commit-msg \$1"
-```
+> This linter works by standalone. But if you have husky@5 installed, because husky@5 will ignore the `.git/hooks/commit-msg` so a `.husky/commit-msg` need to add manually:
+>
+> ```sh
+> npx husky add .husky/commit-msg ".git/hooks/commit-msg \$1"
+> ```
 
 ## Recommended Commit Message Format
 
