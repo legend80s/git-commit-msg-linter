@@ -47,6 +47,7 @@ npm install git-commit-msg-linter --save-dev
 **Just Install No Configurations Required** and your commit message is under linting from now on.
 
 > 💡 Tips: for husky 5 see [Work With Husky 5](#2-work-with-husky-5).
+
 ## Recommended Commit Message Format
 
 ```
@@ -218,7 +219,6 @@ Before uninstalling, the `commit-msg` file will be restored and the `commit-msg.
 ### 1. Why not [conventional-changelog/commitlint](https://github.com/conventional-changelog/commitlint)?
 
 - Configuration is relatively complex.
-
 - No description for type, unfriendly to commit newbies. Because every time your are wondering which type should I use, you must jump out of you commit context to seek documentation in the wild web.
 - To modify type description is also not supported. Unfriendly to non-english speakers. For example, all my team members are Japanese, isn't it more productive to change all the descriptions to Japanese?
 - To add more types is also impossible. This is unacceptable for project with different types already existed.
