@@ -46,12 +46,7 @@ npm install git-commit-msg-linter --save-dev
 
 **Just Install No Configurations Required** and your commit message is under linting from now on.
 
-> This linter works by standalone. But if you have husky@5 installed, because husky@5 will ignore the `.git/hooks/commit-msg` so a `.husky/commit-msg` need to add manually:
->
-> ```sh
-> npx husky add .husky/commit-msg ".git/hooks/commit-msg \$1"
-> ```
-
+> 💡 Tips: for husky 5 see [Work With Husky 5](#2.0-work-with-husky-5).
 ## Recommended Commit Message Format
 
 ```
@@ -220,15 +215,32 @@ Before uninstalling, the `commit-msg` file will be restored and the `commit-msg.
 
 ## FAQs
 
-Why not [conventional-changelog/commitlint](https://github.com/conventional-changelog/commitlint)?
+### 1. Why not [conventional-changelog/commitlint](https://github.com/conventional-changelog/commitlint)?
 
-> Configuration is relatively complex.
->
-> No description for type, unfriendly to commit newbies. Because every time your are wondering which type should I use, you must jump out of you commit context to seek documentation in the wild web.
->
-> To modify type description is also not supported. Unfriendly to non-english speakers. For example, all my team members are Japanese, isn't it more productive to change all the descriptions to Japanese?
->
-> To add more types is also impossible. This is unacceptable for project with different types already existed.
+- Configuration is relatively complex.
+
+- No description for type, unfriendly to commit newbies. Because every time your are wondering which type should I use, you must jump out of you commit context to seek documentation in the wild web.
+- To modify type description is also not supported. Unfriendly to non-english speakers. For example, all my team members are Japanese, isn't it more productive to change all the descriptions to Japanese?
+- To add more types is also impossible. This is unacceptable for project with different types already existed.
+
+### 2. Work With Husky 5
+
+This linter can work by standalone. But if you have husky 5 installed, because husky 5 will ignore the `.git/hooks/commit-msg` so a `.husky/commit-msg` need to be added manually:
+
+```sh
+npx husky add .husky/commit-msg ".git/hooks/commit-msg \$1"
+```
+
+Show the file content of `.husky/commit-msg` to make sure it has been added successfully otherwise do it manually.
+
+```sh
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+.git/hooks/commit-msg $1
+```
+
+More details at [issues 8](https://github.com/legend80s/commit-msg-linter/issues/8).
 
 ## TODO
 
