@@ -46,7 +46,7 @@ npm install git-commit-msg-linter --save-dev
 
 **Just Install No Configurations Required** and your commit message is under linting from now on.
 
-> 💡 Tips: for husky 5 see [Work With Husky 5](#2.0-work-with-husky-5).
+> 💡 Tips: for husky 5 see [Work With Husky 5](#2-work-with-husky-5).
 ## Recommended Commit Message Format
 
 ```
