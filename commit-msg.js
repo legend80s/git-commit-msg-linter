@@ -83,6 +83,8 @@ async function lint(commitMsgContent, config, lang) {
 
     subjectDescriptions = defaultSubjectDescriptions,
     invalidSubjectDescriptions = defaultInvalidSubjectDescriptions,
+
+    postSubjectDescriptions = [],
   } = config;
 
   verbose && debug('config:', config);
@@ -104,6 +106,8 @@ async function lint(commitMsgContent, config, lang) {
     invalidScopeDescriptions,
     subjectDescriptions,
     invalidSubjectDescriptions,
+    postSubjectDescriptions,
+
     lang,
   })) {
     process.exit(1);
@@ -190,6 +194,7 @@ function validateMessage(
     scopeDescriptions,
     invalidScopeDescriptions,
     subjectDescriptions,
+    postSubjectDescriptions,
     invalidSubjectDescriptions,
     lang,
   },
@@ -229,6 +234,7 @@ function validateMessage(
         scopeDescriptions,
         invalidScopeDescriptions,
         subjectDescriptions,
+        postSubjectDescriptions,
         invalidSubjectDescriptions,
         lang,
       },
@@ -265,6 +271,7 @@ function validateMessage(
         scopeDescriptions,
         invalidScopeDescriptions,
         subjectDescriptions,
+        postSubjectDescriptions,
         invalidSubjectDescriptions,
         lang,
       },
@@ -295,6 +302,7 @@ function displayError(
     scopeDescriptions,
     invalidScopeDescriptions,
     subjectDescriptions,
+    postSubjectDescriptions,
     invalidSubjectDescriptions,
     lang,
   },
@@ -318,6 +326,9 @@ function displayError(
   const defaultInvalidScopeDescription = `scope can be ${emphasis('optional')}${RED}, but its parenthesis if exists cannot be empty.`;
 
   const subjectDescription = subjectDescriptions.join('\n    ');
+  let postSubjectDescription = postSubjectDescriptions.join('\n    ');
+  postSubjectDescription = postSubjectDescription ? `\n\n    ${italic(postSubjectDescription)}` : '';
+
   const invalidSubjectDescription = invalidSubjectDescriptions.join('\n    ');
   const translated = i18n(lang);
   const { example: labelExample, correctFormat, commitMessage } = translated;
@@ -340,7 +351,7 @@ function displayError(
     ${invalidScopeDescription || defaultInvalidScopeDescription}` : ''}
 
   ${invalidSubject ? RED : YELLOW}subject:
-    ${GRAY}${subjectDescription}${invalidSubject ? `${RED}
+    ${GRAY}${subjectDescription}${postSubjectDescription}${invalidSubject ? `${RED}
     ${invalidSubjectDescription}` : ''}
   `,
   );
@@ -450,11 +461,11 @@ function emphasis(text) {
  * @param {string} text
  * @returns {string}
  */
-// function italic(text) {
-//   const ITALIC = '\x1b[3m';
+function italic(text) {
+  const ITALIC = '\x1b[3m';
 
-//   return `${ITALIC}${text}${EOS}`;
-// }
+  return `${ITALIC}${text}${EOS}`;
+}
 
 /**
  * Make text underlined.
