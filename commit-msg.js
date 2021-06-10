@@ -5,13 +5,9 @@ const fs = require('fs');
 const path = require('path');
 const util = require('util');
 const Matcher = require('did-you-mean');
+const LANG = require('./lang');
 
 const readFile = util.promisify(fs.readFile);
-
-const LANG = {
-  EN_US: 'en-US',
-  ZH_CN: 'zh-CN',
-}
 
 // Any line of the commit message cannot be longer than 100 characters!
 // This allows the message to be easier to read on github as well as in various git tools.
@@ -38,22 +34,44 @@ const EOS = '\x1b[0m';
 const BOLD = '\x1b[1m';
 
 async function main() {
+
+  if (process.argv.length < 3) {
+    console.error('Please inform the commit message file as an argument (e.g. "commit-msg").');
+    process.exit(1);
+  }
+
   const commitMsgFilePath = process.argv[2];
   const commitlinterrcFilePath = path.resolve(__dirname, '..', '..', 'commitlinterrc.json');
 
   // console.log(commitlinterrc);
 
-  const [commitMsgContent, config] = await Promise.all([
-    readFile(commitMsgFilePath),
-    readConfig(commitlinterrcFilePath),
-  ]);
+  try {
+    const [commitMsgContent, config] = await Promise.all([
+      readFile(commitMsgFilePath),
+      readConfig(commitlinterrcFilePath),
+    ]);
 
-  const lang = getLanguage(config.lang);
+    const lang = getLanguage(config.lang);
 
-  lint(commitMsgContent, config, lang);
+    lint(commitMsgContent, config, lang);
+
+  } catch ( err ) {
+    console.error('Error:', err.message);
+    process.exit(1);
+  }
 }
 
 main();
+
+/**
+ * Returns the given language's data if the language exists. Otherwise, returns the data for the English language.
+ *
+ * @param {string} lang Language
+ * @returns
+ */
+function langData( lang ) {
+  return LANG[lang] ? LANG[lang] : LANG['en-US'];
+}
 
 /**
  * @param {string} commitMsgContent
@@ -62,13 +80,16 @@ main();
  * @returns {void}
  */
 async function lint(commitMsgContent, config, lang) {
+
+  const DESCRIPTIONS = langData(lang).descriptions;
+
   const {
-    commitMsgExample,
-    defaultScopeDescriptions,
-    defaultInvalidScopeDescriptions,
-    defaultSubjectDescriptions,
-    defaultInvalidSubjectDescriptions,
-  } = resolveDefaultDescriptions(lang);
+    example,
+    scope,
+    invalidScope,
+    subject,
+    invalidSubject,
+  } = DESCRIPTIONS;
 
   const {
     types,
@@ -76,13 +97,12 @@ async function lint(commitMsgContent, config, lang) {
     'min-len': minLength,
     debug: verbose = false,
     showInvalidHeader = true,
-    example = commitMsgExample,
 
-    scopeDescriptions = defaultScopeDescriptions,
-    invalidScopeDescriptions = defaultInvalidScopeDescriptions,
+    scopeDescriptions = scope,
+    invalidScopeDescriptions = invalidScope,
 
-    subjectDescriptions = defaultSubjectDescriptions,
-    invalidSubjectDescriptions = defaultInvalidSubjectDescriptions,
+    subjectDescriptions = subject,
+    invalidSubjectDescriptions = invalidSubject,
 
     postSubjectDescriptions = [],
   } = config;
@@ -90,7 +110,7 @@ async function lint(commitMsgContent, config, lang) {
   verbose && debug('config:', config);
 
   const msg = getFirstLine(commitMsgContent).replace(/\s{2,}/g, ' ');
-  const STEREOTYPES = resolveStereotypes(lang);
+  const STEREOTYPES = langData(lang).stereotypes;
   const mergedTypes = merge(STEREOTYPES, types);
   const maxLen = typeof maxLength === 'number' ? maxLength : MAX_LENGTH;
   const minLen = typeof minLength === 'number' ? minLength : MIN_LENGTH;
@@ -316,7 +336,8 @@ function displayError(
   const typeDescriptions = describeTypes(mergedTypes, suggestedType);
 
   const invalid = invalidLength || invalidFormat || typeInvalid || invalidScope || invalidSubject;
-  const invalidHeader = resolveHeader(lang);
+  const translated = langData(lang).i18n;
+  const invalidHeader = translated.invalidHeader;
   const header = !showInvalidHeader ?
     '' :
     `\n  ${invalidFormat ? RED : YELLOW}************* ${invalidHeader} **************${EOS}`;
@@ -330,7 +351,7 @@ function displayError(
   postSubjectDescription = postSubjectDescription ? `\n\n    ${italic(postSubjectDescription)}` : '';
 
   const invalidSubjectDescription = invalidSubjectDescriptions.join('\n    ');
-  const translated = i18n(lang);
+
   const { example: labelExample, correctFormat, commitMessage } = translated;
 
   const correctedExample = typeInvalid ?
@@ -339,7 +360,7 @@ function displayError(
 
   console.info(
     `${header}${invalid ? `
-  ${label(`${commitMessage}:`)} ${RED}${message}${EOS}` : ''}${generateInvalidLengthTips(message, invalidLength, maxLen, minLen, translated, lang)}
+  ${label(`${commitMessage}:`)} ${RED}${message}${EOS}` : ''}${generateInvalidLengthTips(message, invalidLength, maxLen, minLen, lang)}
   ${label(`${correctFormat}:`)} ${GREEN}${decoratedType}${scope}: ${subject}${EOS}
   ${label(`${labelExample}:`)} ${GREEN}${correctedExample}${EOS}
 
@@ -561,19 +582,16 @@ function label(text) {
  * @param {boolean} invalid
  * @param {number} maxLen
  * @param {number} minLen
+ * @param {string} lang
  * @returns {string}
  */
-function generateInvalidLengthTips(message, invalid, maxLen, minLen, translated, lang) {
+function generateInvalidLengthTips(message, invalid, maxLen, minLen, lang) {
   if (invalid) {
-    const { length } = message;
-    const maxStyle = length > maxLen ? BOLD : '';
-    const minStyle = length < minLen ? BOLD : '';
-    const isCHN = lang === LANG.ZH_CN;
-
-    const tips =
-      `${RED}${isCHN ? '长度' : 'Length'} ${BOLD}${length}${EOS}. ${RED}${isCHN ? '提交信息长度不能大于' : 'Commit message cannot be longer than'} ${maxStyle}${maxLen}${EOS} ${RED}${isCHN ? '或小于' : 'characters or shorter than'} ${minStyle}${minLen}${EOS}${RED}${isCHN ? '' : ' characters'}${EOS}`;
-
-    return `\n  ${BOLD}${translated.invalidLength}${EOS}: ${tips}`;
+    const max = `${BOLD}${maxLen}${EOS}${RED}`;
+    const min = `${BOLD}${minLen}${EOS}${RED}`;
+    const i18n = langData(lang).i18n;
+    const tips = `${RED}${i18n.length} ${BOLD}${message.length}${EOS}${RED}. ${format(i18n.invalidLengthTip, max, min)}${EOS}`;
+    return `\n  ${BOLD}${i18n.invalidLength}${EOS}: ${tips}`;
   }
 
   return '';
@@ -589,11 +607,9 @@ function debug(...args) {
 }
 
 /**
- * @returns 'en-US' or 'zh-CN'
+ * @returns {string}
  */
 function getLanguage(configLang) {
-  // return LANG.ZH_CN;
-
   return configLang ||
     process.env.COMMIT_MSG_LINTER_LANG ||
     Intl.DateTimeFormat().resolvedOptions().locale
@@ -601,174 +617,19 @@ function getLanguage(configLang) {
 }
 
 /**
- * @param {string} lang
+ * Replaces numeric arguments inside curly brackets with their corresponding values.
+ *
+ * @example
+ *  format( 'Good {1}, Mr {2}', 'morning', 'Bob' ) returns 'Good morning, Mr Bob'
+ *
+ * @param {string} text A text with arguments between curly brackets
+ * @param  {any[]} args Values to replace the arguments
+ * @returns
  */
-function resolveStereotypes(lang) {
-  // todo: extract to config.js
-  const STEREOTYPES_ZH_CN = {
-    feat: '产品新功能：通常是能够让用户觉察到的变化，小到文案或样式修改',
-    fix: '修复 bug',
-    docs: '更新文档或注释',
-    style: '代码格式调整，对逻辑无影响：比如为按照 eslint 或团队风格修改代码格式。注意不是 UI 变更',
-    refactor: '重构：不影响现有功能或添加功能。比如文件、变量重命名，代码抽象为函数，消除魔法数字等',
-    test: '单测相关变更',
-    chore: '杂项：其他无法归类的变更，比如代码合并',
-
-    // added
-    perf: '性能提升变更',
-    ci: '持续集成相关变更',
-    build: '代码构建相关变更：比如修复部署时的构建问题、构建脚本 webpack 或 gulp 相关变更',
-    temp: '临时代码：不计入 CHANGELOG，比如必须部署到某种环境才能测试的变更',
-  }
-
-  const STEREOTYPES_EN_US = {
-    feat: 'A new feature.',
-    fix: 'A bug fix.',
-    docs: 'Documentation only changes.',
-    style: 'Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc).',
-    refactor: 'A code change that neither fixes a bug nor adds a feature.',
-    test: 'Adding missing tests or correcting existing ones.',
-    chore: 'Changes to the build process or auxiliary tools and libraries such as documentation generation.',
-
-    // added
-    perf: 'A code change that improves performance.',
-    ci: 'Changes to your CI configuration files and scripts.',
-    build: 'Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm).',
-    temp: 'Temporary commit that won\'t be included in your CHANGELOG.',
-  };
-
-  /** @type {typeof STEREOTYPES_EN_US} */
-  let stereotype;
-
-  switch (lang) {
-    case LANG.ZH_CN:
-      stereotype = STEREOTYPES_ZH_CN;
-      break;
-
-    default:
-      stereotype = STEREOTYPES_EN_US;
-      break;
-  }
-
-  return stereotype;
+function format( text, ...args ) {
+  return text.replace( /\{(\d+)\}/g, (_,i) => args[i-1] );
 }
 
-/**
- * @param lang {string}
- */
-function resolveDefaultDescriptions(lang) {
-  const DEFAULT_EXAMPLE_EN_US = 'docs: update README to add developer tips';
-  const DEFAULT_EXAMPLE_ZH_CN = 'docs: 更新 README 添加开发者部分';
-
-  const DEFAULT_SCOPE_DESCRIPTIONS_EN_US = [
-    'Optional, can be anything specifying the scope of the commit change.',
-    'For example $location, $browser, $compile, $rootScope, ngHref, ngClick, ngView, etc.',
-    'In App Development, scope can be a page, a module or a component.',
-  ];
-  const DEFAULT_SCOPE_DESCRIPTIONS_ZH_CN = [
-    '可选。变更范围（细粒度要合适，并在一个项目中保持一致）：比如页面名、模块名、或组件名',
-  ];
-
-  const DEFAULT_INVALID_SCOPE_DESCRIPTIONS_EN_US = [
-    '`scope` can be optional, but its parenthesis if exists cannot be empty.',
-  ];
-  const DEFAULT_INVALID_SCOPE_DESCRIPTIONS_ZH_CN = [
-    '`scope` 可选，若有则必须加小括号',
-  ];
-
-  const DEFAULT_SUBJECT_DESCRIPTIONS_EN_US = [
-    'Brief summary of the change in present tense. Not capitalized. No period at the end.',
-  ];
-  const DEFAULT_SUBJECT_DESCRIPTIONS_ZH_CN = [
-    '此次变更的简短描述，必须采用现在时态，如果是英语则首字母不能大写，句尾不加句号',
-  ];
-
-  const DEFAULT_INVALID_SUBJECT_DESCRIPTIONS_EN_US = [
-    '- don\'t capitalize first letter',
-    '- no dot "." at the end`',
-  ];
-  const DEFAULT_INVALID_SUBJECT_DESCRIPTIONS_ZH_CN = [
-    '首字母不能大写',
-    '句尾不加句号',
-  ];
-
-  let descriptions = {
-    commitMsgExample: DEFAULT_EXAMPLE_EN_US,
-
-    defaultScopeDescriptions: DEFAULT_SCOPE_DESCRIPTIONS_EN_US,
-    defaultInvalidScopeDescriptions: DEFAULT_INVALID_SCOPE_DESCRIPTIONS_EN_US,
-
-    defaultSubjectDescriptions: DEFAULT_SUBJECT_DESCRIPTIONS_EN_US,
-    defaultInvalidSubjectDescriptions: DEFAULT_INVALID_SUBJECT_DESCRIPTIONS_EN_US,
-  };
-
-  switch (lang) {
-    case LANG.ZH_CN:
-      descriptions.commitMsgExample = DEFAULT_EXAMPLE_ZH_CN;
-
-      descriptions.defaultScopeDescriptions = DEFAULT_SCOPE_DESCRIPTIONS_ZH_CN;
-      descriptions.defaultInvalidScopeDescriptions = DEFAULT_INVALID_SCOPE_DESCRIPTIONS_ZH_CN;
-
-      descriptions.defaultSubjectDescriptions = DEFAULT_SUBJECT_DESCRIPTIONS_ZH_CN;
-      descriptions.defaultInvalidSubjectDescriptions = DEFAULT_INVALID_SUBJECT_DESCRIPTIONS_ZH_CN;
-      break;
-
-    default:
-      break;
-  }
-
-  return descriptions;
-}
-
-/**
- * @param {string} lang
- */
-function resolveHeader(lang) {
-  const EN = 'Invalid Git Commit Message';
-  const ZH = 'Git 提交信息不规范';
-
-  let header = '';
-
-  switch (lang) {
-    case LANG.ZH_CN:
-      header = ZH;
-      break;
-
-    default:
-      header = EN;
-      break;
-  }
-
-  return header;
-}
-
-function i18n(lang) {
-  const en = {
-    example: 'example',
-    commitMessage: 'commit message',
-    correctFormat: 'correct format',
-    invalidLength: 'Invalid length',
-  }
-  const zh = {
-    example: '示例',
-    commitMessage: '提交信息',
-    correctFormat: '正确格式',
-    invalidLength: '提交信息长度不合法',
-  }
-
-  let translated = en;
-
-  switch (lang) {
-    case LANG.ZH_CN:
-      translated = zh;
-      break;
-
-    default:
-      break;
-  }
-
-  return translated;
-}
 
 function resolvePatterns(message) {
   /* eslint-disable no-useless-escape */
