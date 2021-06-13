@@ -11,6 +11,10 @@
   <a href="https://packagephobia.now.sh/result?p=commander" rel="nofollow">
     <img src="https://packagephobia.now.sh/badge?p=git-commit-msg-linter" alt="Install Size">
   </a>
+
+  <a href="https://www.npmjs.com/package/git-commit-msg-linter">
+    <img src="https://badgen.net/badge/git-commit-msg-linter/3.2.2/green" alt="commit msg linted by git-commit-msg-linter" />
+  </a>
 </p>
 
 > 👀 Watching your every git commit message INSTANTLY 🚀.
@@ -247,6 +251,14 @@ Show the file content of `.husky/commit-msg` to make sure it has been added succ
 ```
 
 More details at [issues 8](https://github.com/legend80s/commit-msg-linter/issues/8).
+
+### 3. git-commit-msg-linter badge
+
+```html
+<a href="https://www.npmjs.com/package/git-commit-msg-linter">
+  <img src="https://badgen.net/badge/git-commit-msg-linter/3.0.0/yellow" alt="commit msg linted by git-commit-msg-linter" />
+</a>
+```
 
 ## TODO
 
