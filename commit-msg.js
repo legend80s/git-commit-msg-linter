@@ -62,7 +62,8 @@ async function main() {
 main();
 
 /**
- * Returns the given language's data if the language exists. Otherwise, returns the data for the English language.
+ * Returns the given language's data if the language exists.
+ * Otherwise, returns the data for the English language.
  *
  * @param {string} lang Language
  * @returns
