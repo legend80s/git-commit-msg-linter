@@ -35,7 +35,7 @@
     "eslint": "^7.28.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.23.4",
-    "git-commit-msg-linter": "^3.2.1"
+    "git-commit-msg-linter": "^3.2.3"
   },
   "dependencies": {
     "chalk": "^2.4.2",
