@@ -25,7 +25,7 @@ const commitMsgFile = path.resolve(git, 'hooks', COMMIT_MSG_HOOK_FILE);
 // Bail out if we don't have commit-msg file, it might be removed manually.
 if (!exists(commitMsgFile)) {
   console.info(
-    `${PACKAGE_NAME_LABEL}: Not found any ${COMMIT_MSG_LABLE} hook, no need to clean the battle field`
+    `${PACKAGE_NAME_LABEL}: Not found any ${COMMIT_MSG_LABLE} hook, no need to clean the battle field`,
   );
 
   bailOut();

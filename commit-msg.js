@@ -34,7 +34,6 @@ const EOS = '\x1b[0m';
 const BOLD = '\x1b[1m';
 
 async function main() {
-
   if (process.argv.length < 3) {
     console.error('Please inform the commit message file as an argument (e.g. "commit-msg").');
     process.exit(1);
@@ -54,8 +53,7 @@ async function main() {
     const lang = getLanguage(config.lang);
 
     lint(commitMsgContent, config, lang);
-
-  } catch ( err ) {
+  } catch (err) {
     console.error('Error:', err.message);
     process.exit(1);
   }
@@ -69,7 +67,7 @@ main();
  * @param {string} lang Language
  * @returns
  */
-function langData( lang ) {
+function langData(lang) {
   return LANG[lang] ? LANG[lang] : LANG['en-US'];
 }
 
@@ -80,7 +78,6 @@ function langData( lang ) {
  * @returns {void}
  */
 async function lint(commitMsgContent, config, lang) {
-
   const DESCRIPTIONS = langData(lang).descriptions;
 
   const {
@@ -170,7 +167,7 @@ async function readConfig(filename) {
 }
 
 function merge(stereotypes, configTypes) {
-  return compact(Object.assign({}, stereotypes, configTypes), { strictFalse: true });
+  return compact({ ...stereotypes, ...configTypes }, { strictFalse: true });
 }
 
 /**
@@ -222,7 +219,7 @@ function validateMessage(
   let isValid = true;
   let invalidLength = false;
 
-  if (IGNORED_PATTERNS.some(pattern => pattern.test(message))) {
+  if (IGNORED_PATTERNS.some((pattern) => pattern.test(message))) {
     console.log('Commit message validation ignored.');
     return true;
   }
@@ -280,7 +277,9 @@ function validateMessage(
 
   if (invalidLength || typeInvalid || invalidScope || invalidSubject) {
     displayError(
-      { invalidLength, type, typeInvalid, invalidScope, invalidSubject },
+      {
+        invalidLength, type, typeInvalid, invalidScope, invalidSubject,
+      },
       {
         mergedTypes,
         maxLen,
@@ -337,10 +336,10 @@ function displayError(
 
   const invalid = invalidLength || invalidFormat || typeInvalid || invalidScope || invalidSubject;
   const translated = langData(lang).i18n;
-  const invalidHeader = translated.invalidHeader;
-  const header = !showInvalidHeader ?
-    '' :
-    `\n  ${invalidFormat ? RED : YELLOW}************* ${invalidHeader} **************${EOS}`;
+  const { invalidHeader } = translated;
+  const header = !showInvalidHeader
+    ? ''
+    : `\n  ${invalidFormat ? RED : YELLOW}************* ${invalidHeader} **************${EOS}`;
 
   const scopeDescription = scopeDescriptions.join('\n    ');
   const invalidScopeDescription = invalidScopeDescriptions.join('\n    ');
@@ -354,9 +353,9 @@ function displayError(
 
   const { example: labelExample, correctFormat, commitMessage } = translated;
 
-  const correctedExample = typeInvalid ?
-    didYouMean(message, { example, types }) :
-    example;
+  const correctedExample = typeInvalid
+    ? didYouMean(message, { example, types })
+    : example;
 
   console.info(
     `${header}${invalid ? `
@@ -377,7 +376,6 @@ function displayError(
   `,
   );
 }
-
 
 /**
  *
@@ -410,9 +408,7 @@ function didYouMean(message, { types, example }) {
 
   const TYPE_REGEXP = /^\w+(\(\w*\))?:/;
 
-  return message.replace(TYPE_REGEXP, (_, p1) => {
-    return p1 && p1 !== '()' ? `${suggestedType}${p1}:` : `${suggestedType}:`;
-  })
+  return message.replace(TYPE_REGEXP, (_, p1) => (p1 && p1 !== '()' ? `${suggestedType}${p1}:` : `${suggestedType}:`));
 }
 
 function suggestType(type = '', types) {
@@ -421,7 +417,7 @@ function suggestType(type = '', types) {
 
   if (match) { return match; }
 
-  const suggestedType = types.find(t => type.includes(t) || t.includes(type));
+  const suggestedType = types.find((t) => type.includes(t) || t.includes(type));
 
   return suggestedType || '';
 }
@@ -539,7 +535,9 @@ function nSpaces(n) {
  *
  * @returns {string}
  */
-function describe({ index, type, suggestedType, description, maxTypeLength }) {
+function describe({
+  index, type, suggestedType, description, maxTypeLength,
+}) {
   const paddingBefore = index === 0 ? '' : nSpaces(4);
   const marginRight = nSpaces(maxTypeLength - type.length + 1);
   const typeColor = suggestedType === type ? GREEN + BOLD : YELLOW;
@@ -561,7 +559,9 @@ function describeTypes(mergedTypes, suggestedType = '') {
     .map((type, index) => {
       const description = mergedTypes[type];
 
-      return describe({ index, type, suggestedType, description, maxTypeLength });
+      return describe({
+        index, type, suggestedType, description, maxTypeLength,
+      });
     })
     .join('\n');
 }
@@ -589,7 +589,7 @@ function generateInvalidLengthTips(message, invalid, maxLen, minLen, lang) {
   if (invalid) {
     const max = `${BOLD}${maxLen}${EOS}${RED}`;
     const min = `${BOLD}${minLen}${EOS}${RED}`;
-    const i18n = langData(lang).i18n;
+    const { i18n } = langData(lang);
     const tips = `${RED}${i18n.length} ${BOLD}${message.length}${EOS}${RED}. ${format(i18n.invalidLengthTip, max, min)}${EOS}`;
     return `\n  ${BOLD}${i18n.invalidLength}${EOS}: ${tips}`;
   }
@@ -610,10 +610,9 @@ function debug(...args) {
  * @returns {string}
  */
 function getLanguage(configLang) {
-  return configLang ||
-    process.env.COMMIT_MSG_LINTER_LANG ||
-    Intl.DateTimeFormat().resolvedOptions().locale
-  ;
+  return configLang
+    || process.env.COMMIT_MSG_LINTER_LANG
+    || Intl.DateTimeFormat().resolvedOptions().locale;
 }
 
 /**
@@ -626,10 +625,9 @@ function getLanguage(configLang) {
  * @param  {any[]} args Values to replace the arguments
  * @returns
  */
-function format( text, ...args ) {
-  return text.replace( /\{(\d+)\}/g, (_,i) => args[i-1] );
+function format(text, ...args) {
+  return text.replace(/\{(\d+)\}/g, (_, i) => args[i - 1]);
 }
-
 
 function resolvePatterns(message) {
   /* eslint-disable no-useless-escape */
@@ -645,7 +643,7 @@ function resolvePatterns(message) {
       type,
       scope,
       subject,
-    }
+    };
   }
 
   return null;
