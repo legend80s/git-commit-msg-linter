@@ -271,7 +271,7 @@ More details at [issues 8](https://github.com/legend80s/commit-msg-linter/issues
 ### Publish
 
 ```sh
-npm version patch / minor / major && npm publish && git push && git push --tags
+npm version patch / minor / major
 ```
 
 ## References
