@@ -40,6 +40,7 @@ A git "commit-msg" hook for linting your git commit message against the popular 
 - [FAQs](#faqs)
   - [1. Why not conventional-changelog/commitlint?](#1-why-not-conventional-changelogcommitlint)
   - [2. Work With Husky 5](#2-work-with-husky-5)
+  - [3. git-commit-msg-linter badge](#3-git-commit-msg-linter-badge)
 - [TODO](#todo)
 - [Development](#development)
   - [Publish](#publish)
@@ -195,11 +196,11 @@ profiles such as `.bash_profile`, `.zshrc` etc.
 
 ## Features
 
-1. Visualization, low cost to Learn
-2. Zero configuration
-3. Prompt error msg precisely, friendly to commit message format unfamiliar developers
-4. i18: en-US, pt-BR (Brazilian Portuguese), zh-CN supported
-5. Customizable for your team's format
+1. Visualization, low cost to Learn.
+2. Zero configuration.
+3. Prompt error msg precisely, friendly to commit message format unfamiliar developers.
+4. i18: en-US, pt-BR (Brazilian Portuguese), zh-CN supported and you can add more in [getLangs](https://github.com/legend80s/commit-msg-linter/blob/master/commit-msg.js#L656).
+5. Customizable for your team's format.
 6. It works with the husky flow.
 
 ## Why yet a new linter
