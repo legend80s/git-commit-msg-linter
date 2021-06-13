@@ -34,9 +34,15 @@ A git "commit-msg" hook for linting your git commit message against the popular 
 - [Why yet a new linter](#why-yet-a-new-linter)
 - [How it works](#how-it-works)
 - [FAQs](#faqs)
+  - [1. Why not conventional-changelog/commitlint?](#1-why-not-conventional-changelogcommitlint)
+  - [2. Work With Husky 5](#2-work-with-husky-5)
 - [TODO](#todo)
 - [Development](#development)
+  - [Publish](#publish)
 - [References](#references)
+- [🤝 Contributing](#-contributing)
+- [Show your support](#show-your-support)
+- [📝 License](#-license)
 
 ## Install
 
