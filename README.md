@@ -179,7 +179,7 @@ It will use your system's language as the default language. But two ways are pro
 }
 ```
 
-lang in ["en-US", "zh-CN"]
+lang in ["en-US", "zh-CN", "pt-BR"]
 
 #### Set in bash profiles
 
@@ -193,8 +193,8 @@ profiles such as `.bash_profile`, `.zshrc` etc.
 
 1. Visualization, low cost to Learn
 2. Zero configuration
-3. Prompt error msg precisely, friendly to commit messge format unfamiliar developers
-4. i18 en-US and zh-CN supported
+3. Prompt error msg precisely, friendly to commit message format unfamiliar developers
+4. i18: en-US, pt-BR (Brazilian Portuguese), zh-CN supported
 5. Customizable for your team's format
 6. It works with the husky flow.
 
