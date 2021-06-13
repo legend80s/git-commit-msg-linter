@@ -13,7 +13,7 @@
   </a>
 
   <a href="https://www.npmjs.com/package/git-commit-msg-linter">
-    <img src="https://badgen.net/badge/git-commit-msg-linter/3.2.2/green" alt="commit msg linted by git-commit-msg-linter" />
+    <img src="https://badgen.net/badge/git-commit-msg-linter/3.2.5/green" alt="commit msg linted by git-commit-msg-linter" />
   </a>
 </p>
 
