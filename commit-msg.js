@@ -675,7 +675,7 @@ function getLangs() {
           'For example $location, $browser, $compile, $rootScope, ngHref, ngClick, ngView, etc.',
           'In App Development, scope can be a page, a module or a component.',
         ],
-        invalid: [
+        invalidScope: [
           '`scope` can be optional, but its parenthesis if exists cannot be empty.',
         ],
         subject: [
