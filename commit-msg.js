@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const util = require('util');
 const Matcher = require('did-you-mean');
+const supportsColor = require('supports-color');
 
 const LANG = getLangs();
 
@@ -25,14 +26,17 @@ const IGNORED_PATTERNS = [
   // ignore auto-generated commit msg
   /^((Merge pull request)|(Merge (.*?) into (.*?)|(Merge branch (.*?)))(?:\r?\n)*$)/m,
 ];
-const YELLOW = '\x1b[1;33m';
-const GRAY = '\x1b[0;37m';
-const RED = '\x1b[0;31m';
-const GREEN = '\x1b[0;32m';
+
+const colorSupported = supportsColor.stdout;
+
+const YELLOW = colorSupported ? '\x1b[1;33m' : '';
+const GRAY = colorSupported ? '\x1b[0;37m' : '';
+const RED = colorSupported ? '\x1b[0;31m' : '';
+const GREEN = colorSupported ? '\x1b[0;32m' : '';
 
 /** End Of Style, removes all attributes (formatting and colors) */
-const EOS = '\x1b[0m';
-const BOLD = '\x1b[1m';
+const EOS = colorSupported ? '\x1b[0m' : '';
+const BOLD = colorSupported ? '\x1b[1m' : '';
 
 async function main() {
   if (process.argv.length < 3) {
