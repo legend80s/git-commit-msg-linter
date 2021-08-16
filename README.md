@@ -8,12 +8,9 @@
     <img src="https://img.shields.io/npm/dm/git-commit-msg-linter.svg" alt="npm downloads" />
   </a>
   <img src="https://img.shields.io/badge/node-%3E%3D%208.0.0-blue.svg" alt="prerequisite node version" />
-  <a href="https://packagephobia.now.sh/result?p=commander" rel="nofollow">
-    <img src="https://packagephobia.now.sh/badge?p=git-commit-msg-linter" alt="Install Size">
-  </a>
 
   <a href="https://www.npmjs.com/package/git-commit-msg-linter">
-    <img src="https://badgen.net/badge/git-commit-msg-linter/3.2.5/green" alt="commit msg linted by git-commit-msg-linter" />
+    <img src="https://badgen.net/badge/use%20git-commit-msg-linter/3.2.5/green" alt="commit msg linted by git-commit-msg-linter" />
   </a>
 </p>
 
