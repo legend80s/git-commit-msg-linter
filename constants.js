@@ -8,7 +8,7 @@ const COMMIT_MSG_HOOK_FILE = 'commit-msg';
 exports.PACKAGE_NAME = PACKAGE_NAME;
 exports.COMMIT_MSG_HOOK_FILE = COMMIT_MSG_HOOK_FILE;
 
-exports.PACKAGE_NAME_LABEL = chalk.yellow(PACKAGE_NAME);
+exports.PACKAGE_NAME_LABEL = `[${chalk.yellow(PACKAGE_NAME)}]`;
 exports.COMMIT_MSG_LABLE = chalk.bold(COMMIT_MSG_HOOK_FILE);
 
 exports.PROJECT_ROOT = path.resolve(__dirname, '..', '..');

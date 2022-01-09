@@ -48,7 +48,7 @@ const backup = `${commitMsgHookFile}.old`;
 // so we had to use `postinstall` to do the install work
 // https://github.com/legend80s/commit-msg-linter/issues/13
 if (installedByInstallScriptInPackageJSON(commitMsgHookFile)) {
-  console.info(`${PACKAGE_NAME_LABEL}: ${chalk.yellow('Skip install: installed by `install` script')}`);
+  console.info(`${PACKAGE_NAME_LABEL}: ${chalk.yellow('Skip install: installed by `install` script.')}`);
   bailOut();
 }
 
