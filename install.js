@@ -110,11 +110,11 @@ function installedByInstallScriptInPackageJSON(commitMsgFilepath) {
 
 /**
  *
- * @param {string[]} projectRootList
+ * @param {string[]} projectDirectories
  * @returns {string}
  */
-function guessGitDirectory(projectRootList) {
-  return projectRootList
+function guessGitDirectory(projectDirectories) {
+  return projectDirectories
     .map((projectRoot) => path.resolve(projectRoot, '.git'))
     .find((gitDirectory) => exists(gitDirectory) && fs.lstatSync(gitDirectory).isDirectory());
 }
