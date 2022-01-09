@@ -13,6 +13,9 @@
     "utils.js"
   ],
   "scripts": {
+    "pub:patch": "npm version patch",
+    "pub:minor": "npm version minor",
+    "pub:major": "npm version major",
     "lint": "eslint *.js",
     "lint:fix": "eslint --fix *.js",
     "install": "echo '[git-commit-msg-linter] install start.' && node install.js",
