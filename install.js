@@ -16,30 +16,40 @@ const {
   PACKAGE_NAME_LABEL,
   COMMIT_MSG_HOOK_FILE,
   PACKAGE_NAME,
-  PROJECT_ROOT,
 } = require('./constants');
 
 const exists = fs.existsSync;
-const git = path.resolve(PROJECT_ROOT, '.git');
+
+const projectRootList = [
+  path.resolve(__dirname, '..', '..'),
+
+  // for pnpm: not a elegant solution 😓
+  path.resolve(__dirname, '../../..'),
+  path.resolve(__dirname, '../../../..'),
+  path.resolve(__dirname, '../../../../..'),
+];
+
+const git = guessGitDirectory(projectRootList);
 
 // Bail out if we don't have an `.git` folder as the hooks will not get triggered.
-if (!exists(git) || !fs.lstatSync(git).isDirectory()) {
-  console.error(`${PACKAGE_NAME_LABEL}: ${chalk.red('.git folder Not found')}`);
+if (!git) {
+  console.error(`${PACKAGE_NAME_LABEL}: ${chalk.red('.git folder not found in')}`);
+  console.error(projectRootList);
   console.error(`${PACKAGE_NAME_LABEL}: ${chalk.red(`${PACKAGE_NAME} won't be installed`)}`);
 
-  bailOut();
-}
-
-// The `install` script in package.json wont be run by pnpm 😓 What a pity!
-// so we had to use `postinstall` to do the install work
-// https://github.com/legend80s/commit-msg-linter/issues/13
-if (installedByInstallScriptInPackageJSON()) {
   bailOut();
 }
 
 const hooks = path.resolve(git, 'hooks');
 const commitMsgHookFile = path.resolve(hooks, COMMIT_MSG_HOOK_FILE);
 const backup = `${commitMsgHookFile}.old`;
+
+// The `install` script in package.json wont be run by pnpm 😓 What a pity!
+// so we had to use `postinstall` to do the install work
+// https://github.com/legend80s/commit-msg-linter/issues/13
+if (installedByInstallScriptInPackageJSON(commitMsgHookFile)) {
+  bailOut();
+}
 
 // If we do have `.git` folder create a `hooks` folder under it if it doesn't exist.
 if (!exists(hooks)) { fs.mkdirSync(hooks); }
@@ -58,7 +68,7 @@ if (exists(commitMsgHookFile) && !fs.lstatSync(commitMsgHookFile).isSymbolicLink
   console.log(`${PACKAGE_NAME_LABEL}:`);
 }
 
-const rules = fs.readFileSync('./commit-msg.js');
+const rules = fs.readFileSync(path.resolve(__dirname, './commit-msg.js'));
 
 // It could be that we do not have rights to this folder which could cause the
 // installation of this module to completely failure.
@@ -78,15 +88,33 @@ try { fs.chmodSync(commitMsgHookFile, '777'); } catch (e) {
   console.error(`${PACKAGE_NAME_LABEL}:`);
 }
 
-function installedByInstallScriptInPackageJSON() {
+function installedByInstallScriptInPackageJSON(commitMsgFilepath) {
   // if it's been touched within 10s,
   // then it must be installed by `install` script in package.json
   // GAP is the time between `install` and `postinstall`.
   const GAP = 10 * 1000;
 
-  if (Date.now() - fs.lstatSync(commitMsgHookFile).mtimeMs <= GAP) {
-    return true;
-  }
+  try {
+    return Date.now() - fs.lstatSync(commitMsgFilepath).mtimeMs <= GAP;
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      // DO NOTHING
+      // Because it is normal when `.git/hooks/commit-msg` not exists.
+    } else {
+      console.error(`[${PACKAGE_NAME_LABEL}]:`, error);
+    }
 
-  return false;
+    return false;
+  }
+}
+
+/**
+ *
+ * @param {string[]} projectRootList
+ * @returns {string}
+ */
+function guessGitDirectory(projectRootList) {
+  return projectRootList
+    .map((projectRoot) => path.resolve(projectRoot, '.git'))
+    .find((gitDirectory) => exists(gitDirectory) && fs.lstatSync(gitDirectory).isDirectory());
 }
