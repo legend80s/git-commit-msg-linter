@@ -4,8 +4,21 @@
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
-const Matcher = require('did-you-mean');
-const supportsColor = require('supports-color');
+
+// pnpm wont resolve this package's dependencies as npm unless `pnpm install --shamefully-hoist`. What a shame!
+// issue#13 https://github.com/legend80s/commit-msg-linter/issues/13
+// So it had to be degraded to not use this two packages.
+let Matcher;
+try {
+  Matcher = require('did-you-mean');
+} catch (error) {
+}
+
+let supportsColor = { stdout: true };
+try {
+  const supportsColor = require('supports-color');
+} catch (error) {
+}
 
 const LANG = getLangs();
 
@@ -418,6 +431,10 @@ function didYouMean(message, { types, example }) {
 }
 
 function suggestType(type = '', types) {
+  if (!Matcher) {
+    return '';
+  }
+
   const matcher = new Matcher(types);
   const match = matcher.get(type);
 
