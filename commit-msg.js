@@ -5,19 +5,24 @@ const fs = require('fs');
 const path = require('path');
 const util = require('util');
 
-// pnpm wont resolve this package's dependencies as npm unless `pnpm install --shamefully-hoist`. What a shame!
+// pnpm wont resolve this package's dependencies as npm does
+// unless `pnpm install --shamefully-hoist`. What a shame!
 // issue#13 https://github.com/legend80s/commit-msg-linter/issues/13
 // So it had to be degraded to not use this two packages.
 let Matcher;
 try {
+  // eslint-disable-next-line global-require
   Matcher = require('did-you-mean');
 } catch (error) {
+  // DO NOTHING
 }
 
 let supportsColor = { stdout: true };
 try {
-  const supportsColor = require('supports-color');
+  // eslint-disable-next-line global-require
+  supportsColor = require('supports-color');
 } catch (error) {
+  // DO NOTHING
 }
 
 const LANG = getLangs();
