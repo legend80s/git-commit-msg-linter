@@ -30,6 +30,13 @@ if (!exists(git) || !fs.lstatSync(git).isDirectory()) {
   bailOut();
 }
 
+// The `install` script in package.json wont be run by pnpm 😓 What a pity!
+// so we had to use `postinstall` to do the install work
+// https://github.com/legend80s/commit-msg-linter/issues/13
+if (installedByInstallScriptInPackageJSON()) {
+  bailOut();
+}
+
 const hooks = path.resolve(git, 'hooks');
 const commitMsgHookFile = path.resolve(hooks, COMMIT_MSG_HOOK_FILE);
 const backup = `${commitMsgHookFile}.old`;
@@ -69,4 +76,17 @@ try { fs.chmodSync(commitMsgHookFile, '777'); } catch (e) {
   console.error(`${PACKAGE_NAME_LABEL}: ${alert}`);
   console.error(`${PACKAGE_NAME_LABEL}: ${chalk.red(e.message)}`);
   console.error(`${PACKAGE_NAME_LABEL}:`);
+}
+
+function installedByInstallScriptInPackageJSON() {
+  // if it's been touched within 10s,
+  // then it must be installed by `install` script in package.json
+  // GAP is the time between `install` and `postinstall`.
+  const GAP = 10 * 1000;
+
+  if (Date.now() - fs.lstatSync(commitMsgHookFile).mtimeMs <= GAP) {
+    return true;
+  }
+
+  return false;
 }
