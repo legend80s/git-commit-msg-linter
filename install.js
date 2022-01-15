@@ -55,11 +55,15 @@ if (exists(commitMsgHookFile) && !fs.lstatSync(commitMsgHookFile).isSymbolicLink
   console.log(`${PACKAGE_NAME_LABEL}: An existing git ${COMMIT_MSG_LABEL} hook detected`);
 
   // Only backup when "commit-msg.old" not exists, otherwise the original content will be lost.
-  !exists(backup) && fs.writeFileSync(backup, fs.readFileSync(commitMsgHookFile));
+  if (exists(backup) || isFileWeCreated(commitMsgHookFile)) {
+    // NO NEED TO BACKUP
+  } else {
+    fs.writeFileSync(backup, fs.readFileSync(commitMsgHookFile));
 
-  const old = chalk.bold(`${COMMIT_MSG_HOOK_FILE}.old`);
-  console.log(`${PACKAGE_NAME_LABEL}: Old ${COMMIT_MSG_LABEL} hook backed up to ${old}`);
-  console.log(`${PACKAGE_NAME_LABEL}:`);
+    const old = chalk.bold(`${COMMIT_MSG_HOOK_FILE}.old`);
+    console.log(`${PACKAGE_NAME_LABEL}: Old ${COMMIT_MSG_LABEL} hook backed up to ${old}`);
+    console.log(`${PACKAGE_NAME_LABEL}:`);
+  }
 }
 
 const rules = fs.readFileSync(path.resolve(__dirname, './commit-msg.sh'));
@@ -98,4 +102,11 @@ function guessGitDirectory(projectDirectories) {
   return projectDirectories
     .map((projectRoot) => path.resolve(projectRoot, '.git'))
     .find((gitDirectory) => exists(gitDirectory) && fs.lstatSync(gitDirectory).isDirectory());
+}
+
+function isFileWeCreated(fp) {
+  const content = fs.readFileSync(fp, 'utf-8');
+  const ID = 'commit-msg-linter';
+
+  return content.includes(ID);
 }
