@@ -88,7 +88,7 @@ fs.copyFileSync(
   path.resolve(hooks, 'commit-msg-linter.js'),
 );
 
-console.info(chalk.green(`${PACKAGE_NAME}: Installed successfully.`));
+console.info(chalk.green(`[${PACKAGE_NAME}]: Installed successfully.`));
 
 /**
  * @param {string[]} projectDirectories
