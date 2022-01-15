@@ -20,6 +20,7 @@
     "lint": "eslint *.js",
     "lint:fix": "eslint --fix *.js",
     "install": "echo '[git-commit-msg-linter] install start.' && node install.js",
+    "postinstall": "echo '[git-commit-msg-linter] postinstall start.' && node install.js",
     "uninstall": "node uninstall.js",
     "preversion": "npm run lint",
     "postversion": "npm publish && git push && git push --tags",

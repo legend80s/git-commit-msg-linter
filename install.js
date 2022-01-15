@@ -45,6 +45,14 @@ const hooks = path.resolve(git, 'hooks');
 const commitMsgHookFile = path.resolve(hooks, COMMIT_MSG_HOOK_FILE);
 const backup = `${commitMsgHookFile}.old`;
 
+// The `install` script in package.json wont be run by pnpm 😓 What a pity!
+// so we had to use `postinstall` to do the install work
+// https://github.com/legend80s/commit-msg-linter/issues/13
+if (installedByInstallScriptInPackageJSON(commitMsgHookFile)) {
+  console.info(`${PACKAGE_NAME_LABEL}: ${chalk.yellow('Skip install: installed by `install` script.')}`);
+  bailOut();
+}
+
 // If we do have `.git` folder create a `hooks` folder under it if it doesn't exist.
 if (!exists(hooks)) { fs.mkdirSync(hooks); }
 
@@ -89,6 +97,26 @@ fs.copyFileSync(
 );
 
 console.info(chalk.green(`[${PACKAGE_NAME}]: Installed successfully.`));
+
+function installedByInstallScriptInPackageJSON(commitMsgFilepath) {
+  // if it's been touched within 10s,
+  // then it must be installed by `install` script in package.json
+  // GAP is the time between `install` and `postinstall`.
+  const GAP = 10 * 1000;
+
+  try {
+    return Date.now() - fs.lstatSync(commitMsgFilepath).mtimeMs <= GAP;
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      // DO NOTHING
+      // Because it is normal when `.git/hooks/commit-msg` not exists.
+    } else {
+      console.error(`[${PACKAGE_NAME_LABEL}]:`, error);
+    }
+
+    return false;
+  }
+}
 
 /**
  * @param {string[]} projectDirectories
