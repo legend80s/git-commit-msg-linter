@@ -59,10 +59,9 @@ const BOLD = colorSupported ? '\x1b[1m' : '';
 
 async function main() {
   const commitMsgFilePath = '.git/COMMIT_EDITMSG';
-  // TODO: test
-  const commitlinterrcFilePath = path.resolve(__dirname, '..', '..', 'commitlinterrc.json');
+  const commitlinterrcFilePath = path.resolve(__dirname, 'commitlinterrc.json');
 
-  // console.log(commitlinterrc);
+  // console.log(commitlinterrcFilePath);
 
   try {
     const [commitMsgContent, config] = await Promise.all([
