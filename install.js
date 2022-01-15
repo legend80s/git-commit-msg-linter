@@ -90,6 +90,12 @@ try { fs.chmodSync(commitMsgHookFile, '777'); } catch (e) {
   console.error(`${PACKAGE_NAME_LABEL}:`);
 }
 
+// Copy the "engine".
+fs.copyFileSync(
+  path.resolve(__dirname, 'commit-msg-linter.js'),
+  path.resolve(hooks, 'commit-msg-linter.js'),
+);
+
 console.info(chalk.green(`${PACKAGE_NAME_LABEL}: Installed successfully.`));
 
 function installedByInstallScriptInPackageJSON(commitMsgFilepath) {
