@@ -12,21 +12,22 @@ const chalk = require('chalk');
 
 const { bailOut } = require('./utils');
 const {
-  COMMIT_MSG_LABLE,
+  COMMIT_MSG_LABEL,
   PACKAGE_NAME_LABEL,
   COMMIT_MSG_HOOK_FILE,
   PACKAGE_NAME,
+  PROJECT_ROOT,
 } = require('./constants');
 
 const exists = fs.existsSync;
 
 const projectRootList = [
-  path.resolve(__dirname, '..', '..'),
+  PROJECT_ROOT,
 
   // for pnpm: not a elegant solution 😓
-  path.resolve(__dirname, '../../..'),
-  path.resolve(__dirname, '../../../..'),
-  path.resolve(__dirname, '../../../../..'),
+  // path.resolve(__dirname, '../../..'),
+  // path.resolve(__dirname, '../../../..'),
+  // path.resolve(__dirname, '../../../../..'),
 ];
 
 const git = guessGitDirectory(projectRootList);
@@ -59,17 +60,17 @@ if (!exists(hooks)) { fs.mkdirSync(hooks); }
 // overwriting it and losing it completely as it might contain something important.
 if (exists(commitMsgHookFile) && !fs.lstatSync(commitMsgHookFile).isSymbolicLink()) {
   console.log(`${PACKAGE_NAME_LABEL}:`);
-  console.log(`${PACKAGE_NAME_LABEL}: An existing git ${COMMIT_MSG_LABLE} hook detected`);
+  console.log(`${PACKAGE_NAME_LABEL}: An existing git ${COMMIT_MSG_LABEL} hook detected`);
 
-  // Only backup when "commit-msg.old" not exists, otherwise the original content will be lost
+  // Only backup when "commit-msg.old" not exists, otherwise the original content will be lost.
   !exists(backup) && fs.writeFileSync(backup, fs.readFileSync(commitMsgHookFile));
 
   const old = chalk.bold(`${COMMIT_MSG_HOOK_FILE}.old`);
-  console.log(`${PACKAGE_NAME_LABEL}: Old ${COMMIT_MSG_LABLE} hook backed up to ${old}`);
+  console.log(`${PACKAGE_NAME_LABEL}: Old ${COMMIT_MSG_LABEL} hook backed up to ${old}`);
   console.log(`${PACKAGE_NAME_LABEL}:`);
 }
 
-const rules = fs.readFileSync(path.resolve(__dirname, './commit-msg.js'));
+const rules = fs.readFileSync(path.resolve(__dirname, './commit-msg.sh'));
 
 // It could be that we do not have rights to this folder which could cause the
 // installation of this module to completely failure.
@@ -81,7 +82,7 @@ try { fs.writeFileSync(commitMsgHookFile, rules); } catch (e) {
 }
 
 try { fs.chmodSync(commitMsgHookFile, '777'); } catch (e) {
-  const alert = chalk.red(`chmod 0777 the ${COMMIT_MSG_LABLE} file in your .git/hooks folder because:`);
+  const alert = chalk.red(`chmod 0777 the ${COMMIT_MSG_LABEL} file in your .git/hooks folder because:`);
 
   console.error(`${PACKAGE_NAME_LABEL}:`);
   console.error(`${PACKAGE_NAME_LABEL}: ${alert}`);
@@ -112,7 +113,6 @@ function installedByInstallScriptInPackageJSON(commitMsgFilepath) {
 }
 
 /**
- *
  * @param {string[]} projectDirectories
  * @returns {string}
  */

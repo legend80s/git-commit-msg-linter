@@ -199,6 +199,8 @@ profiles such as `.bash_profile`, `.zshrc` etc.
 4. i18: en-US, pt-BR (Brazilian Portuguese), zh-CN supported and you can add more in [getLangs](https://github.com/legend80s/commit-msg-linter/blob/master/commit-msg.js#L656).
 5. Customizable for your team's format.
 6. It works with the husky flow.
+7. pnpm supported.
+8. ES6 modules or project with "type: module" in package.json supported.
 
 ## Why yet a new linter
 

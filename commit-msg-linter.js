@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /* eslint-disable no-console */
 
 const fs = require('fs');
@@ -15,6 +14,7 @@ try {
   Matcher = require('did-you-mean');
 } catch (error) {
   // DO NOTHING
+  // on MODULE_NOT_FOUND when installed by pnpm
 }
 
 let supportsColor = { stdout: true };
@@ -23,6 +23,7 @@ try {
   supportsColor = require('supports-color');
 } catch (error) {
   // DO NOTHING
+  // on MODULE_NOT_FOUND when installed by pnpm
 }
 
 const LANG = getLangs();
@@ -57,12 +58,8 @@ const EOS = colorSupported ? '\x1b[0m' : '';
 const BOLD = colorSupported ? '\x1b[1m' : '';
 
 async function main() {
-  if (process.argv.length < 3) {
-    console.error('Please inform the commit message file as an argument (e.g. "commit-msg").');
-    process.exit(1);
-  }
-
-  const commitMsgFilePath = process.argv[2];
+  const commitMsgFilePath = '.git/COMMIT_EDITMSG';
+  // TODO: test
   const commitlinterrcFilePath = path.resolve(__dirname, '..', '..', 'commitlinterrc.json');
 
   // console.log(commitlinterrc);
