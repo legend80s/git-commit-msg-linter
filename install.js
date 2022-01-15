@@ -25,9 +25,9 @@ const projectRootList = [
   PROJECT_ROOT,
 
   // for pnpm: not a elegant solution 😓
-  // path.resolve(__dirname, '../../..'),
-  // path.resolve(__dirname, '../../../..'),
-  // path.resolve(__dirname, '../../../../..'),
+  path.resolve(__dirname, '../../..'),
+  path.resolve(__dirname, '../../../..'),
+  path.resolve(__dirname, '../../../../..'),
 ];
 
 const git = guessGitDirectory(projectRootList);
