@@ -803,5 +803,49 @@ function getLangs() {
         invalidLengthTip: 'Mensagem de commit não pode ser maior que {1} caracteres ou menor que {2}',
       },
     },
+
+    'es-ES': {
+      stereotypes: {
+        feat: 'Una nueva funcionalidad.',
+        fix: 'Corregir un error.',
+        docs: 'Cambios únicamente en la documentación.',
+        style: 'Cambios que no afectan la ejecución del código (espacios en blanco, formato, falta de punto y coma, etc.).',
+        refactor: 'Un cambio de código que no afecta el funcionamiento existente (no corrige un error ni añade una función.)',
+        test: 'Añadir pruebas que faltan o corregir las existentes.',
+        chore: 'Cambios en el proceso de construcción o en las herramientas y bibliotecas auxiliares, como la generación de documentación, sin afectar el código de producción.',
+        // added
+        perf: 'Un cambio de código que mejora el rendimiento.',
+        ci: 'Cambios en sus archivos de configuración y scripts de CI.',
+        build: 'Cambios que afectan al sistema de construcción o a las dependencias externas (ejemplos de ámbitos: gulp, broccoli, npm).',
+        temp: 'Cambio temporal que no se incluirá en su CHANGELOG.',
+      },
+      descriptions: {
+        example: 'docs: actualiza el README para añadir consejos para desarrolladores',
+        scope: [
+          'Opcional, puede ser cualquier cosa que especifique el alcance del cambio en el commit.',
+          'Por ejemplo $location, $browser, $compile, $rootScope, ngHref, ngClick, ngView, etc.',
+          'En el desarrollo, el ámbito puede ser una página, un módulo o un componente.',
+        ],
+        invalidScope: [
+          'El `alcance` puede ser opcional, pero su paréntesis, si existe, no puede estar vacío.',
+        ],
+        subject: [
+          'Breve resumen del cambio en tiempo presente. Sin mayúsculas. Sin punto al final.',
+        ],
+        invalidSubject: [
+          '- no escriba la primera letra en mayúscula',
+          '- no use "." al final`',
+        ],
+      },
+      i18n: {
+        invalidHeader: 'Mensaje del commit inválido',
+        example: 'ejemplo',
+        commitMessage: 'mensaje del commit',
+        correctFormat: 'formato correcto',
+        invalidLength: 'longitud inválida',
+        length: 'Longitud',
+        invalidLengthTip: 'El mensaje del commit no puede tener más de {1} caracteres, o menos de {2}',
+      },
+    },
   };
 }

@@ -178,7 +178,7 @@ It will use your system's language as the default language. But two ways are pro
 }
 ```
 
-lang in ["en-US", "zh-CN", "pt-BR"]
+lang in ["en-US", "zh-CN", "pt-BR", "es-ES"]
 
 #### Set in bash profiles
 
