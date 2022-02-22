@@ -293,6 +293,13 @@ npm version patch / minor / major
 
 Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/legend80s/commit-msg-linter/issues).
 
+### How to add new language support
+
+1. Modify README.md to add the new language.
+2. Add the translation into commit-msg-linter.js.
+
+You can read this PR [feat: add support to spanish (es-ES) #18](https://github.com/legend80s/commit-msg-linter/pull/18/files) as an example.
+
 ## Show your support
 
 Give a ⭐️ if this project helped you!
