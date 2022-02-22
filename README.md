@@ -178,7 +178,7 @@ It will use your system's language as the default language. But two ways are pro
 }
 ```
 
-lang in ["en-US", "zh-CN", "pt-BR", "es-ES"]
+`lang` in ["**en-US**", "**zh-CN**", "**pt-BR**", "**es-ES**"].
 
 #### Set in bash profiles
 
@@ -193,7 +193,7 @@ profiles such as `.bash_profile`, `.zshrc` etc.
 1. Visualization, low cost to Learn.
 2. Zero configuration.
 3. Prompt error msg precisely, friendly to commit message format unfamiliar developers.
-4. i18: en-US, pt-BR (Brazilian Portuguese), zh-CN supported and you can add more in [getLangs](https://github.com/legend80s/commit-msg-linter/blob/master/commit-msg.js#L656).
+4. i18n: **en-US**, **pt-BR** (Brazilian Portuguese), **zh-CN** an **es-ES** supported and you can add more in [How to contribute new language support](#how-to-add-new-language-support).
 5. The linter is customizable for your team.
 6. It works with the husky flow.
 7. pnpm supported.
@@ -295,8 +295,8 @@ Contributions, issues and feature requests are welcome!<br />Feel free to check 
 
 ### How to add new language support
 
-1. Modify README.md to add the new language.
-2. Add the translation into commit-msg-linter.js.
+1. Add the translation into commit-msg-linter.js.
+2. Modify README.md to add the new language.
 
 You can read this PR [feat: add support to spanish (es-ES) #18](https://github.com/legend80s/commit-msg-linter/pull/18/files) as an example.
 
