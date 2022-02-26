@@ -21,6 +21,9 @@ A git "commit-msg" hook for linting your git commit message against the popular 
 
 [简体中文](https://github.com/legend80s/commit-msg-linter/blob/master/README-zh-CN.md)
 
+<details>
+ <summary>Table of Contents</summary>
+  
 - [Install](#install)
 - [Recommended Commit Message Format](#recommended-commit-message-format)
 - [Zero Configuration](#zero-configuration)
@@ -42,14 +45,15 @@ A git "commit-msg" hook for linting your git commit message against the popular 
 - [🤝 Contributing](#-contributing)
 - [Show your support](#show-your-support)
 - [📝 License](#-license)
-
+</details>
+  
 ## Install
 
 ```shell
 npm install git-commit-msg-linter --save-dev
 ```
 
-**Just Install No Configurations Required** and your commit message is under linting from now on.
+**Just install NO CONFIGURATIONS REQUIRED!** and your commit message is under linting from now on 🎉. Now go to your codebase to commit a message.
 
 > 💡 Tips: for husky 5 see [Work With Husky 5](#2-work-with-husky-5).
 
@@ -89,9 +93,12 @@ The default commit `type`s can be extended or modified by [commitlinterrc.json](
 
 The default `type`s includes **feat**, **fix**, **docs**, **style**, **refactor**, **test**, **chore**, **perf**, **ci**, **build** and **temp**.
 
-The default `max-len` is 100 which means the commit message cannot be longer than 100 characters.
+The default `max-len` is 100 which means the commit message cannot be longer than 100 characters. All the settings can be modified in commitlinterrc.json.
 
 ### commitlinterrc.json
+
+<details>
+ <summary>More advanced settings</summary>
 
 Except for default types, you can add, overwrite or forbid certain types and so does the `max-len`.
 
@@ -165,6 +172,7 @@ A more detailed `commitlinterrc.json`：
 In this config, the one-line `example` and `scope`, `subject`'s description section are modified as what your write in the `commitlinterrc.json`. And the the invalid header is hidden by set `"showInvalidHeader": false`。
 
 ![detailed-config-demo](https://raw.githubusercontent.com/legend80s/commit-msg-linter/master/assets/detailed-config-wx-compressed.png)
+</details>
 
 ### Set Linting Prompter's Language
 
