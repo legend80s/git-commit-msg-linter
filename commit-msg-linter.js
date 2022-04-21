@@ -777,7 +777,7 @@ function getLangs() {
         temp: 'Commit temporário, que não deve ser incluído no CHANGELOG.',
       },
       descriptions: {
-        example: 'docs: Atualiza o README com link para a nova documentação',
+        example: 'docs: atualiza o README com link para a nova documentação',
         scope: [
           'Opcional, pode ser qualquer coisa que especifique o escopo da mudança.',
           'Exemplos: subpacote, workspace, módulo, componente, página.',
