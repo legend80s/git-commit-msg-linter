@@ -5,12 +5,13 @@
     <img src="https://img.shields.io/npm/v/git-commit-msg-linter.svg" alt="npm version" />
   </a>
   <a href="https://www.npmjs.com/package/git-commit-msg-linter">
-    <img src="https://img.shields.io/npm/dm/using-git-commit-msg-linter.svg" alt="npm downloads" />
+    <img src="https://img.shields.io/npm/dm/git-commit-msg-linter.svg" alt="npm downloads" />
   </a>
   <img src="https://img.shields.io/badge/node-%3E%3D%208.0.0-blue.svg" alt="prerequisite node version" />
 </p>
 
-> A simple, fast and joyful interactive git commit message linter.
+> A simple, fast and joyful git commit message linter.
+>
 > 👀 Watching your every git commit message INSTANTLY 🚀.
 
 ![git-commit-msg-linter-demo](https://raw.githubusercontent.com/legend80s/commit-msg-linter/master/assets/demo-7-compressed.png)
