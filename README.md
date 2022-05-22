@@ -10,7 +10,7 @@
   <img src="https://img.shields.io/badge/node-%3E%3D%208.0.0-blue.svg" alt="prerequisite node version" />
 </p>
 
-> A simple, fast and joyful git commit message linter.
+> A lightweight, independent, 0 configurations and joyful git commit message linter.
 >
 > 👀 Watching your every git commit message INSTANTLY 🚀.
 
@@ -25,10 +25,10 @@ A git "commit-msg" hook for linting your git commit message against the popular 
 
 <details>
  <summary>Table of Contents</summary>
-  
+
 - [Install](#install)
 - [Recommended Commit Message Format](#recommended-commit-message-format)
-- [Zero Configuration](#zero-configuration)
+- [Zero Configurations](#zero-configurations)
   - [commitlinterrc.json](#commitlinterrcjson)
   - [Set Linting Prompter's Language](#set-linting-prompters-language)
     - [Set in commitlinterrc.json](#set-in-commitlinterrcjson)
@@ -48,7 +48,7 @@ A git "commit-msg" hook for linting your git commit message against the popular 
 - [Show your support](#show-your-support)
 - [📝 License](#-license)
 </details>
-  
+
 ## Install
 
 ```shell
@@ -89,9 +89,9 @@ Good (commit message with scope):
 
 The default commit `type`s can be extended or modified by [commitlinterrc.json](https://github.com/legend80s/commit-msg-linter/blob/master/assets/docs.md#commitlinterrcjson).
 
-## Zero Configuration
+## Zero Configurations
 
-**Configuration Not Required!** If it has to be customized we have the guide below.
+**Configurations Not Required!** If it has to be customized we have the guide below.
 
 The default `type`s includes **feat**, **fix**, **docs**, **style**, **refactor**, **test**, **chore**, **perf**, **ci**, **build** and **temp**.
 
@@ -101,7 +101,7 @@ The default `max-len` is 100 which means the commit message cannot be longer tha
 
 <details>
  <summary>More advanced settings</summary>
-  
+
 Except for default types, you can add, overwrite or forbid certain types and so does the `max-len`.
 
 For example if you have this `commitlinterrc.json` file below in the root directory of your project:
@@ -201,7 +201,7 @@ profiles such as `.bash_profile`, `.zshrc` etc.
 ## Features
 
 1. Visualization, low cost to Learn.
-2. Zero configuration.
+2. Independent, zero configurations.
 3. Prompt error msg precisely, friendly to commit message format unfamiliar developers.
 4. i18n: **en-US**, **pt-BR** (Brazilian Portuguese), **zh-CN** an **es-ES** supported and you can add more in [How to contribute new language support](#how-to-add-new-language-support).
 5. The linter is customizable for your team.
@@ -213,7 +213,7 @@ profiles such as `.bash_profile`, `.zshrc` etc.
 
 <details>
  <summary>The answer</summary>
-  
+
 Firstly it's very important to follow certain git commit message conventions and we recommend Angular's.
 
 Secondly no simple git commit message hook ever exists right now. To Add, to overwrite or to remove `type`s is not so friendly supported. *Why not conventional-changelog/commitlint or husky, read the [FAQs](https://github.com/legend80s/commit-msg-linter/blob/master/assets/docs.md#faqs)*.
@@ -222,7 +222,7 @@ Secondly no simple git commit message hook ever exists right now. To Add, to ove
 ## How it works
 <details>
  <summary>The answer</summary>
-  
+
 > The `commit-msg` hook takes one parameter, which again is the path to a temporary file that contains the commit message written by the developer. If this script exits non-zero, Git aborts the commit process, so you can use it to validate your project state or commit message before allowing a commit to go through.
 >
 > https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks
@@ -237,15 +237,15 @@ npm uninstall git-commit-msg-linter --save-dev
 
 Before uninstalling, the `commit-msg` file will be restored and the `commit-msg.old` will be removed.
 </details>
-  
+
 ## FAQs
 
 <details>
  <summary>1. Why not commitlint</summary>
-  
+
 Why not [conventional-changelog/commitlint](https://github.com/conventional-changelog/commitlint)?
 
-- Configuration is relatively complex.
+- Configurations are relatively complex.
 - No description for type, unfriendly to commit newbies. Because every time your are wondering which type should I use, you must jump out of you commit context to seek documentation in the wild web.
 - To modify type description is also not supported. Unfriendly to non-english speakers. For example, all my team members are Japanese, isn't it more productive to change all the descriptions to Japanese?
 - To add more types is also impossible. This is unacceptable for project with different types already existed.
@@ -253,7 +253,7 @@ Why not [conventional-changelog/commitlint](https://github.com/conventional-chan
 
 <details>
  <summary>2. Work With Husky 5</summary>
-  
+
 This linter can work by standalone. But if you have husky 5 installed, because husky 5 will ignore the `.git/hooks/commit-msg` so a `.husky/commit-msg` need to be added manually:
 
 ```sh
@@ -271,7 +271,7 @@ Show the file content of `.husky/commit-msg` to make sure it has been added succ
 
 More details at [issues 8](https://github.com/legend80s/commit-msg-linter/issues/8).
 </details>
-  
+
 <details>
  <summary>3. git-commit-msg-linter badge</summary>
 
