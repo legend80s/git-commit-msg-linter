@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+/* eslint-disable no-useless-escape */
 
 const fs = require('fs');
 const path = require('path');
@@ -263,7 +264,7 @@ function validateMessage(
     console.log('');
     console.warn(`${YELLOW}[git-commit-msg-linter] Commit message can not contain ${RED}non-English${EOS}${YELLOW} characters due to ${red('`englishOnly`')} ${yellow('in "commitlinterrc.json" is true.')}`);
 
-    return;
+    return false;
   }
 
   const matches = resolvePatterns(message);
@@ -636,15 +637,6 @@ function generateInvalidLengthTips(message, invalid, maxLen, minLen, lang) {
 }
 
 /**
- * Print error information.
- * @param  {any[]} args
- * @returns {void}
- */
-function error(...args) {
-  console.error(RED, ...args, EOS);
-}
-
-/**
  * Output debugging information.
  * @param  {any[]} args
  * @returns {void}
@@ -677,7 +669,6 @@ function format(text, ...args) {
 }
 
 function resolvePatterns(message) {
-  /* eslint-disable no-useless-escape */
   const PATTERN = /^(?:fixup!\s*)?(\w*)(\(([\w\$\.\*/-]*)\))?\: (.*)$/;
   const matches = PATTERN.exec(message);
 
