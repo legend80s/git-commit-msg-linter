@@ -260,6 +260,7 @@ function validateMessage(
     isValid = false;
   }
 
+  // eslint-disable-next-line no-useless-escape
   if (englishOnly && !/^[a-zA-Z\s\.!@#$%^&*\(\)-_+=\\\|\[\]\{\};:'"?/.>,<]+$/.test(message)) {
     console.log('');
     console.warn(`${YELLOW}[git-commit-msg-linter] Commit message can not contain ${RED}non-English${EOS}${YELLOW} characters due to ${red('`englishOnly`')} ${yellow('in "commitlinterrc.json" is true.')}`);
