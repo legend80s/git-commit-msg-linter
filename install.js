@@ -22,6 +22,7 @@ const {
 const exists = fs.existsSync;
 
 const projectRootList = [
+  process.cwd(),
   PROJECT_ROOT,
 
   // for pnpm: not a elegant solution 😓

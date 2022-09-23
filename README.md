@@ -303,6 +303,8 @@ More details at [issues 8](https://github.com/legend80s/commit-msg-linter/issues
 
 ## Development
 
+Use pnpm.
+
 ### Publish
 
 ```sh

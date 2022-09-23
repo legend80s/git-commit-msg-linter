@@ -2,3 +2,4 @@ node_modules
 .DS_Store
 *.tgz
 git-commit-msg-linter.code-workspace
+.pnpm-debug.log
