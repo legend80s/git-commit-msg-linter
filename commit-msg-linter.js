@@ -59,7 +59,7 @@ const BOLD = colorSupported ? '\x1b[1m' : '';
 
 async function main() {
   const commitMsgFilePath = '.git/COMMIT_EDITMSG';
-  const commitlinterrcFilePath = path.resolve(__dirname, 'commitlinterrc.json');
+  const commitlinterrcFilePath = path.resolve(process.cwd(), 'commitlinterrc.json');
 
   // console.log(commitlinterrcFilePath);
 
@@ -73,7 +73,9 @@ async function main() {
 
     lint(commitMsgContent, config, lang);
   } catch (err) {
-    console.error('Error:', err.message);
+    console.error('[git-commit-msg-linter] failed:', err.message);
+    console.error(err);
+
     process.exit(1);
   }
 }
@@ -93,7 +95,7 @@ function getLangData(lang) {
 
 /**
  * @param {string} commitMsgContent
- * @param {string} config
+ * @param {IConfigLinterRC} config
  *
  * @returns {void}
  */
@@ -112,7 +114,7 @@ async function lint(commitMsgContent, config, lang) {
     types,
     'max-len': maxLength,
     'min-len': minLength,
-    debug: verbose = false,
+    debug: verbose = process.env.COMMIT_MSG_LINTER_ENV === 'debug',
     showInvalidHeader = true,
 
     scopeDescriptions = scope,
@@ -122,6 +124,7 @@ async function lint(commitMsgContent, config, lang) {
     invalidSubjectDescriptions = invalidSubject,
 
     postSubjectDescriptions = [],
+    englishOnly = false,
   } = config;
 
   verbose && debug('config:', config);
@@ -146,6 +149,7 @@ async function lint(commitMsgContent, config, lang) {
     postSubjectDescriptions,
 
     lang,
+    englishOnly,
   })) {
     process.exit(1);
   } else {
@@ -172,6 +176,9 @@ async function readConfig(filename) {
       console.error(`${packageName}: ${RED}read commitlinterrc.json failed`, error);
     }
   }
+
+  // console.log('filename:', filename);
+  // console.log('content:', content);
 
   let config = {};
 
@@ -234,6 +241,7 @@ function validateMessage(
     postSubjectDescriptions,
     invalidSubjectDescriptions,
     lang,
+    englishOnly,
   },
 ) {
   let isValid = true;
@@ -251,10 +259,12 @@ function validateMessage(
     isValid = false;
   }
 
-  // if (/[\u3220-\uFA29]+/.test(message)) {
-  //   console.error(`${COLOR}commit text can not contain chinese characters`);
-  //   isValid = false;
-  // }
+  if (englishOnly && !/^[a-zA-Z\s\.!@#$%^&*\(\)-_+=\\\|\[\]\{\};:'"?/.>,<]+$/.test(message)) {
+    console.log('');
+    console.warn(`${YELLOW}[git-commit-msg-linter] Commit message can not contain ${RED}non-English${EOS}${YELLOW} characters due to ${red('`englishOnly`')} ${yellow('in "commitlinterrc.json" is true.')}`);
+
+    return;
+  }
 
   const matches = resolvePatterns(message);
 
@@ -524,9 +534,13 @@ function underline(text) {
  * @param {string} text
  * @returns {string}
  */
-// function red(text) {
-//   return `${RED}${text}${EOS}`;
-// }
+function red(text) {
+  return `${RED}${text}${EOS}`;
+}
+
+function yellow(text) {
+  return `${YELLOW}${text}${EOS}`;
+}
 
 /**
  * isUpperCase
@@ -619,6 +633,15 @@ function generateInvalidLengthTips(message, invalid, maxLen, minLen, lang) {
   }
 
   return '';
+}
+
+/**
+ * Print error information.
+ * @param  {any[]} args
+ * @returns {void}
+ */
+function error(...args) {
+  console.error(RED, ...args, EOS);
 }
 
 /**

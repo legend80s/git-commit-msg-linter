@@ -286,7 +286,7 @@ More details at [issues 8](https://github.com/legend80s/commit-msg-linter/issues
 ## TODO
 
 - [x] Existing rule can be overwritten and new ones can be added through `commitlinterrc.json`.
-- [ ] `is-english-only` should be configurable through `commitlinterrc.json`, default `false`.
+- [x] `englishOnly` should be configurable through `commitlinterrc.json`, default `false`.
 - [x] `max-len` should be configurable through `commitlinterrc.json`, default `100`.
 - [x] First letter of `subject` must be a lowercase one.
 - [x] `subject` must not end with dot.
