@@ -2,7 +2,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const util = require('util');
 
 // pnpm wont resolve this package's dependencies as npm does
 // unless `pnpm install --shamefully-hoist`. What a shame!
@@ -26,9 +25,19 @@ try {
   // on MODULE_NOT_FOUND when installed by pnpm
 }
 
-const LANG = getLangs();
+const colorSupported = supportsColor.stdout;
 
-const readFile = util.promisify(fs.readFile);
+const YELLOW = colorSupported ? '\x1b[1;33m' : '';
+const GRAY = colorSupported ? '\x1b[0;37m' : '';
+const RED = colorSupported ? '\x1b[0;31m' : '';
+const GREEN = colorSupported ? '\x1b[0;32m' : '';
+
+/** End Of Style, removes all attributes (formatting and colors) */
+const EOS = colorSupported ? '\x1b[0m' : '';
+const BOLD = colorSupported ? '\x1b[1m' : '';
+
+const config = readConfig();
+const i18n = getLangs();
 
 // Any line of the commit message cannot be longer than 100 characters!
 // This allows the message to be easier to read on github as well as in various git tools.
@@ -46,37 +55,22 @@ const IGNORED_PATTERNS = [
   /^((Merge pull request)|(Merge (.*?) into (.*?)|(Merge branch (.*?)))(?:\r?\n)*$)/m,
 ];
 
-const colorSupported = supportsColor.stdout;
-
-const YELLOW = colorSupported ? '\x1b[1;33m' : '';
-const GRAY = colorSupported ? '\x1b[0;37m' : '';
-const RED = colorSupported ? '\x1b[0;31m' : '';
-const GREEN = colorSupported ? '\x1b[0;32m' : '';
-
-/** End Of Style, removes all attributes (formatting and colors) */
-const EOS = colorSupported ? '\x1b[0m' : '';
-const BOLD = colorSupported ? '\x1b[1m' : '';
-
-async function main() {
+function main() {
   const commitMsgFilePath = '.git/COMMIT_EDITMSG';
-  const commitlinterrcFilePath = path.resolve(process.cwd(), 'commitlinterrc.json');
 
   // console.log(commitlinterrcFilePath);
 
   try {
-    const [commitMsgContent, config] = await Promise.all([
-      readFile(commitMsgFilePath),
-      readConfig(commitlinterrcFilePath),
-    ]);
+    const commitMsgContent = fs.readFileSync(commitMsgFilePath, 'utf-8');
 
     const lang = getLanguage(config.lang);
 
-    lint(commitMsgContent, config, lang);
+    lint(commitMsgContent, lang);
   } catch (err) {
     console.error('[git-commit-msg-linter] failed:', err.message);
     console.error(err);
 
-    process.exit(1);
+    process.exitCode = 1;
   }
 }
 
@@ -87,20 +81,19 @@ main();
  * Otherwise, returns the data for the English language.
  *
  * @param {string} lang Language
- * @returns
+ * @returns {typeof i18n['en-US']}
  */
 function getLangData(lang) {
-  return LANG[lang] ? LANG[lang] : LANG['en-US'];
+  return i18n[lang] ? i18n[lang] : i18n['en-US'];
 }
 
 /**
  * @param {string} commitMsgContent
- * @param {IConfigLinterRC} config
  *
  * @returns {void}
  */
-async function lint(commitMsgContent, config, lang) {
-  const DESCRIPTIONS = getLangData(lang).descriptions;
+async function lint(commitMsgContent, lang) {
+  const { descriptions: DESCRIPTIONS, stereotypes: STEREOTYPES } = getLangData(lang);
 
   const {
     example,
@@ -125,12 +118,12 @@ async function lint(commitMsgContent, config, lang) {
 
     postSubjectDescriptions = [],
     englishOnly = false,
+    scopeRequired = false,
   } = config;
 
   verbose && debug('config:', config);
 
   const msg = getFirstLine(commitMsgContent).replace(/\s{2,}/g, ' ');
-  const STEREOTYPES = getLangData(lang).stereotypes;
   const mergedTypes = merge(STEREOTYPES, types);
   const maxLen = typeof maxLength === 'number' ? maxLength : MAX_LENGTH;
   const minLen = typeof minLength === 'number' ? minLength : MIN_LENGTH;
@@ -150,6 +143,7 @@ async function lint(commitMsgContent, config, lang) {
 
     lang,
     englishOnly,
+    scopeRequired,
   })) {
     process.exit(1);
   } else {
@@ -158,15 +152,16 @@ async function lint(commitMsgContent, config, lang) {
 }
 
 /**
- * @param {string} filename
- * @returns {Promise<Object>} return empty object when read file error or content invalid json
+ * @returns {Partial<import('./typings').IConfigLinterRC>}
  */
-async function readConfig(filename) {
+function readConfig() {
+  const filename = path.resolve(process.cwd(), 'commitlinterrc.json');
+
   const packageName = `${YELLOW}git-commit-msg-linter`;
   let content = '{}';
 
   try {
-    content = await readFile(filename);
+    content = fs.readFileSync(filename);
   } catch (error) {
     if (error.code === 'ENOENT') {
       /** pass, as commitlinterrc are optional */
@@ -180,17 +175,17 @@ async function readConfig(filename) {
   // console.log('filename:', filename);
   // console.log('content:', content);
 
-  let config = {};
+  let configObject = {};
 
   try {
-    config = JSON.parse(content);
+    configObject = JSON.parse(content);
   } catch (error) {
     /** pass, commitlinterrc ignored when invalid json */
     /** output the error to the user for self-checking */
     console.error(`${packageName}: ${RED}commitlinterrc.json ignored because of invalid json`);
   }
 
-  return config;
+  return configObject;
 }
 
 function merge(stereotypes, configTypes) {
@@ -242,6 +237,7 @@ function validateMessage(
     invalidSubjectDescriptions,
     lang,
     englishOnly,
+    scopeRequired,
   },
 ) {
   let isValid = true;
@@ -285,6 +281,7 @@ function validateMessage(
         postSubjectDescriptions,
         invalidSubjectDescriptions,
         lang,
+        scopeRequired,
       },
     );
 
@@ -301,7 +298,9 @@ function validateMessage(
   // scope can be optional, but not empty string
   // "test: hello" OK
   // "test(): hello" FAILED
-  const invalidScope = typeof scope === 'string' && scope.trim() === '';
+  const trimedScope = scope && scope.trim();
+  const invalidScope = (scopeRequired && !trimedScope)
+    || (typeof scope === 'string' && trimedScope === '');
 
   // Don't capitalize first letter; No dot (.) at the end
   const invalidSubject = isUpperCase(subject[0]) || subject.endsWith('.');
@@ -324,6 +323,7 @@ function validateMessage(
         postSubjectDescriptions,
         invalidSubjectDescriptions,
         lang,
+        scopeRequired,
       },
     );
 
@@ -355,11 +355,12 @@ function displayError(
     postSubjectDescriptions,
     invalidSubjectDescriptions,
     lang,
+    scopeRequired,
   },
 ) {
-  const decoratedType = decorate('type', typeInvalid);
-  const scope = decorate('scope', invalidScope, true);
-  const subject = decorate('subject', invalidSubject);
+  const decoratedType = decorate('type', typeInvalid, true);
+  const scope = decorate('scope', invalidScope, scopeRequired);
+  const subject = decorate('subject', invalidSubject, true);
 
   const types = Object.keys(mergedTypes);
   const suggestedType = suggestType(type, types);
@@ -462,16 +463,16 @@ function suggestType(type = '', types) {
  *
  * @param {string} text Text to decorate
  * @param {boolean} invalid Whether the part is invalid
- * @param {boolean} optional For example `scope` is optional
+ * @param {boolean} required For example `scope` is optional
  *
  * @returns {string}
  */
-function decorate(text, invalid, optional = false) {
+function decorate(text, invalid, required = true) {
   if (invalid) {
-    return `${RED}${addPeripherals(underline(text) + RED, optional)}`;
+    return `${RED}${addPeripherals(underline(text) + RED, required)}`;
   }
 
-  return `${GREEN}${addPeripherals(text, optional)}`;
+  return `${GREEN}${addPeripherals(text, required)}`;
 }
 
 /**
@@ -480,20 +481,20 @@ function decorate(text, invalid, optional = false) {
  * @example
  * addPeripherals('type')
  * // => "<type>"
- * addPeripherals('scope', true)
+ * addPeripherals('scope', false)
  * // => "[scope]"
  *
  * @param {string} text
- * @param {boolean} optional
+ * @param {boolean} required
  *
  * @returns {string}
  */
-function addPeripherals(text, optional = false) {
-  if (optional) {
-    return `[${text}]`;
+function addPeripherals(text, required = true) {
+  if (required) {
+    return `<${text}>`;
   }
 
-  return `<${text}>`;
+  return `[${text}]`;
 }
 
 /**
@@ -628,6 +629,7 @@ function generateInvalidLengthTips(message, invalid, maxLen, minLen, lang) {
   if (invalid) {
     const max = `${BOLD}${maxLen}${EOS}${RED}`;
     const min = `${BOLD}${minLen}${EOS}${RED}`;
+    // eslint-disable-next-line no-shadow
     const { i18n } = getLangData(lang);
     const tips = `${RED}${i18n.length} ${BOLD}${message.length}${EOS}${RED}. ${format(i18n.invalidLengthTip, max, min)}${EOS}`;
     return `\n  ${BOLD}${i18n.invalidLength}${EOS}: ${tips}`;
@@ -649,9 +651,11 @@ function debug(...args) {
  * @returns {string}
  */
 function getLanguage(configLang) {
-  return configLang
+  const lang = configLang
     || process.env.COMMIT_MSG_LINTER_LANG
     || Intl.DateTimeFormat().resolvedOptions().locale;
+
+  return lang && lang.toLowerCase();
 }
 
 /**
@@ -668,6 +672,11 @@ function format(text, ...args) {
   return text.replace(/\{(\d+)\}/g, (_, i) => args[i - 1]);
 }
 
+/**
+ *
+ * @param {string} message
+ * @returns {null | {type: string; scope: string | undefined; subject: string}}
+ */
 function resolvePatterns(message) {
   // eslint-disable-next-line no-useless-escape
   const PATTERN = /^(?:fixup!\s*)?(\w*)(\(([\w\$\.\*/-]*)\))?\: (.*)$/;
@@ -706,14 +715,19 @@ function getLangs() {
         temp: 'Temporary commit that won\'t be included in your CHANGELOG.',
       },
       descriptions: {
-        example: 'docs: update README to add developer tips',
+        example: config.scopeRequired
+          ? 'docs(README): add developer tips'
+          : 'docs: update README to add developer tips',
+
         scope: [
-          'Optional, can be anything specifying the scope of the commit change.',
+          `${config.scopeRequired ? 'Required'
+            : 'Optional'}, can be anything specifying the scope of the commit change.`,
           'For example $location, $browser, $compile, $rootScope, ngHref, ngClick, ngView, etc.',
           'In App Development, scope can be a page, a module or a component.',
         ],
         invalidScope: [
-          '`scope` can be optional, but its parenthesis if exists cannot be empty.',
+          config.scopeRequired ? '`scope` required.'
+            : '`scope` can be optional, but its parenthesis if exists cannot be empty.',
         ],
         subject: [
           'Brief summary of the change in present tense. Not capitalized. No period at the end.',
@@ -734,7 +748,7 @@ function getLangs() {
       },
     },
 
-    'zh-CN': {
+    'zh-cn': {
       stereotypes: {
         feat: '产品新功能：通常是能够让用户觉察到的变化，小到文案或样式修改',
         fix: '修复 bug',
@@ -750,12 +764,16 @@ function getLangs() {
         temp: '临时代码：不计入 CHANGELOG，比如必须部署到某种环境才能测试的变更',
       },
       descriptions: {
-        example: 'docs: 更新 README 添加开发者部分',
+        example: config.scopeRequired
+          ? 'docs(README): 添加开发者部分'
+          : 'docs: 更新 README 添加开发者部分',
+
         scope: [
           '可选。变更范围（细粒度要合适，并在一个项目中保持一致）：比如页面名、模块名、或组件名',
         ],
         invalidScope: [
-          '`scope` 可选，若有则必须加小括号',
+          config.scopeRequired ? '`scope` 必选'
+            : '`scope` 可选，若有则必须加小括号',
         ],
         subject: [
           '此次变更的简短描述，必须采用现在时态，如果是英语则首字母不能大写，句尾不加句号',
@@ -792,7 +810,10 @@ function getLangs() {
         temp: 'Commit temporário, que não deve ser incluído no CHANGELOG.',
       },
       descriptions: {
-        example: 'docs: atualiza o README com link para a nova documentação',
+        example: config.scopeRequired
+          ? 'docs(README): link para a nova documentação'
+          : 'docs: atualiza o README com link para a nova documentação',
+
         scope: [
           'Opcional, pode ser qualquer coisa que especifique o escopo da mudança.',
           'Exemplos: subpacote, workspace, módulo, componente, página.',
