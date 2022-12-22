@@ -6,10 +6,10 @@ export interface IConfigLinterRC {
   showInvalidHeader: boolean;
 
   /**
-   * https://github.com/legend80s/commit-msg-linter/issues/23
    * default false
    */
   scopeRequired: boolean;
+  validScopes: string | string[];
 
   /** default false */
   englishOnly: boolean;

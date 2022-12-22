@@ -119,6 +119,7 @@ async function lint(commitMsgContent, lang) {
     postSubjectDescriptions = [],
     englishOnly = false,
     scopeRequired = false,
+    ...rest
   } = config;
 
   verbose && debug('config:', config);
@@ -129,6 +130,8 @@ async function lint(commitMsgContent, lang) {
   const minLen = typeof minLength === 'number' ? minLength : MIN_LENGTH;
 
   if (!validateMessage(msg, {
+    ...rest,
+
     mergedTypes,
     maxLen,
     minLen,
@@ -231,13 +234,18 @@ function validateMessage(
     example,
     showInvalidHeader,
     scopeDescriptions,
-    invalidScopeDescriptions,
     subjectDescriptions,
     postSubjectDescriptions,
     invalidSubjectDescriptions,
     lang,
     englishOnly,
+
     scopeRequired,
+    validScopes,
+    invalidScopeDescriptions,
+    scopeNotInRangeDescription = Array.isArray(validScopes) && validScopes.length
+      ? `scope must be one of [${validScopes.map((s) => `"${s}"`).join(', ')}].`
+      : 'scope not in range. SHOULD NOT SEE THIS MESSAGE. PLEASE REPORT AN ISSUE.',
   },
 ) {
   let isValid = true;
@@ -276,12 +284,15 @@ function validateMessage(
         example,
         showInvalidHeader,
         scopeDescriptions,
-        invalidScopeDescriptions,
+
         subjectDescriptions,
         postSubjectDescriptions,
         invalidSubjectDescriptions,
         lang,
+
         scopeRequired,
+        validScopes,
+        invalidScopeDescriptions,
       },
     );
 
@@ -295,12 +306,7 @@ function validateMessage(
   const types = Object.keys(mergedTypes);
   const typeInvalid = !types.includes(type);
 
-  // scope can be optional, but not empty string
-  // "test: hello" OK
-  // "test(): hello" FAILED
-  const trimedScope = scope && scope.trim();
-  const invalidScope = (scopeRequired && !trimedScope)
-    || (typeof scope === 'string' && trimedScope === '');
+  const [invalidScope, reason] = isScopeInvalid(scope, { scopeRequired, validScopes });
 
   // Don't capitalize first letter; No dot (.) at the end
   const invalidSubject = isUpperCase(subject[0]) || subject.endsWith('.');
@@ -318,7 +324,7 @@ function validateMessage(
         example,
         showInvalidHeader,
         scopeDescriptions,
-        invalidScopeDescriptions,
+        invalidScopeDescriptions: reason === 'NOT_IN_RANGE' ? castArry(scopeNotInRangeDescription) : invalidScopeDescriptions,
         subjectDescriptions,
         postSubjectDescriptions,
         invalidSubjectDescriptions,
@@ -349,11 +355,13 @@ function displayError(
     message,
     example,
     showInvalidHeader,
+
     scopeDescriptions,
     invalidScopeDescriptions,
     subjectDescriptions,
     postSubjectDescriptions,
     invalidSubjectDescriptions,
+
     lang,
     scopeRequired,
   },
@@ -697,6 +705,43 @@ function resolvePatterns(message) {
   return null;
 }
 
+/**
+ * - required: scope not exists FAIL, scope exists but not in range FAIL
+ * - not required: scope not exits OK, scope exists but not in range FAIL
+ * @param {string} scope
+ * @param {{validScopes: string[]; scopeRequired: boolean;}} param1
+ * @return {[invalid: false] | [invalid: true, reason: 'SCOPE_REQUIRED' | 'NOT_IN_RANGE' | 'SCOPE_EMPTY_STRING']}
+ */
+function isScopeInvalid(scope, { validScopes, scopeRequired }) {
+  const trimedScope = scope && scope.trim();
+
+  const notInRange = () => Array.isArray(validScopes)
+    && validScopes.length > 0
+    && !validScopes.includes(scope);
+
+  if (scopeRequired) {
+    if (!trimedScope) return [true, 'SCOPE_REQUIRED'];
+
+    if (notInRange()) {
+      return [true, 'NOT_IN_RANGE'];
+    }
+  }
+
+  if (typeof scope === 'string') {
+    // scope can be optional, but not empty string
+    // @example
+    // "test: hello" OK
+    // "test(): hello" FAILED
+    if (trimedScope === '') { return [true, 'SCOPE_EMPTY_STRING']; }
+
+    if (notInRange()) {
+      return [true, 'NOT_IN_RANGE'];
+    }
+  }
+
+  return [false];
+}
+
 function getLangs() {
   return {
     'en-US': {
@@ -884,4 +929,8 @@ function getLangs() {
       },
     },
   };
+}
+
+function castArry(val) {
+  return Array.isArray(val) ? val : [val];
 }

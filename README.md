@@ -157,6 +157,7 @@ A more detailed `commitlinterrc.json`：
     "たとえば、$ location、$ browser、$ compile、$ rootScope、ngHref、ngClick、ngViewなど。",
     "アプリ開発では、スコープはページ、モジュール、またはコンポーネントです。"
   ],
+  "validScopes": ["workspace", "package1", "package2", "package3", ...],
   "invalidScopeDescriptions": [
     "`scope`はオプションですが、括弧が存在する場合は空にすることはできません。"
   ],
