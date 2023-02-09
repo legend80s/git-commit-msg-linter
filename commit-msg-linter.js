@@ -663,7 +663,7 @@ function getLanguage(configLang) {
     || process.env.COMMIT_MSG_LINTER_LANG
     || Intl.DateTimeFormat().resolvedOptions().locale;
 
-  return lang && lang.toLowerCase();
+  return lang;
 }
 
 /**
@@ -793,7 +793,7 @@ function getLangs() {
       },
     },
 
-    'zh-cn': {
+    'zh-CN': {
       stereotypes: {
         feat: '产品新功能：通常是能够让用户觉察到的变化，小到文案或样式修改',
         fix: '修复 bug',

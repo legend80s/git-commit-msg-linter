@@ -16,7 +16,7 @@ npm install git-commit-msg-linter --save-dev
 
 ## 设置提示语言
 
-默认使用系统设置语言（`$ node -p 'Intl.DateTimeFormat().resolvedOptions().locale'`），可通过以下两种方式自定义语言，支持中文（zh-CN）、英文（en-US）葡萄牙语（pt-BR）。以下配置顺序优先级从高到低：
+默认使用系统设置语言（`$ node -p 'Intl.DateTimeFormat().resolvedOptions().locale'`），可通过以下两种方式自定义语言，支持中文（zh-CN）、英文（en-US）葡萄牙语（pt-BR）和 es-ES。以下配置顺序优先级从高到低：
 
 ### 通过 commitlinterrc.json 设置
 
