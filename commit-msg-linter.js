@@ -45,16 +45,6 @@ const i18n = getLangs();
 const MAX_LENGTH = 100;
 const MIN_LENGTH = 10;
 
-/* eslint-enable no-useless-escape */
-const IGNORED_PATTERNS = [
-  /(^WIP:)|(^\d+\.\d+\.\d+)/,
-
-  /^Publish$/,
-
-  // ignore auto-generated commit msg
-  /^((Merge pull request)|(Merge (.*?) into (.*?)|(Merge branch (.*?)))(?:\r?\n)*$)/m,
-];
-
 function main() {
   const commitMsgFilePath = '.git/COMMIT_EDITMSG';
 
@@ -227,6 +217,7 @@ function getFirstLine(buffer) {
 function validateMessage(
   message,
   {
+    shouldDisplayError = true,
     mergedTypes,
     maxLen,
     minLen,
@@ -251,8 +242,18 @@ function validateMessage(
   let isValid = true;
   let invalidLength = false;
 
+  /* eslint-enable no-useless-escape */
+  const IGNORED_PATTERNS = [
+    /(^WIP:)|(^\d+\.\d+\.\d+)/,
+
+    /^Publish$/,
+
+    // ignore auto-generated commit msg
+    /^((Merge pull request)|(Merge (.*?) into (.*?)|(Merge branch (.*?)))(?:\r?\n)*$)/m,
+  ];
+
   if (IGNORED_PATTERNS.some((pattern) => pattern.test(message))) {
-    console.log('Commit message validation ignored.');
+    shouldDisplayError && console.log('Commit message validation ignored.');
     return true;
   }
 
@@ -265,8 +266,8 @@ function validateMessage(
 
   // eslint-disable-next-line no-useless-escape
   if (englishOnly && !/^[a-zA-Z\s\.!@#$%^&*\(\)-_+=\\\|\[\]\{\};:'"?/.>,<]+$/.test(message)) {
-    console.log('');
-    console.warn(`${YELLOW}[git-commit-msg-linter] Commit message can not contain ${RED}non-English${EOS}${YELLOW} characters due to ${red('`englishOnly`')} ${yellow('in "commitlinterrc.json" is true.')}`);
+    shouldDisplayError && console.log('');
+    shouldDisplayError && console.warn(`${YELLOW}[git-commit-msg-linter] Commit message can not contain ${RED}non-English${EOS}${YELLOW} characters due to ${red('`englishOnly`')} ${yellow('in "commitlinterrc.json" is true.')}`);
 
     return false;
   }
@@ -274,7 +275,7 @@ function validateMessage(
   const matches = resolvePatterns(message);
 
   if (!matches) {
-    displayError(
+    shouldDisplayError && displayError(
       { invalidLength, invalidFormat: true },
       {
         mergedTypes,
@@ -312,7 +313,7 @@ function validateMessage(
   const invalidSubject = isUpperCase(subject[0]) || subject.endsWith('.');
 
   if (invalidLength || typeInvalid || invalidScope || invalidSubject) {
-    displayError(
+    shouldDisplayError && displayError(
       {
         invalidLength, type, typeInvalid, invalidScope, invalidSubject,
       },
@@ -713,14 +714,14 @@ function resolvePatterns(message) {
  * @return {[invalid: false] | [invalid: true, reason: 'SCOPE_REQUIRED' | 'NOT_IN_RANGE' | 'SCOPE_EMPTY_STRING']}
  */
 function isScopeInvalid(scope, { validScopes, scopeRequired }) {
-  const trimedScope = scope && scope.trim();
+  const trimmedScope = scope && scope.trim();
 
   const notInRange = () => Array.isArray(validScopes)
     && validScopes.length > 0
     && !validScopes.includes(scope);
 
   if (scopeRequired) {
-    if (!trimedScope) return [true, 'SCOPE_REQUIRED'];
+    if (!trimmedScope) return [true, 'SCOPE_REQUIRED'];
 
     if (notInRange()) {
       return [true, 'NOT_IN_RANGE'];
@@ -732,7 +733,7 @@ function isScopeInvalid(scope, { validScopes, scopeRequired }) {
     // @example
     // "test: hello" OK
     // "test(): hello" FAILED
-    if (trimedScope === '') { return [true, 'SCOPE_EMPTY_STRING']; }
+    if (trimmedScope === '') { return [true, 'SCOPE_EMPTY_STRING']; }
 
     if (notInRange()) {
       return [true, 'NOT_IN_RANGE'];

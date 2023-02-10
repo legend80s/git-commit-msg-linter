@@ -3,7 +3,12 @@
   "version": "4.5.1",
   "description": "git commit message lint hook",
   "main": "index.js",
+  "bin": {
+    "commit-msg-linter": "cli/validate.js"
+  },
   "files": [
+    "cli/validate.js",
+    "core/validate.js",
     "index.js",
     "commit-msg.sh",
     "commit-msg-linter.js",

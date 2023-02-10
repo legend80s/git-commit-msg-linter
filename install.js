@@ -10,6 +10,16 @@ const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 
+const silent = process.argv.slice(2).some((arg) => arg.includes('--silent'));
+
+function log(...args) {
+  if (silent) {
+    return;
+  }
+
+  console.info(...args);
+}
+
 const { bailOut } = require('./utils');
 const {
   COMMIT_MSG_LABEL,
@@ -52,8 +62,8 @@ if (!exists(hooks)) { fs.mkdirSync(hooks); }
 // If there's an existing `commit-msg` hook file back it up instead of
 // overwriting it and losing it completely as it might contain something important.
 if (exists(commitMsgHookFile) && !fs.lstatSync(commitMsgHookFile).isSymbolicLink()) {
-  console.log(`${PACKAGE_NAME_LABEL}:`);
-  console.log(`${PACKAGE_NAME_LABEL}: An existing git ${COMMIT_MSG_LABEL} hook detected`);
+  log(`${PACKAGE_NAME_LABEL}:`);
+  log(`${PACKAGE_NAME_LABEL}: An existing git ${COMMIT_MSG_LABEL} hook detected`);
 
   // Only backup when "commit-msg.old" not exists, otherwise the original content will be lost.
   if (exists(backup) || isFileWeCreated(commitMsgHookFile)) {
@@ -62,8 +72,8 @@ if (exists(commitMsgHookFile) && !fs.lstatSync(commitMsgHookFile).isSymbolicLink
     fs.writeFileSync(backup, fs.readFileSync(commitMsgHookFile));
 
     const old = chalk.bold(`${COMMIT_MSG_HOOK_FILE}.old`);
-    console.log(`${PACKAGE_NAME_LABEL}: Old ${COMMIT_MSG_LABEL} hook backed up to ${old}`);
-    console.log(`${PACKAGE_NAME_LABEL}:`);
+    log(`${PACKAGE_NAME_LABEL}: Old ${COMMIT_MSG_LABEL} hook backed up to ${old}`);
+    log(`${PACKAGE_NAME_LABEL}:`);
   }
 }
 
@@ -93,7 +103,7 @@ fs.copyFileSync(
   path.resolve(hooks, 'commit-msg-linter.js'),
 );
 
-console.info(chalk.green(`[${PACKAGE_NAME}]: Installed successfully.`));
+log(chalk.green(`[${PACKAGE_NAME}]: Installed successfully.`));
 
 /**
  * @param {string[]} projectDirectories
