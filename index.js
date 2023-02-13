@@ -5,6 +5,7 @@ const INSTALL_SCRIPT = path.join(__dirname, 'install.js');
 const UNINSTALL_SCRIPT = path.join(__dirname, 'uninstall.js');
 
 function install(options) {
+  options = options || {}
   const result = cp.spawnSync(
     'node',
     [
