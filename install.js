@@ -29,6 +29,8 @@ const {
   PROJECT_ROOT,
 } = require('./constants');
 
+log('[git-commit-msg-linter]: Install starting...');
+
 const exists = fs.existsSync;
 
 const projectRootList = [
