@@ -491,7 +491,7 @@ function decorate(text, invalid, required = true) {
  * addPeripherals('type')
  * // => "<type>"
  * addPeripherals('scope', false)
- * // => "[scope]"
+ * // => "(scope)"
  *
  * @param {string} text
  * @param {boolean} required
@@ -503,7 +503,7 @@ function addPeripherals(text, required = true) {
     return `<${text}>`;
   }
 
-  return `[${text}]`;
+  return `(${text})`;
 }
 
 /**
