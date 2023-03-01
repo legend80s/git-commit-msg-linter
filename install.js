@@ -79,7 +79,7 @@ if (exists(commitMsgHookFile) && !fs.lstatSync(commitMsgHookFile).isSymbolicLink
   }
 }
 
-const rules = fs.readFileSync(path.resolve(__dirname, './commit-msg.sh'));
+const rules = fs.readFileSync(path.resolve(__dirname, './commit-msg'));
 
 // It could be that we do not have rights to this folder which could cause the
 // installation of this module to completely failure.
@@ -98,12 +98,6 @@ try { fs.chmodSync(commitMsgHookFile, '777'); } catch (e) {
   console.error(`${PACKAGE_NAME_LABEL}: ${chalk.red(e.message)}`);
   console.error(`${PACKAGE_NAME_LABEL}:`);
 }
-
-// Copy the "engine".
-fs.copyFileSync(
-  path.resolve(__dirname, 'commit-msg-linter.js'),
-  path.resolve(hooks, 'commit-msg-linter.js'),
-);
 
 log(chalk.green(`[${PACKAGE_NAME}]: Installed successfully.`));
 
