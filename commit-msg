@@ -1,3 +1,4 @@
+#!/usr/bin/env -S sh -c "cat commit-msg | node --input-type=commonjs"
 /* eslint-disable no-console */
 
 const fs = require('fs');
