@@ -11,7 +11,7 @@
     "core/validate.js",
     "index.js",
     "index.d.ts",
-    "commit-msg",
+    "commit-msg.js",
     "constants.js",
     "install.js",
     "uninstall.js",

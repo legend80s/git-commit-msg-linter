@@ -79,7 +79,7 @@ if (exists(commitMsgHookFile) && !fs.lstatSync(commitMsgHookFile).isSymbolicLink
   }
 }
 
-const rules = fs.readFileSync(path.resolve(__dirname, './commit-msg'));
+const rules = fs.readFileSync(path.resolve(__dirname, './commit-msg.js'));
 
 // It could be that we do not have rights to this folder which could cause the
 // installation of this module to completely failure.
