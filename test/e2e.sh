@@ -12,7 +12,7 @@ echo 1 >> README.md
 
 out=$(git commit -am "test" 2>&1)
 
-# echo out=$out
+# echo out1=$out
 
 substr1='Invalid Git Commit Message'
 substr2='Invalid length: Length 4'
