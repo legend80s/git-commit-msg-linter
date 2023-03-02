@@ -1,4 +1,3 @@
-#!/usr/bin/env -S sh -c "cat .git/hooks/commit-msg | node --input-type=commonjs"
 /* eslint-disable no-console */
 
 const fs = require('fs');

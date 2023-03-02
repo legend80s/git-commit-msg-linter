@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 // https://github.com/legend80s/commit-msg-linter/issues/21
+/* eslint-disable no-undef */
 
 // expected output of `commit-msg-linter sha1..sha2`? Just exit with code 1 and print the invalid msg list?
 const { execSync } = require('child_process');
