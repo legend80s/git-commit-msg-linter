@@ -27,9 +27,9 @@
     "lint:fix": "eslint --fix *.js",
     "install": "node install.js",
     "uninstall": "node uninstall.js",
-    "preversion": "npm run lint",
+    "preversion": "npm test && npm run lint",
     "postversion": "npm publish && git push && git push --tags",
-    "test": "echo open \"https://github.com/legend80s/commit-msg-linter-test\" && exit 0"
+    "test": "bash ./test/e2e.sh"
   },
   "repository": {
     "type": "git",

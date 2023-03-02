@@ -3,3 +3,6 @@ node_modules
 *.tgz
 git-commit-msg-linter.code-workspace
 .pnpm-debug.log
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
