@@ -9,6 +9,7 @@
 const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
+const pkg = require('./package.json');
 
 const silent = process.argv.slice(2).some((arg) => arg.includes('--silent'));
 
@@ -79,7 +80,14 @@ if (exists(commitMsgHookFile) && !fs.lstatSync(commitMsgHookFile).isSymbolicLink
   }
 }
 
+function getTag() {
+  const time = new Date().toLocaleString();
+
+  return `${pkg.name}@${pkg.version} ${time}`;
+}
+
 const rules = `
+# ${getTag()}
 # id=commit-msg-linter - THE id COMMENT SHOULD NOT BE DELETED OR MODIFIED!
 # It's used to check whether this commit-msg hook file is created by us,
 # if it is then we can remove it confidently on uninstallation.
