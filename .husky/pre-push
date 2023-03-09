@@ -1,6 +1,8 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+echo '[GCML] prepush hook run.'
+
 if [[ $publishing == '1' ]]; then
   # do nothing during publishing because npm test has run in the `preversion` phase
   echo ''
