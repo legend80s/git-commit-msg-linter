@@ -10,6 +10,10 @@ else
   npm i ../git-commit-msg-linter --save-dev
 fi
 
+# `install` not run when npm i local directory,
+# so we run it manually.
+node node_modules/git-commit-msg-linter/install.js
+
 echo $(date '+%F %T') >> README.md
 
 out=$(git commit -am "test" 2>&1)
