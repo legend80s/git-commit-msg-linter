@@ -1,11 +1,9 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-echo publishing=$publishing
-
 if [[ $publishing == '1' ]]; then
   # do nothing during publishing because npm test has run in the `preversion` phase
-  echo 'publishing'
+  echo ''
 else
   npm test
 fi
