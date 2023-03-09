@@ -2,13 +2,15 @@
 
 cd ../commit-msg-linter-test
 
+rm .git/hooks/commit-msg
+
 if [[ -d ../commit-msg-linter ]]; then
   npm i ../commit-msg-linter --save-dev
 else
   npm i ../git-commit-msg-linter --save-dev
 fi
 
-echo 1 >> README.md
+echo $(date '+%F %T') >> README.md
 
 out=$(git commit -am "test" 2>&1)
 
@@ -18,9 +20,9 @@ substr1='Invalid Git Commit Message'
 substr2='Invalid length: Length 4'
 
 if [[ "$out" == *"$substr1"* && "$out" == *"$substr2"* ]]; then
-  echo sucess
+  echo '✅ SUCESS'
   exit 0
 else
-  echo failed
+  echo '❌ FAILED'
   exit 1
 fi

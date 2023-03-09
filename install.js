@@ -79,10 +79,13 @@ if (exists(commitMsgHookFile) && !fs.lstatSync(commitMsgHookFile).isSymbolicLink
   }
 }
 
-const rules = `# id=commit-msg-linter - The comment SHOULD NOT BE DELETED.
-# It's used to check whether this commit-msg hook file is created by us, if it is then we can remove it confidently on uninstallation.
+const rules = `
+# id=commit-msg-linter - The comment SHOULD NOT BE DELETED.
+# It's used to check whether this commit-msg hook file is created by us,
+# if it is then we can remove it confidently on uninstallation.
+
 cat ${path.resolve(__dirname, 'commit-msg-linter.js')} | node --input-type=commonjs
-`
+`;
 
 // It could be that we do not have rights to this folder which could cause the
 // installation of this module to completely failure.
