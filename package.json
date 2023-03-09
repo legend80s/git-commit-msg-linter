@@ -27,7 +27,7 @@
     "install": "node install.js",
     "uninstall": "node uninstall.js",
     "preversion": "npm test && npm run lint",
-    "postversion": "npm publish && git push && git push --tags",
+    "postversion": "npm publish && publishing=1 git push && publishing=1 git push --tags",
     "test": "bash ./test/e2e.sh"
   },
   "repository": {
