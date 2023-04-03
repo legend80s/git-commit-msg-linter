@@ -87,6 +87,7 @@ function getTag() {
 }
 
 const rules = `
+#!/bin/bash
 # ${getTag()}
 # id=commit-msg-linter - THE id COMMENT SHOULD NOT BE DELETED OR MODIFIED!
 # It's used to check whether this commit-msg hook file is created by us,
