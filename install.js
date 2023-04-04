@@ -86,6 +86,11 @@ function getTag() {
   return `${pkg.name}@${pkg.version} ${time}`;
 }
 
+function genLinterPath() {
+  // fix https://github.com/legend80s/git-commit-msg-linter/issues/38
+  return path.resolve(__dirname, 'commit-msg-linter.js').replaceAll('\\', '/');
+}
+
 const rules = `
 #!/bin/bash
 # ${getTag()}
@@ -93,7 +98,7 @@ const rules = `
 # It's used to check whether this commit-msg hook file is created by us,
 # if it is then we can remove it confidently on uninstallation.
 
-cat ${path.resolve(__dirname, 'commit-msg-linter.js')} | node --input-type=commonjs
+cat ${genLinterPath()} | node --input-type=commonjs
 `.trimStart();
 
 // It could be that we do not have rights to this folder which could cause the
