@@ -13,6 +13,7 @@ export interface IConfigLinterRC {
 
   /** default false */
   englishOnly: boolean;
+  example: string;
 
   scopeDescriptions: string;
   invalidScopeDescriptions: string;

@@ -126,7 +126,7 @@ async function lint(commitMsgContent, lang) {
     maxLen,
     minLen,
     verbose,
-    example,
+    example: config.example || example,
     showInvalidHeader,
     scopeDescriptions,
     invalidScopeDescriptions,
