@@ -688,7 +688,7 @@ function format(text, ...args) {
  */
 function resolvePatterns(message) {
   // eslint-disable-next-line no-useless-escape
-  const PATTERN = /^(?:fixup!\s*)?(\w*)(\(([\w\$\.\*/-]*)\))?\: (.*)$/;
+  const PATTERN = /^(?:fixup!\s*)?(\w*)(\(([\w\$\.\*/-]*)\))?!?\: (.*)$/;
   const matches = PATTERN.exec(message);
 
   if (matches) {
