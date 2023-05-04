@@ -88,7 +88,8 @@ function getTag() {
 
 function genLinterPath() {
   // fix https://github.com/legend80s/git-commit-msg-linter/issues/38
-  return path.resolve(__dirname, 'commit-msg-linter.js').replaceAll('\\', '/');
+  // fix https://github.com/legend80s/git-commit-msg-linter/issues/44
+  return path.resolve(__dirname, 'commit-msg-linter.js').replace(/\\/g, '/');
 }
 
 const rules = `
