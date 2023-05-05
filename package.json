@@ -1,63 +1,14 @@
 {
-  "name": "git-commit-msg-linter",
-  "version": "4.11.1",
-  "description": "git commit message lint hook",
-  "main": "index.js",
-  "bin": {
-    "commit-msg-linter": "cli/validate.js"
-  },
-  "files": [
-    "cli/validate.js",
-    "core/validate.js",
-    "index.js",
-    "index.d.ts",
-    "commit-msg-linter.js",
-    "constants.js",
-    "install.js",
-    "uninstall.js",
-    "lang.js",
-    "utils.js"
+  "private": true,
+  "workspaces": [
+    "packages/*"
   ],
-  "scripts": {
-    "pub:patch": "npm version patch",
-    "pub:minor": "npm version minor",
-    "pub:major": "npm version major",
-    "lint": "eslint *.js",
-    "lint:fix": "eslint --fix *.js",
-    "install": "node install.js",
-    "uninstall": "node uninstall.js",
-    "preversion": "npm test && npm run lint",
-    "postversion": "npm publish && publishing=1 git push && publishing=1 git push --tags",
-    "test": "bash ./test/e2e.sh"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/legend80s/commit-msg-linter.git"
-  },
-  "keywords": [],
-  "author": "legend80s",
-  "license": "MIT",
-  "engines": {
-    "node": ">= 8.0.0"
-  },
   "devDependencies": {
     "eslint": "^7.28.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.23.4",
-    "git-commit-msg-linter": "^4.8.3",
+    "git-commit-msg-linter": "workspace:*",
     "husky": "^8.0.3",
     "lint-staged": "^13.1.1"
-  },
-  "dependencies": {
-    "chalk": "^2.4.2",
-    "did-you-mean": "^0.0.1",
-    "supports-color": "^8.1.1"
-  },
-  "lint-staged": {
-    "*.js": "eslint"
-  },
-  "bugs": {
-    "url": "https://github.com/legend80s/commit-msg-linter/issues"
-  },
-  "homepage": "https://github.com/legend80s/commit-msg-linter#readme"
+  }
 }

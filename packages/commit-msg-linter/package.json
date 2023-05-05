@@ -1,0 +1,24 @@
+{
+  "name": "commit-msg-linter",
+  "version": "1.0.0",
+  "description": "git commit message linter",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/legend80s/commit-msg-linter.git"
+  },
+  "keywords": [],
+  "author": "legend80s",
+  "license": "MIT",
+  "engines": {
+    "node": ">= 8.0.0"
+  },
+  "dependencies": {
+    "did-you-mean": "^0.0.1",
+    "supports-color": "^8.1.1"
+  },
+  "bugs": {
+    "url": "https://github.com/legend80s/commit-msg-linter/issues"
+  },
+  "homepage": "https://github.com/legend80s/commit-msg-linter#readme"
+}
