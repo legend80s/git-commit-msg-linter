@@ -145,7 +145,7 @@ async function lint(commitMsgContent, lang) {
 }
 
 /**
- * @returns {Partial<import('./typings').IConfigLinterRC>}
+ * @returns {Partial<import('../git-commit-msg-linter/typings').IConfigLinterRC>}
  */
 function readConfig() {
   const filename = path.resolve(process.cwd(), 'commitlinterrc.json');
