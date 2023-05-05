@@ -4,10 +4,10 @@ cd ../commit-msg-linter-test
 
 rm .git/hooks/commit-msg
 
-if [[ -d ../commit-msg-linter ]]; then
-  npm i ../commit-msg-linter --save-dev
+if [[ -d ../commit-msg-linter/packages/git-commit-msg-linter ]]; then
+  npm i ../commit-msg-linter/packages/git-commit-msg-linter --save-dev
 else
-  npm i ../git-commit-msg-linter --save-dev
+  npm i ../git-commit-msg-linter/packages/git-commit-msg-linter --save-dev
 fi
 
 # `install` not run when npm i local directory,
