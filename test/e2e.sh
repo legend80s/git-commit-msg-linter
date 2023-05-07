@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ../../commit-msg-linter-test
+cd ../../../commit-msg-linter-test
 
 rm .git/hooks/commit-msg
 
