@@ -1,6 +1,6 @@
 {
   "name": "git-commit-msg-linter",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "git commit message lint hook",
   "main": "index.js",
   "bin": {
@@ -24,8 +24,9 @@
     "pub:major": "npm version major",
     "install": "node install.js",
     "uninstall": "node uninstall.js",
-    "preversion": "npm test && cd ../ && pnpm lint",
-    "postversion": "npm publish && publishing=1 git push && publishing=1 git push --tags",
+    "postversion": "npm publish",
+    "postpublish": "git commit -am 'chore: update version' && npm run push",
+    "push": "publishing=1 git push && publishing=1 git push --tags",
     "test": "bash ./test/e2e.sh"
   },
   "repository": {
