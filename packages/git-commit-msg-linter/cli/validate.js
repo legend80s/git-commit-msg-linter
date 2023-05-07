@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
 
 // https://github.com/legend80s/commit-msg-linter/issues/21
 /* eslint-disable no-undef */

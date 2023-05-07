@@ -9,8 +9,9 @@
 const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
-const pkg = require('./package.json');
 const linter = require('commit-msg-linter');
+
+const pkg = require('./package.json');
 
 const silent = process.argv.slice(2).some((arg) => arg.includes('--silent'));
 

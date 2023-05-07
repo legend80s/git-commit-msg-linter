@@ -24,7 +24,7 @@
     "pub:major": "npm version major",
     "install": "node install.js",
     "uninstall": "node uninstall.js",
-    "preversion": "npm test && npm run lint",
+    "preversion": "npm test && cd ../ && pnpm lint",
     "postversion": "npm publish && publishing=1 git push && publishing=1 git push --tags",
     "test": "bash ./test/e2e.sh"
   },

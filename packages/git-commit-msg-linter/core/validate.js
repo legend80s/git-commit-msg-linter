@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-console */
 const colorSupported = false;
 
 exports.YELLOW = colorSupported ? '\x1b[1;33m' : '';
