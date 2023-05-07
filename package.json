@@ -4,6 +4,9 @@
     "packages/*"
   ],
   "scripts": {
+    "pub:patch": "cd packages/git-commit-msg-linter && npm run pub:patch && cd ../..",
+    "pub:minor": "cd packages/git-commit-msg-linter && npm run pub:minor && cd ../..",
+    "pub:major": "cd packages/git-commit-msg-linter && npm run pub:major && cd ../..",
     "lint": "eslint **/*.js",
     "lint:fix": "eslint --fix **/*.js"
   },
