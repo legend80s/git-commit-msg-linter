@@ -7,7 +7,7 @@
   <a href="https://www.npmjs.com/package/git-commit-msg-linter">
     <img src="https://img.shields.io/npm/dm/git-commit-msg-linter.svg" alt="npm downloads" />
   </a>
-  <img src="https://img.shields.io/badge/node-%3E%3D%208.0.0-blue.svg" alt="prerequisite node version" />
+  <img src="https://img.shields.io/badge/node-%3E%3D%2014.0.0-blue.svg" alt="prerequisite node version" />
   <img src="https://visitor-badge.glitch.me/badge?page_id=legend80s/commit-msg-linter&left_color=blue&right_color=green" alt="visitor count" />
 </p>
 
