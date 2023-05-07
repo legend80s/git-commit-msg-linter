@@ -7,5 +7,6 @@ if [[ $publishing == '1' ]]; then
   # do nothing during publishing because npm test has run in the `preversion` phase
   echo ''
 else
+  cd packages/git-commit-msg-linter
   npm test
 fi

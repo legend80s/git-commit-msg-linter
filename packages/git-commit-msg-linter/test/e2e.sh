@@ -6,7 +6,7 @@ echo "test: here we are: $(pwd)."
 # clean hooks before testing
 # rm .git/hooks/commit-msg
 
-npm i ../git-commit-msg-linter --save-dev
+# npm i ../git-commit-msg-linter --save-dev
 
 # `install` not run when npm install a local directory,
 # so we run it manually.
