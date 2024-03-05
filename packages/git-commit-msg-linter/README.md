@@ -202,7 +202,7 @@ profiles such as `.bash_profile`, `.zshrc` etc.
 
 ## Features
 
-1. Visualization, low cost to Learn.
+1. Visualization, low cost to learn for git newbies.
 2. Independent, zero configurations.
 3. Prompt error msg precisely, friendly to commit message format unfamiliar developers.
 4. i18n: **en-US**, **pt-BR** (Brazilian Portuguese), **zh-CN** an **es-ES** supported and you can add more in [How to contribute new language support](#how-to-add-new-language-support).
