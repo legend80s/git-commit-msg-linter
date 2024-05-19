@@ -96,7 +96,7 @@ const rules = `
 # It's used to check whether this commit-msg hook file is created by us,
 # if it is then we can remove it confidently on uninstallation.
 
-cat ${linter.getLinterPath()} | node --input-type=commonjs
+cat "${linter.getLinterPath()}" | node --input-type=commonjs
 `.trimStart();
 
 // It could be that we do not have rights to this folder which could cause the
