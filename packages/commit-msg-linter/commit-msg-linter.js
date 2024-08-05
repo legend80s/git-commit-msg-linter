@@ -688,7 +688,8 @@ function format(text, ...args) {
  */
 function resolvePatterns(message) {
   // eslint-disable-next-line no-useless-escape
-  const PATTERN = /^(?:fixup!\s*)?(\w*)(\(([\w\$\.\*/-]*)\))?!?\: (.*)$/;
+  const PATTERN = /^(?:fixup!\s*)?(\w+)(\(([\w\$\.\*/-]*(?:,[\w\$\.\*/-]+)*)\))?!?\: (.+)$/;
+
   const matches = PATTERN.exec(message);
 
   if (matches) {
@@ -711,17 +712,22 @@ function resolvePatterns(message) {
  * - not required: scope not exits OK, scope exists but not in range FAIL
  * @param {string} scope
  * @param {{validScopes: string[]; scopeRequired: boolean;}} param1
- * @return {[invalid: false] | [invalid: true, reason: 'SCOPE_REQUIRED' | 'NOT_IN_RANGE' | 'SCOPE_EMPTY_STRING']}
+ * @return {[invalid: false] | [invalid: true, reason: 'SCOPE_REQUIRED' | 'SCOPE_DUPLICATED' | 'NOT_IN_RANGE' | 'SCOPE_EMPTY_STRING']}
  */
 function isScopeInvalid(scope, { validScopes, scopeRequired }) {
-  const trimmedScope = scope && scope.trim();
+  const scopeArr = scope ? scope.split(',') : [];
+  const hasScope = (scopeArr.length > 0);
+
+  if ((new Set(scopeArr)).size !== scopeArr.length) {
+    return [true, 'SCOPE_DUPLICATED'];
+  }
 
   const notInRange = () => Array.isArray(validScopes)
     && validScopes.length > 0
-    && !validScopes.includes(scope);
+    && !scopeArr.every((item) => validScopes.includes(item));
 
   if (scopeRequired) {
-    if (!trimmedScope) return [true, 'SCOPE_REQUIRED'];
+    if (!hasScope) return [true, 'SCOPE_REQUIRED'];
 
     if (notInRange()) {
       return [true, 'NOT_IN_RANGE'];
@@ -733,7 +739,7 @@ function isScopeInvalid(scope, { validScopes, scopeRequired }) {
     // @example
     // "test: hello" OK
     // "test(): hello" FAILED
-    if (trimmedScope === '') { return [true, 'SCOPE_EMPTY_STRING']; }
+    if (scope === '') { return [true, 'SCOPE_EMPTY_STRING']; }
 
     if (notInRange()) {
       return [true, 'NOT_IN_RANGE'];
@@ -773,7 +779,7 @@ function getLangs() {
         ],
         invalidScope: [
           config.scopeRequired ? '`scope` required.'
-            : '`scope` can be optional, but its parenthesis if exists cannot be empty.',
+            : '`scope` is optional, but if it exists, the parentheses cannot be empty and scopes cannot be duplicated.',
         ],
         subject: [
           'Brief summary of the change in present tense. Not capitalized. No period at the end.',
