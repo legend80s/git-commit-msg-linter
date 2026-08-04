@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 
 // pnpm wont resolve this package's dependencies as npm does
 // unless `pnpm install --shamefully-hoist`. What a shame!
@@ -45,10 +46,11 @@ const i18n = getLangs();
 const MAX_LENGTH = 100;
 const MIN_LENGTH = 10;
 
-function main() {
-  const commitMsgFilePath = '.git/COMMIT_EDITMSG';
+/** Where the in-progress commit message lives when `.git` is a plain directory. */
+const FALLBACK_COMMIT_MSG_FILE_PATH = '.git/COMMIT_EDITMSG';
 
-  // console.log(commitlinterrcFilePath);
+function main() {
+  const commitMsgFilePath = resolveCommitMsgFilePath();
 
   try {
     const commitMsgContent = fs.readFileSync(commitMsgFilePath, 'utf-8');
@@ -65,6 +67,31 @@ function main() {
 }
 
 main();
+
+/**
+ * Returns the path of the file holding the commit message being linted.
+ *
+ * Inside a git worktree or a submodule, `.git` is a file pointing at the real
+ * git directory rather than a directory, so the path cannot be assembled by
+ * hand. Asking git keeps every layout working.
+ *
+ * @returns {string}
+ */
+function resolveCommitMsgFilePath() {
+  try {
+    const gitPath = execSync('git rev-parse --git-path COMMIT_EDITMSG', {
+      encoding: 'utf-8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
+
+    if (gitPath) { return gitPath; }
+  } catch (error) {
+    // git is unavailable or this is not a repository, so fall back below
+    // to keep working wherever the hardcoded location already resolved.
+  }
+
+  return FALLBACK_COMMIT_MSG_FILE_PATH;
+}
 
 /**
  * Returns the given language's data if the language exists.

@@ -8,6 +8,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 const chalk = require('chalk');
 const linter = require('commit-msg-linter');
 
@@ -46,7 +47,7 @@ const projectRootList = [
   path.resolve(__dirname, '../../../../..'),
 ];
 
-const git = guessGitDirectory(projectRootList);
+const git = guessGitDirectory(projectRootList) || gitCommonDirectory();
 
 // Bail out if we don't have an `.git` folder as the hooks will not get triggered.
 if (!git) {
@@ -127,6 +128,28 @@ function guessGitDirectory(projectDirectories) {
   return projectDirectories
     .map((projectRoot) => path.resolve(projectRoot, '.git'))
     .find((gitDirectory) => exists(gitDirectory) && fs.lstatSync(gitDirectory).isDirectory());
+}
+
+/**
+ * Returns the shared git directory, or `undefined` when git cannot report one.
+ *
+ * Only reached when no `.git` directory was found, which is what happens inside
+ * a worktree or submodule where `.git` is a file pointing elsewhere. Hooks live
+ * in the common directory so all worktrees share a single installation.
+ *
+ * @returns {string | undefined}
+ */
+function gitCommonDirectory() {
+  try {
+    const commonDirectory = execSync('git rev-parse --git-common-dir', {
+      encoding: 'utf-8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
+
+    return commonDirectory ? path.resolve(commonDirectory) : undefined;
+  } catch (error) {
+    return undefined;
+  }
 }
 
 function isFileWeCreated(fp) {
