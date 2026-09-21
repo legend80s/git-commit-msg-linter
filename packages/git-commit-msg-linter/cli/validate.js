@@ -5,7 +5,7 @@
 /* eslint-disable no-undef */
 
 // expected output of `commit-msg-linter sha1..sha2`? Just exit with code 1 and print the invalid msg list?
-const { execSync } = require('child_process');
+const { execFileSync } = require('child_process');
 const { readFileSync } = require('fs');
 const path = require('path');
 const { validateMessage, YELLOW, RED } = require('../core/validate');
@@ -73,7 +73,7 @@ function prune(arr) {
  */
 function lint(sha) {
   // git log $sha --pretty=format:%s -n1
-  const msg = execSync(`git log ${sha} --pretty=format:%s -n1`).toString();
+  const msg = execFileSync('git', ['log', sha, '--pretty=format:%s', '-n1']).toString();
 
   return validate(msg) ? true : msg;
 }
@@ -90,9 +90,7 @@ function lintBetween(start, end) {
 
   // git log sha1 --pretty=format:%s -n1
   // chore: upgrade to 4
-  const rangeCmd = `git log ${start}..${end} --pretty=format:%s`;
-
-  const msgs = execSync(rangeCmd).toString().split('\n');
+  const msgs = execFileSync('git', ['log', `${start}..${end}`, '--pretty=format:%s']).toString().split('\n');
   const invalidMsgs = msgs.filter((msg) => !validate(msg));
 
   const startMsg = lint(start);
