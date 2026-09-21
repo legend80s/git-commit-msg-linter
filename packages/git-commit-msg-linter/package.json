@@ -52,6 +52,6 @@
   },
   "homepage": "https://github.com/legend80s/commit-msg-linter#readme",
   "devDependencies": {
-    "npm-shipwright": "^0.2.1"
+    "npm-shipwright": "^0.2.2"
   }
 }
