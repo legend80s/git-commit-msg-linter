@@ -24,6 +24,7 @@
     "pub:major": "npm version major",
     "install": "node install.js",
     "uninstall": "node uninstall.js",
+    "preversion": "shipwright",
     "postversion": "npm publish",
     "postpublish": "git commit -am 'chore: update version' && npm run push",
     "push": "publishing=1 git push && publishing=1 git push --tags",
@@ -49,5 +50,8 @@
   "bugs": {
     "url": "https://github.com/legend80s/commit-msg-linter/issues"
   },
-  "homepage": "https://github.com/legend80s/commit-msg-linter#readme"
+  "homepage": "https://github.com/legend80s/commit-msg-linter#readme",
+  "devDependencies": {
+    "npm-shipwright": "^0.2.1"
+  }
 }
